@@ -1,3 +1,4 @@
+import autoBind from "auto-bind";
 import { Coordinate } from "../utilities";
 import { CommandChar } from "./CommandChar";
 
@@ -24,6 +25,7 @@ export class Befunge {
 
   constructor(public code: string[][], private onSlowStep: () => void) {
     this.limits = new Coordinate(code.length, code[0]?.length || 0);
+    autoBind(this);
   }
 
   public run(): void {
@@ -116,7 +118,9 @@ export class Befunge {
     this.stack.push(Number(!this.stack.pop()));
   }
   private ["`"](): void {
-    this.stack.push(Number((this.stack.pop() ?? 0) < (this.stack.pop() ?? 0)));
+    const a = this.stack.pop() ?? 0;
+    const b = this.stack.pop() ?? 0;
+    this.stack.push(Number(a < b));
   }
   private [">"](): void {
     this.direction = Direction.Right;
@@ -170,5 +174,5 @@ export class Befunge {
   private ["@"](): void {
     this.halted = true;
   }
-  private [" "](): void {}
+  private [" "](): void {} // eslint-disable-line @typescript-eslint/no-empty-function
 }

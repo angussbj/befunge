@@ -1,4 +1,4 @@
-import { constArray2, Coordinate } from "../../utilities";
+import { constArray2, Coordinate } from "../utilities";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const DIRECTIONS = {
@@ -8,17 +8,22 @@ const DIRECTIONS = {
   Down: { x: 0, y: 1 },
 };
 
-export function useGridTyping(limits: Coordinate): {
+export function useGridTyping(
+  width: number,
+  height: number
+): {
   code: string[][];
   selection: Coordinate;
   onClick: (x: number, y: number) => () => void;
+  render: () => void;
 } {
-  const code = useRef(constArray2(limits.x, limits.y, " ")).current;
-  let selection = useRef(new Coordinate(0, 0)).current;
+  const code = useRef(constArray2(width, height, " ")).current;
+  const limits = new Coordinate(width, height);
 
-  let direction = useRef(new Coordinate(1, 0)).current;
+  const selection = useRef(new Coordinate(0, 0)).current;
+  const direction = useRef(new Coordinate(1, 0)).current;
 
-  const [_renderHelper, setRenderHelper] = useState(0);
+  const setRenderHelper = useState(0)[1];
 
   const moveSelection = useCallback(
     (direction: Coordinate) => {
@@ -66,11 +71,12 @@ export function useGridTyping(limits: Coordinate): {
   }, []);
 
   const onClick = useCallback(
-    (x: number, y: number) => () => {
-      selection.x = x;
-      selection.y = y;
-      render();
-    },
+    (x: number, y: number): (() => void) =>
+      (): void => {
+        selection.x = x;
+        selection.y = y;
+        render();
+      },
     []
   );
 
@@ -78,5 +84,6 @@ export function useGridTyping(limits: Coordinate): {
     code,
     selection,
     onClick,
+    render,
   };
 }

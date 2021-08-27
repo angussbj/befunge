@@ -1,18 +1,19 @@
 import React from "react";
-import { Grid } from "./components";
+import { CodingSpace } from "./components/CodingSpace";
+import { Colors } from "./ui/Colors";
 
-function App() {
+function App(): React.ReactElement {
   return (
     <div
       style={{
-        backgroundColor: "#283134",
+        backgroundColor: Colors.DARK.toString(),
         display: "flex",
         minHeight: "100vh",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Grid />
+      <CodingSpace />
     </div>
   );
 }
