@@ -14,6 +14,7 @@ export function useBefunge(
   stack: number[];
   step: () => void;
   run: () => void;
+  reset: () => void;
   limits: Coordinate;
 } {
   const { code, selection, onClick, render } = useGridTyping(width, height);
@@ -28,6 +29,7 @@ export function useBefunge(
     stack: b.stack,
     step: b.step,
     run: b.run,
+    reset: b.reset,
     limits: b.limits,
   };
 }

@@ -1,22 +1,21 @@
 import React, { FC } from "react";
-import { Colors } from "./Colors";
-import Color from "color";
 import MaterialButton from "@material-ui/core/Button";
 
 interface Props {
   label: string | FC<{ color?: string }>;
   onClick: () => void;
-  color?: Color;
   disabled?: boolean;
+  style?: React.CSSProperties;
 }
 
-export function Button({ label, onClick }: Props): React.ReactElement {
+export function Button({ label, onClick, ...rest }: Props): React.ReactElement {
   return (
     <MaterialButton
       variant="contained"
       size="small"
       disableElevation
       onClick={onClick}
+      {...rest}
     >
       {label}
     </MaterialButton>

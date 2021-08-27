@@ -23,7 +23,7 @@ export class Befunge {
   public halted = false;
   public limits: Coordinate;
 
-  constructor(public code: string[][], private onSlowStep: () => void) {
+  constructor(public code: string[][], private render: () => void) {
     this.limits = new Coordinate(code.length, code[0]?.length || 0);
     autoBind(this);
   }
@@ -34,10 +34,19 @@ export class Befunge {
     }
   }
 
+  // TODO: how do we reset any changes made to the playing field by `p` commands?
+  public reset(): void {
+    this.cursor = new Coordinate(0, 0);
+    this.stack = [];
+    this.halted = false;
+    this.stringMode = false;
+    this.render();
+  }
+
   public step(): void {
     this.execute(this.code[this.cursor.x][this.cursor.y]);
     this.moveCursor();
-    this.onSlowStep();
+    this.render();
   }
 
   public moveCursor(): void {
