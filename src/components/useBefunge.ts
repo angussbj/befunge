@@ -1,5 +1,5 @@
 import { Coordinate } from "../utilities";
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useGridTyping } from "./useGridTyping";
 import { Befunge } from "../Befunge";
 
@@ -10,26 +10,21 @@ export function useBefunge(
   code: string[][];
   selection: Coordinate;
   onClick: (x: number, y: number) => () => void;
-  cursor: Coordinate;
-  stack: number[];
-  step: () => void;
-  run: () => void;
-  reset: () => void;
-  limits: Coordinate;
+  befunge: Befunge;
 } {
-  const { code, selection, onClick, render } = useGridTyping(width, height);
+  const setRenderHelper = useState(0)[1];
+  const render = useCallback(() => {
+    setRenderHelper(Math.random());
+  }, []);
 
-  const b = useRef(new Befunge(code, render)).current;
+  const b = useRef(new Befunge(width, height, render)).current;
+
+  const { code, selection, onClick } = useGridTyping(b.code, b.limits, render);
 
   return {
     code,
     selection,
     onClick,
-    cursor: b.cursor,
-    stack: b.stack,
-    step: b.step,
-    run: b.run,
-    reset: b.reset,
-    limits: b.limits,
+    befunge: b,
   };
 }

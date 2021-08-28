@@ -9,21 +9,16 @@ const DIRECTIONS = {
 };
 
 export function useGridTyping(
-  width: number,
-  height: number
+  code: string[][],
+  limits: Coordinate,
+  render: () => void
 ): {
   code: string[][];
   selection: Coordinate;
   onClick: (x: number, y: number) => () => void;
-  render: () => void;
 } {
-  const code = useRef(constArray2(width, height, " ")).current;
-  const limits = new Coordinate(width, height);
-
   const selection = useRef(new Coordinate(0, 0)).current;
   const direction = useRef(new Coordinate(1, 0)).current;
-
-  const setRenderHelper = useState(0)[1];
 
   const moveSelection = useCallback(
     (direction: Coordinate) => {
@@ -32,10 +27,6 @@ export function useGridTyping(
     },
     [selection]
   );
-
-  const render = useCallback(() => {
-    setRenderHelper(Math.random());
-  }, []);
 
   const updateDirectionAndMove = useCallback(
     (dir: "Left" | "Right" | "Up" | "Down") => {
@@ -84,6 +75,5 @@ export function useGridTyping(
     code,
     selection,
     onClick,
-    render,
   };
 }

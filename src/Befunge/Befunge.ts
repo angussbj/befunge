@@ -1,5 +1,5 @@
 import autoBind from "auto-bind";
-import { Coordinate } from "../utilities";
+import { constArray2, Coordinate } from "../utilities";
 import { CommandChar } from "./CommandChar";
 
 enum Direction {
@@ -19,12 +19,15 @@ export class Befunge {
   public cursor = new Coordinate(0, 0);
   public direction = Direction.Right;
   public stack: number[] = [];
+  public output = "";
   public stringMode = false;
   public halted = false;
   public limits: Coordinate;
+  public code: string[][];
 
-  constructor(public code: string[][], private render: () => void) {
-    this.limits = new Coordinate(code.length, code[0]?.length || 0);
+  constructor(width: number, height: number, private render: () => void) {
+    this.limits = new Coordinate(width, height);
+    this.code = constArray2(width, height, " ");
     autoBind(this);
   }
 
@@ -38,6 +41,7 @@ export class Befunge {
   public reset(): void {
     this.cursor = new Coordinate(0, 0);
     this.stack = [];
+    this.output = "";
     this.halted = false;
     this.stringMode = false;
     this.render();
@@ -57,20 +61,20 @@ export class Befunge {
   public execute(command: string): void {
     if (this.stringMode) this.stack.push(command.charCodeAt(0));
     if (this.isValidCommand(command)) this[command]();
-    else Befunge.throwUnrecognisedCommand(command, this.cursor);
-  }
-
-  private static throwUnrecognisedCommand(
-    command: string,
-    cursor: Coordinate
-  ): never {
-    throw new Error(
-      `Unrecognised command "${command}" at ${cursor.toString()}`
-    );
+    else this.throwUnrecognisedCommand(command, this.cursor);
   }
 
   public isValidCommand(command: string): command is CommandChar {
     return command in this;
+  }
+
+  private throwUnrecognisedCommand(command: string, cursor: Coordinate): void {
+    this.output += `\nError: Unrecognised command "${command}" at ${cursor.toString()}`;
+    this.halt();
+  }
+
+  private halt(): void {
+    this.halted = true;
   }
 
   // Instructions
@@ -179,9 +183,16 @@ export class Befunge {
     this.code[this.stack.pop() ?? 0][this.stack.pop() ?? 0] =
       String.fromCharCode(this.stack.pop() ?? 32); // 32 is [space]
   }
+  private ["."](): void {
+    this.output += (this.stack.pop() ?? 0).toString(10);
+  }
+  private [","](): void {
+    const a = this.stack.pop();
+    if (a !== undefined) this.output += String.fromCharCode(a);
+  }
   // TODO: input/output methods: ., ,, &, and ~
   private ["@"](): void {
-    this.halted = true;
+    this.halt();
   }
   private [" "](): void {} // eslint-disable-line @typescript-eslint/no-empty-function
 }

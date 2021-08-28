@@ -1,17 +1,17 @@
 import React from "react";
-import { Colors } from "../ui/Colors";
+import { Colors } from "../ui";
 
 interface Props {
-  stack: number[];
+  output: string;
   style?: React.CSSProperties;
 }
 
-export function Stack({ stack, style }: Props): React.ReactElement {
+export function Output({ output, style }: Props): React.ReactElement {
   return (
     <div
       style={{
-        width: 120,
-        height: 240,
+        flex: 1,
+        alignSelf: "stretch",
         backgroundColor: Colors.LIGHT.toString(),
         padding: 8,
         overflowY: "scroll",
@@ -20,12 +20,7 @@ export function Stack({ stack, style }: Props): React.ReactElement {
         ...style,
       }}
     >
-      {stack
-        .slice()
-        .reverse()
-        .map((value, index) => (
-          <div key={index}>{value}</div>
-        ))}
+      {output}
     </div>
   );
 }
