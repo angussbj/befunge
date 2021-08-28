@@ -19,6 +19,7 @@ export function useGridTyping(
 } {
   const selection = useRef(new Coordinate(0, 0)).current;
   const direction = useRef(new Coordinate(1, 0)).current;
+  const depressedCommandKeys = useRef(new Set()).current;
 
   const moveSelection = useCallback(
     (direction: Coordinate) => {
@@ -38,30 +39,57 @@ export function useGridTyping(
     []
   );
 
-  const onKeyDownEvent = useCallback((event) => {
+  const onKeyDown = useCallback((event) => {
     if (event.key.length === 1) {
-      code[selection.x][selection.y] = event.key;
-      moveSelection(direction);
+      if (depressedCommandKeys.size === 0) {
+        code[selection.x][selection.y] = event.key;
+        moveSelection(direction);
+      }
     } else if (event.key.match(/^Arrow/)) {
       updateDirectionAndMove(event.key.slice(5));
     } else if (event.key === "Backspace") {
       moveSelection(direction.clone().negative());
       code[selection.x][selection.y] = " ";
+    } else {
+      depressedCommandKeys.add(event.key);
     }
     render();
   }, []);
 
+  const onKeyUp = useCallback((event) => {
+    if (
+      event.key.length != 1 &&
+      !event.key.match(/^Arrow/) &&
+      event.key !== "Backspace"
+    ) {
+      depressedCommandKeys.delete(event.key);
+    }
+  }, []);
+
   const onPaste = useCallback((event) => {
-    console.log("pasting detected");
-    console.log(event);
+    const text = event.clipboardData.getData("Text");
+    let x = selection.x;
+    let y = selection.y;
+    text.split("").forEach((char: string) => {
+      if (char === "\n") {
+        x = selection.x;
+        y++;
+      } else {
+        code[x][y] = char;
+        x++;
+      }
+    });
+    render();
   }, []);
 
   useEffect(() => {
-    document.addEventListener("keydown", onKeyDownEvent, false);
-    document.addEventListener("paste", onPaste, false);
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("paste", onPaste);
+    document.addEventListener("keyup", onKeyUp);
     return (): void => {
-      document.removeEventListener("keydown", onKeyDownEvent, false);
-      document.addEventListener("paste", onPaste, false);
+      document.removeEventListener("keydown", onKeyDown);
+      document.addEventListener("paste", onPaste);
+      document.addEventListener("keyup", onKeyUp);
     };
   }, []);
 
