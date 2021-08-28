@@ -1,4 +1,4 @@
-import { Coordinate } from "../utilities";
+import { Coordinate, sorted } from "../utilities";
 import { useCallback, useEffect, useRef } from "react";
 
 const DIRECTIONS = {
@@ -17,18 +17,18 @@ export function useGridTyping(
 ): {
   code: string[][];
   selection: Coordinate;
-  selectionDimensions: Coordinate;
+  selectionDelta: Coordinate;
   onClick: (x: number, y: number) => () => void;
 } {
   const selection = useRef(new Coordinate(0, 0)).current;
-  const selectionDimensions = useRef(new Coordinate(0, 0)).current;
+  const selectionDelta = useRef(new Coordinate(0, 0)).current;
   const direction = useRef(new Coordinate(1, 0)).current;
   const depressedCommandKeys = useRef(new Set()).current;
 
   const moveSelection = useCallback((direction: Coordinate) => {
     selection.add(direction);
     selection.modulo(limits);
-    selectionDimensions.set(0, 0);
+    selectionDelta.set(0, 0);
   }, []);
 
   const onKeyDown = useCallback((event) => {
@@ -42,9 +42,7 @@ export function useGridTyping(
         depressedCommandKeys.has("Shift") &&
         depressedCommandKeys.size === 1
       ) {
-        selectionDimensions.add(
-          DIRECTIONS[event.key.slice(5) as DirectionName]
-        );
+        selectionDelta.add(DIRECTIONS[event.key.slice(5) as DirectionName]);
       } else {
         direction.setToCopy(DIRECTIONS[event.key.slice(5) as DirectionName]);
         moveSelection(direction);
@@ -87,8 +85,11 @@ export function useGridTyping(
 
   const onCopy = useCallback((event) => {
     let textToCopy = "";
-    for (let y = selection.y; y <= selection.y + selectionDimensions.y; y++) {
-      for (let x = selection.x; x <= selection.x + selectionDimensions.x; x++) {
+    const [x0, x1] = sorted([selection.x, selection.x + selectionDelta.x]);
+    const [y0, y1] = sorted([selection.y, selection.y + selectionDelta.y]);
+    console.log(x0, x1, y0, y1);
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
         textToCopy += code[x][y];
       }
       textToCopy += "\n";
@@ -117,10 +118,10 @@ export function useGridTyping(
           depressedCommandKeys.has("Shift") &&
           depressedCommandKeys.size === 1
         ) {
-          selectionDimensions.set(x - selection.x, y - selection.y);
+          selectionDelta.set(x - selection.x, y - selection.y);
         } else {
           selection.set(x, y);
-          selectionDimensions.set(0, 0);
+          selectionDelta.set(0, 0);
         }
         render();
       },
@@ -130,7 +131,7 @@ export function useGridTyping(
   return {
     code,
     selection,
-    selectionDimensions,
+    selectionDelta,
     onClick,
   };
 }

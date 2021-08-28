@@ -6,26 +6,26 @@ import { Coordinate, range } from "../../utilities";
 export function Grid({
   code,
   selection,
-  selectionDimensions,
+  selectionDelta,
   onClick,
   limits,
   cursor,
 }: {
   code: string[][];
   selection: Coordinate;
-  selectionDimensions: Coordinate;
+  selectionDelta: Coordinate;
   onClick: (x: number, y: number) => () => void;
   limits: Coordinate;
   cursor: Coordinate;
 }): React.ReactElement {
   const isSelectedX = useCallback(
-    getSelectionCheckFunction(selection.x, selectionDimensions.x),
-    [selection.x, selectionDimensions.x]
+    getSelectionCheckFunction(selection.x, selectionDelta.x),
+    [selection.x, selectionDelta.x]
   );
 
   const isSelectedY = useCallback(
-    getSelectionCheckFunction(selection.y, selectionDimensions.y),
-    [selection.y, selectionDimensions.y]
+    getSelectionCheckFunction(selection.y, selectionDelta.y),
+    [selection.y, selectionDelta.y]
   );
 
   return (

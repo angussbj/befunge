@@ -10,7 +10,7 @@ export function CodingSpace(): React.ReactElement {
   const {
     code,
     selection,
-    selectionDimensions,
+    selectionDelta,
     onClick,
     befunge: b,
   } = useBefunge(48, 32);
@@ -20,7 +20,7 @@ export function CodingSpace(): React.ReactElement {
       <Grid
         code={code}
         selection={selection}
-        selectionDimensions={selectionDimensions}
+        selectionDelta={selectionDelta}
         onClick={onClick}
         limits={b.limits}
         cursor={b.cursor}
