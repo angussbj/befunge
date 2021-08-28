@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Row } from "../../ui";
 import { Square } from "./Square";
-import { Coordinate, range } from "../../utilities";
+import { Coordinate, modulo, range } from "../../utilities";
 
 export function Grid({
   code,
@@ -19,12 +19,12 @@ export function Grid({
   cursor: Coordinate;
 }): React.ReactElement {
   const isSelectedX = useCallback(
-    getSelectionCheckFunction(selection.x, selectionDelta.x),
+    getSelectionCheckFunction(selection.x, selectionDelta.x, limits.x),
     [selection.x, selectionDelta.x]
   );
 
   const isSelectedY = useCallback(
-    getSelectionCheckFunction(selection.y, selectionDelta.y),
+    getSelectionCheckFunction(selection.y, selectionDelta.y, limits.y),
     [selection.y, selectionDelta.y]
   );
 
@@ -51,11 +51,19 @@ export function Grid({
 
 function getSelectionCheckFunction(
   coordinate: number,
-  delta: number
+  delta: number,
+  limit: number
 ): (a: number) => boolean {
-  return delta === 0
-    ? (a: number): boolean => a === coordinate
-    : delta < 0
-    ? (a: number): boolean => coordinate + delta <= a && a <= coordinate
-    : (a: number): boolean => coordinate <= a && a <= coordinate + delta;
+  if (delta === 0) return (a: number): boolean => a === coordinate;
+  const sum = coordinate + delta;
+  const modSum = modulo(coordinate + delta, limit);
+  if (delta < 0) {
+    if (modSum === sum)
+      return (a: number): boolean => coordinate + delta <= a && a <= coordinate;
+    else return (a: number): boolean => a <= coordinate || a >= modSum;
+  } else {
+    if (modSum === sum)
+      return (a: number): boolean => coordinate <= a && a <= coordinate + delta;
+    else return (a: number): boolean => a <= modSum || a >= coordinate;
+  }
 }

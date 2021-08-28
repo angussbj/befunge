@@ -13,6 +13,16 @@ export class Coordinate {
     return this;
   }
 
+  setX(x: number): Coordinate {
+    this.x = x;
+    return this;
+  }
+
+  setY(y: number): Coordinate {
+    this.y = y;
+    return this;
+  }
+
   add(other: Coordinate): Coordinate {
     this.x += other.x;
     this.y += other.y;

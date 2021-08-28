@@ -69,15 +69,16 @@ export function useGridTyping(
 
   const onPaste = useCallback((event) => {
     const text = event.clipboardData.getData("Text");
-    let x = selection.x;
-    let y = selection.y;
+    const pasteCoords = new Coordinate(selection.x, selection.y);
     text.split("").forEach((char: string) => {
       if (char === "\n") {
-        x = selection.x;
-        y++;
+        pasteCoords.setX(selection.x);
+        pasteCoords.setY(pasteCoords.y + 1);
+        pasteCoords.modulo(limits);
       } else {
-        code[x][y] = char;
-        x++;
+        code[pasteCoords.x][pasteCoords.y] = char;
+        pasteCoords.setX(pasteCoords.x + 1);
+        pasteCoords.modulo(limits);
       }
     });
     render();
@@ -87,10 +88,11 @@ export function useGridTyping(
     let textToCopy = "";
     const [x0, x1] = sorted([selection.x, selection.x + selectionDelta.x]);
     const [y0, y1] = sorted([selection.y, selection.y + selectionDelta.y]);
-    console.log(x0, x1, y0, y1);
+    const copyCoords = new Coordinate(0, 0);
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
-        textToCopy += code[x][y];
+        copyCoords.set(x, y).modulo(limits);
+        textToCopy += code[copyCoords.x][copyCoords.y];
       }
       textToCopy += "\n";
     }
