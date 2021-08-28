@@ -113,8 +113,15 @@ export function useGridTyping(
   const onClick = useCallback(
     (x: number, y: number): (() => void) =>
       (): void => {
-        selection.set(x, y);
-        selectionDimensions.set(0, 0);
+        if (
+          depressedCommandKeys.has("Shift") &&
+          depressedCommandKeys.size === 1
+        ) {
+          selectionDimensions.set(x - selection.x, y - selection.y);
+        } else {
+          selection.set(x, y);
+          selectionDimensions.set(0, 0);
+        }
         render();
       },
     []
