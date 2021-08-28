@@ -51,14 +51,11 @@ export class Befunge {
   public run(): void {
     function recur(b: Befunge): () => void {
       return (): void => {
-        if (b.running) {
-          for (let i = 0; i < 100; i++) {
-            b.quickStep();
-          }
-          setTimeout(recur(b), 1);
-        } else {
-          b.render();
+        for (let i = 0; i < 100; i++) {
+          if (b.running) b.quickStep();
         }
+        if (b.running) setTimeout(recur(b), 1);
+        else b.render();
       };
     }
 
@@ -69,6 +66,7 @@ export class Befunge {
 
   public pause(): void {
     this.walking = false;
+    this.running = false;
   }
 
   // TODO: how do we reset any changes made to the playing field by `p` commands?
@@ -116,6 +114,7 @@ export class Befunge {
   private halt(): void {
     this.halted = true;
     this.walking = false;
+    this.running = false;
   }
 
   // Instructions

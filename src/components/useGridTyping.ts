@@ -38,26 +38,30 @@ export function useGridTyping(
     []
   );
 
-  const onKeyDownEvent = useCallback(
-    (event) => {
-      if (event.key.length === 1) {
-        code[selection.x][selection.y] = event.key;
-        moveSelection(direction);
-      } else if (event.key.match(/^Arrow/)) {
-        updateDirectionAndMove(event.key.slice(5));
-      } else if (event.key === "Backspace") {
-        moveSelection(direction.clone().negative());
-        code[selection.x][selection.y] = " ";
-      }
-      render();
-    },
-    [code]
-  );
+  const onKeyDownEvent = useCallback((event) => {
+    if (event.key.length === 1) {
+      code[selection.x][selection.y] = event.key;
+      moveSelection(direction);
+    } else if (event.key.match(/^Arrow/)) {
+      updateDirectionAndMove(event.key.slice(5));
+    } else if (event.key === "Backspace") {
+      moveSelection(direction.clone().negative());
+      code[selection.x][selection.y] = " ";
+    }
+    render();
+  }, []);
+
+  const onPaste = useCallback((event) => {
+    console.log("pasting detected");
+    console.log(event);
+  }, []);
 
   useEffect(() => {
     document.addEventListener("keydown", onKeyDownEvent, false);
+    document.addEventListener("paste", onPaste, false);
     return (): void => {
       document.removeEventListener("keydown", onKeyDownEvent, false);
+      document.addEventListener("paste", onPaste, false);
     };
   }, []);
 
