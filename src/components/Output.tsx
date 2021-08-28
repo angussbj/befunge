@@ -10,12 +10,14 @@ export function Output({ output, style }: Props): React.ReactElement {
   return (
     <div
       style={{
-        flex: 1,
+        flexBasis: 0,
+        flexGrow: 1,
+        flexShrink: 1,
+        minWidth: 0,
         alignSelf: "stretch",
         backgroundColor: Colors.LIGHT.toString(),
         padding: 8,
-        overflowY: "scroll",
-        overflowX: "scroll",
+        overflow: "scroll",
         scrollbarWidth: "none",
         ...style,
       }}

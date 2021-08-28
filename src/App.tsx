@@ -9,6 +9,7 @@ function App(): React.ReactElement {
         backgroundColor: Colors.DARK.toString(),
         display: "flex",
         minHeight: "100vh",
+        padding: 24,
         justifyContent: "center",
         alignItems: "center",
       }}

@@ -24,6 +24,8 @@ export class Befunge {
   public halted = false;
   public limits: Coordinate;
   public code: string[][];
+  private walking = false;
+  private running = false;
 
   constructor(width: number, height: number, private render: () => void) {
     this.limits = new Coordinate(width, height);
@@ -31,10 +33,42 @@ export class Befunge {
     autoBind(this);
   }
 
-  public run(): void {
-    while (!this.halted) {
-      this.step();
+  public walk(): void {
+    function recur(b: Befunge): () => void {
+      return (): void => {
+        if (b.walking) {
+          b.step();
+          setTimeout(recur(b), 1);
+        }
+      };
     }
+
+    this.walking = true;
+    this.running = false;
+    recur(this)();
+  }
+
+  public run(): void {
+    function recur(b: Befunge): () => void {
+      return (): void => {
+        if (b.running) {
+          for (let i = 0; i < 100; i++) {
+            b.quickStep();
+          }
+          setTimeout(recur(b), 1);
+        } else {
+          b.render();
+        }
+      };
+    }
+
+    this.walking = false;
+    this.running = true;
+    recur(this)();
+  }
+
+  public pause(): void {
+    this.walking = false;
   }
 
   // TODO: how do we reset any changes made to the playing field by `p` commands?
@@ -44,7 +78,13 @@ export class Befunge {
     this.output = "";
     this.halted = false;
     this.stringMode = false;
+    this.walking = false;
     this.render();
+  }
+
+  public quickStep(): void {
+    this.execute(this.code[this.cursor.x][this.cursor.y]);
+    this.moveCursor();
   }
 
   public step(): void {
@@ -75,6 +115,7 @@ export class Befunge {
 
   private halt(): void {
     this.halted = true;
+    this.walking = false;
   }
 
   // Instructions

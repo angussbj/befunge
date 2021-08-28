@@ -1,5 +1,5 @@
-import { constArray2, Coordinate } from "../utilities";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Coordinate } from "../utilities";
+import { useCallback, useEffect, useRef } from "react";
 
 const DIRECTIONS = {
   Left: { x: -1, y: 0 },

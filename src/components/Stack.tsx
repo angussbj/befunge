@@ -11,11 +11,10 @@ export function Stack({ stack, style }: Props): React.ReactElement {
     <div
       style={{
         width: 120,
-        height: 240,
+        alignSelf: "stretch",
         backgroundColor: Colors.LIGHT.toString(),
         padding: 8,
-        overflowY: "scroll",
-        overflowX: "scroll",
+        overflow: "scroll",
         scrollbarWidth: "none",
         ...style,
       }}
