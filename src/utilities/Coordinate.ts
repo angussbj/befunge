@@ -1,6 +1,18 @@
 export class Coordinate {
   constructor(public x: number, public y: number) {}
 
+  set(x: number, y: number): Coordinate {
+    this.x = x;
+    this.y = y;
+    return this;
+  }
+
+  setToCopy(other: Coordinate): Coordinate {
+    this.x = other.x;
+    this.y = other.y;
+    return this;
+  }
+
   add(other: Coordinate): Coordinate {
     this.x += other.x;
     this.y += other.y;

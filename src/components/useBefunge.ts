@@ -9,6 +9,7 @@ export function useBefunge(
 ): {
   code: string[][];
   selection: Coordinate;
+  selectionDimensions: Coordinate;
   onClick: (x: number, y: number) => () => void;
   befunge: Befunge;
 } {
@@ -19,11 +20,16 @@ export function useBefunge(
 
   const b = useRef(new Befunge(width, height, render)).current;
 
-  const { code, selection, onClick } = useGridTyping(b.code, b.limits, render);
+  const { code, selection, selectionDimensions, onClick } = useGridTyping(
+    b.code,
+    b.limits,
+    render
+  );
 
   return {
     code,
     selection,
+    selectionDimensions,
     onClick,
     befunge: b,
   };

@@ -7,13 +7,20 @@ import { Output } from "./Output";
 import { Row, Button } from "../ui";
 
 export function CodingSpace(): React.ReactElement {
-  const { code, selection, onClick, befunge: b } = useBefunge(48, 32);
+  const {
+    code,
+    selection,
+    selectionDimensions,
+    onClick,
+    befunge: b,
+  } = useBefunge(48, 32);
 
   return (
     <Container>
       <Grid
         code={code}
         selection={selection}
+        selectionDimensions={selectionDimensions}
         onClick={onClick}
         limits={b.limits}
         cursor={b.cursor}
