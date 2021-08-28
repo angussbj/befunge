@@ -85,12 +85,26 @@ export function useGridTyping(
     render();
   }, []);
 
+  const onCopy = useCallback((event) => {
+    let textToCopy = "";
+    for (let y = selection.y; y <= selection.y + selectionDimensions.y; y++) {
+      for (let x = selection.x; x <= selection.x + selectionDimensions.x; x++) {
+        textToCopy += code[x][y];
+      }
+      textToCopy += "\n";
+    }
+    event.clipboardData.setData("text/plain", textToCopy);
+    event.preventDefault();
+  }, []);
+
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("copy", onCopy);
     document.addEventListener("paste", onPaste);
     document.addEventListener("keyup", onKeyUp);
     return (): void => {
       document.removeEventListener("keydown", onKeyDown);
+      document.addEventListener("copy", onCopy);
       document.addEventListener("paste", onPaste);
       document.addEventListener("keyup", onKeyUp);
     };
@@ -99,8 +113,8 @@ export function useGridTyping(
   const onClick = useCallback(
     (x: number, y: number): (() => void) =>
       (): void => {
-        selection.x = x;
-        selection.y = y;
+        selection.set(x, y);
+        selectionDimensions.set(0, 0);
         render();
       },
     []
