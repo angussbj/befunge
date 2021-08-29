@@ -50,10 +50,46 @@ export function useGridTyping(
     render();
   }, []);
 
-  const onPaste = useCallback((event) => {
-    const text = event.clipboardData.getData("Text");
+  const updateCode = useCallback(
+    (coords: Coordinate, modification: (char: string) => string): void => {
+      code[coords.x][coords.y] = modification(code[coords.x][coords.y]);
+    },
+    []
+  );
+
+  const copyWithModify = useCallback(
+    (modification?: (char: string) => string) =>
+      (event: ClipboardEvent): void => {
+        let textToCopy = "";
+        const [x0, x1] = sorted([selection.x, selection.x + selectionDelta.x]);
+        const [y0, y1] = sorted([selection.y, selection.y + selectionDelta.y]);
+        const copyCoords = new Coordinate(0, 0);
+        for (let y = y0; y <= y1; y++) {
+          for (let x = x0; x <= x1; x++) {
+            copyCoords.set(x, y).modulo(limits);
+            textToCopy += code[copyCoords.x][copyCoords.y];
+            if (modification) updateCode(copyCoords, modification);
+          }
+          textToCopy += "\n";
+        }
+        event.clipboardData?.setData("text/plain", textToCopy);
+        event.preventDefault();
+        if (modification) render();
+      },
+    []
+  );
+
+  const onCut = useCallback(
+    copyWithModify(() => " "),
+    []
+  );
+
+  const onCopy = useCallback(copyWithModify(undefined), []);
+
+  const onPaste = useCallback((event: ClipboardEvent): void => {
+    const text = event.clipboardData?.getData("Text");
     const pasteCoords = new Coordinate(selection.x, selection.y);
-    text.split("").forEach((char: string) => {
+    text?.split("").forEach((char: string) => {
       if (char === "\n") {
         pasteCoords.setX(selection.x);
         pasteCoords.setY(pasteCoords.y + 1);
@@ -67,30 +103,16 @@ export function useGridTyping(
     render();
   }, []);
 
-  const onCopy = useCallback((event) => {
-    let textToCopy = "";
-    const [x0, x1] = sorted([selection.x, selection.x + selectionDelta.x]);
-    const [y0, y1] = sorted([selection.y, selection.y + selectionDelta.y]);
-    const copyCoords = new Coordinate(0, 0);
-    for (let y = y0; y <= y1; y++) {
-      for (let x = x0; x <= x1; x++) {
-        copyCoords.set(x, y).modulo(limits);
-        textToCopy += code[copyCoords.x][copyCoords.y];
-      }
-      textToCopy += "\n";
-    }
-    event.clipboardData.setData("text/plain", textToCopy);
-    event.preventDefault();
-  }, []);
-
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("cut", onCut);
     document.addEventListener("copy", onCopy);
     document.addEventListener("paste", onPaste);
     return (): void => {
       document.removeEventListener("keydown", onKeyDown);
-      document.addEventListener("copy", onCopy);
-      document.addEventListener("paste", onPaste);
+      document.removeEventListener("cut", onCut);
+      document.removeEventListener("copy", onCopy);
+      document.removeEventListener("paste", onPaste);
     };
   }, []);
 
