@@ -7,26 +7,11 @@ import { Output } from "./Output";
 import { Row, Button } from "../ui";
 
 export function CodingSpace(): React.ReactElement {
-  const {
-    code,
-    selection,
-    selectionDelta,
-    onMouseOver,
-    onMouseDown,
-    befunge: b,
-  } = useBefunge(48, 32);
+  const { editor: e, befunge: b } = useBefunge(48, 32);
 
   return (
     <Container>
-      <Grid
-        code={code}
-        selection={selection}
-        selectionDelta={selectionDelta}
-        onMouseOver={onMouseOver}
-        onMouseDown={onMouseDown}
-        limits={b.limits}
-        cursor={b.cursor}
-      />
+      <Grid code={b.code} cursor={b.cursor} editor={e} />
       <Row style={{ marginTop: 16, width: 816, height: 200 }}>
         <Stack stack={b.stack} />
         <ButtonColumn style={{ marginLeft: 16 }}>

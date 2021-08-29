@@ -1,17 +1,12 @@
-import { Coordinate } from "../utilities";
-import { useCallback, useRef, useState, MouseEvent } from "react";
-import { useGridTyping } from "./useGridTyping";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { Befunge } from "../Befunge";
+import { CodeEditor } from "../CodeEditor";
 
 export function useBefunge(
   width: number,
   height: number
 ): {
-  code: string[][];
-  selection: Coordinate;
-  selectionDelta: Coordinate;
-  onMouseDown: (x: number, y: number) => (e: MouseEvent) => void;
-  onMouseOver: (x: number, y: number) => (e: MouseEvent) => void;
+  editor: CodeEditor;
   befunge: Befunge;
 } {
   const setRenderHelper = useState(0)[1];
@@ -20,16 +15,23 @@ export function useBefunge(
   }, []);
 
   const b = useRef(new Befunge(width, height, render)).current;
+  const e = useRef(new CodeEditor(b.code, b.limits, render)).current;
 
-  const { code, selection, selectionDelta, onMouseDown, onMouseOver } =
-    useGridTyping(b.code, b.limits, render);
+  useEffect(() => {
+    document.addEventListener("keydown", e.onKeyDown);
+    document.addEventListener("cut", e.onCut);
+    document.addEventListener("copy", e.onCopy);
+    document.addEventListener("paste", e.onPaste);
+    return (): void => {
+      document.removeEventListener("keydown", e.onKeyDown);
+      document.removeEventListener("cut", e.onCut);
+      document.removeEventListener("copy", e.onCopy);
+      document.removeEventListener("paste", e.onPaste);
+    };
+  }, []);
 
   return {
-    code,
-    selection,
-    selectionDelta,
-    onMouseDown,
-    onMouseOver,
+    editor: e,
     befunge: b,
   };
 }

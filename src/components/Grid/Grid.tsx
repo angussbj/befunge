@@ -1,47 +1,40 @@
-import React, { useCallback, MouseEvent } from "react";
+import React, { useCallback } from "react";
 import { Row } from "../../ui";
 import { Square } from "./Square";
 import { Coordinate, modulo, range } from "../../utilities";
+import { CodeEditor } from "../../CodeEditor";
 
 export function Grid({
   code,
-  selection,
-  selectionDelta,
-  onMouseDown,
-  onMouseOver,
-  limits,
   cursor,
+  editor: e,
 }: {
   code: string[][];
-  selection: Coordinate;
-  selectionDelta: Coordinate;
-  onMouseDown: (x: number, y: number) => (e: MouseEvent) => void;
-  onMouseOver: (x: number, y: number) => (e: MouseEvent) => void;
-  limits: Coordinate;
   cursor: Coordinate;
+  editor: CodeEditor;
 }): React.ReactElement {
   const isSelectedX = useCallback(
-    getSelectionCheckFunction(selection.x, selectionDelta.x, limits.x),
-    [selection.x, selectionDelta.x]
+    getSelectionCheckFunction(e.selection.x, e.selectionDelta.x, e.limits.x),
+    [e.selection.x, e.selectionDelta.x, e.limits.x]
   );
 
   const isSelectedY = useCallback(
-    getSelectionCheckFunction(selection.y, selectionDelta.y, limits.y),
-    [selection.y, selectionDelta.y]
+    getSelectionCheckFunction(e.selection.y, e.selectionDelta.y, e.limits.y),
+    [e.selection.y, e.selectionDelta.y, e.limits.y]
   );
 
   return (
     <div style={{ overflow: "hidden" }}>
       <div style={{ marginRight: -1, marginBottom: -1 }}>
-        {range(0, limits.y).map((y) => (
+        {range(0, e.limits.y).map((y) => (
           <Row key={y}>
-            {range(0, limits.x).map((x) => (
+            {range(0, e.limits.x).map((x) => (
               <Square
                 val={code[x][y]}
                 selected={isSelectedX(x) && isSelectedY(y)}
                 cursored={x === cursor.x && y === cursor.y}
-                onMouseDown={onMouseDown(x, y)}
-                onMouseOver={onMouseOver(x, y)}
+                onMouseDown={e.onMouseDown(x, y)}
+                onMouseOver={e.onMouseOver(x, y)}
                 key={`${x},${y}`}
               />
             ))}
