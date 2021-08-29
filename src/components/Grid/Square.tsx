@@ -1,5 +1,5 @@
+import React, { MouseEvent } from "react";
 import styled from "styled-components";
-import React from "react";
 import { Colors } from "../../ui/Colors";
 
 const LIGHT = Colors.LIGHT.toString();
@@ -11,12 +11,14 @@ export function Square({
   val,
   selected,
   cursored,
-  onClick,
+  onMouseDown,
+  onMouseOver,
 }: {
   val: string;
   selected: boolean;
   cursored: boolean;
-  onClick: () => void;
+  onMouseDown: (e: MouseEvent) => void;
+  onMouseOver: (e: MouseEvent) => void;
 }): React.ReactElement {
   const color = !(selected || cursored)
     ? LIGHT
@@ -27,7 +29,11 @@ export function Square({
     : EXECUTING_CURSOR;
 
   return (
-    <Background color={color} onClick={onClick}>
+    <Background
+      color={color}
+      onMouseDown={onMouseDown}
+      onMouseOver={onMouseOver}
+    >
       {val}
     </Background>
   );

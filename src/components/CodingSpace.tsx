@@ -11,7 +11,8 @@ export function CodingSpace(): React.ReactElement {
     code,
     selection,
     selectionDelta,
-    onClick,
+    onMouseOver,
+    onMouseDown,
     befunge: b,
   } = useBefunge(48, 32);
 
@@ -21,7 +22,8 @@ export function CodingSpace(): React.ReactElement {
         code={code}
         selection={selection}
         selectionDelta={selectionDelta}
-        onClick={onClick}
+        onMouseOver={onMouseOver}
+        onMouseDown={onMouseDown}
         limits={b.limits}
         cursor={b.cursor}
       />

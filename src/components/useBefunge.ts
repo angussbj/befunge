@@ -1,5 +1,5 @@
 import { Coordinate } from "../utilities";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, MouseEvent } from "react";
 import { useGridTyping } from "./useGridTyping";
 import { Befunge } from "../Befunge";
 
@@ -10,7 +10,8 @@ export function useBefunge(
   code: string[][];
   selection: Coordinate;
   selectionDelta: Coordinate;
-  onClick: (x: number, y: number) => () => void;
+  onMouseDown: (x: number, y: number) => (e: MouseEvent) => void;
+  onMouseOver: (x: number, y: number) => (e: MouseEvent) => void;
   befunge: Befunge;
 } {
   const setRenderHelper = useState(0)[1];
@@ -20,17 +21,15 @@ export function useBefunge(
 
   const b = useRef(new Befunge(width, height, render)).current;
 
-  const { code, selection, selectionDelta, onClick } = useGridTyping(
-    b.code,
-    b.limits,
-    render
-  );
+  const { code, selection, selectionDelta, onMouseDown, onMouseOver } =
+    useGridTyping(b.code, b.limits, render);
 
   return {
     code,
     selection,
     selectionDelta,
-    onClick,
+    onMouseDown,
+    onMouseOver,
     befunge: b,
   };
 }

@@ -1,5 +1,5 @@
 import { Coordinate, sorted } from "../utilities";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, MouseEvent } from "react";
 
 const DIRECTIONS = {
   Left: new Coordinate(-1, 0),
@@ -18,12 +18,12 @@ export function useGridTyping(
   code: string[][];
   selection: Coordinate;
   selectionDelta: Coordinate;
-  onClick: (x: number, y: number) => () => void;
+  onMouseDown: (x: number, y: number) => (e: MouseEvent) => void;
+  onMouseOver: (x: number, y: number) => (e: MouseEvent) => void;
 } {
   const selection = useRef(new Coordinate(0, 0)).current;
   const selectionDelta = useRef(new Coordinate(0, 0)).current;
   const direction = useRef(new Coordinate(1, 0)).current;
-  const depressedCommandKeys = useRef(new Set()).current;
 
   const moveSelection = useCallback((direction: Coordinate) => {
     selection.add(direction);
@@ -32,16 +32,11 @@ export function useGridTyping(
   }, []);
 
   const onKeyDown = useCallback((event) => {
-    if (event.key.length === 1) {
-      if (depressedCommandKeys.size === 0) {
-        code[selection.x][selection.y] = event.key;
-        moveSelection(direction);
-      }
-    } else if (event.key.match(/^Arrow/)) {
-      if (
-        depressedCommandKeys.has("Shift") &&
-        depressedCommandKeys.size === 1
-      ) {
+    if (event.key.length === 1 && !event.ctrlKey && !event.metaKey) {
+      code[selection.x][selection.y] = event.key;
+      moveSelection(direction);
+    } else if (event.key.match(/^Arrow/) && !event.ctrlKey && !event.metaKey) {
+      if (event.shiftKey) {
         selectionDelta.add(DIRECTIONS[event.key.slice(5) as DirectionName]);
       } else {
         direction.setToCopy(DIRECTIONS[event.key.slice(5) as DirectionName]);
@@ -51,20 +46,8 @@ export function useGridTyping(
     } else if (event.key === "Backspace") {
       moveSelection(direction.clone().negative());
       code[selection.x][selection.y] = " ";
-    } else {
-      depressedCommandKeys.add(event.key);
     }
     render();
-  }, []);
-
-  const onKeyUp = useCallback((event) => {
-    if (
-      event.key.length != 1 &&
-      !event.key.match(/^Arrow/) &&
-      event.key !== "Backspace"
-    ) {
-      depressedCommandKeys.delete(event.key);
-    }
   }, []);
 
   const onPaste = useCallback((event) => {
@@ -104,22 +87,17 @@ export function useGridTyping(
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("copy", onCopy);
     document.addEventListener("paste", onPaste);
-    document.addEventListener("keyup", onKeyUp);
     return (): void => {
       document.removeEventListener("keydown", onKeyDown);
       document.addEventListener("copy", onCopy);
       document.addEventListener("paste", onPaste);
-      document.addEventListener("keyup", onKeyUp);
     };
   }, []);
 
-  const onClick = useCallback(
-    (x: number, y: number): (() => void) =>
-      (): void => {
-        if (
-          depressedCommandKeys.has("Shift") &&
-          depressedCommandKeys.size === 1
-        ) {
+  const onMouseDown = useCallback(
+    (x: number, y: number): ((event: MouseEvent) => void) =>
+      (event: MouseEvent): void => {
+        if (event.shiftKey) {
           selectionDelta.set(x - selection.x, y - selection.y);
         } else {
           selection.set(x, y);
@@ -130,10 +108,22 @@ export function useGridTyping(
     []
   );
 
+  const onMouseOver = useCallback(
+    (x: number, y: number): ((event: MouseEvent) => void) =>
+      (event: MouseEvent): void => {
+        if (event.buttons % 2 === 1) {
+          selectionDelta.set(x - selection.x, y - selection.y);
+          render();
+        }
+      },
+    []
+  );
+
   return {
     code,
     selection,
     selectionDelta,
-    onClick,
+    onMouseDown,
+    onMouseOver,
   };
 }

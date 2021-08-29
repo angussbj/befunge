@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, MouseEvent } from "react";
 import { Row } from "../../ui";
 import { Square } from "./Square";
 import { Coordinate, modulo, range } from "../../utilities";
@@ -7,14 +7,16 @@ export function Grid({
   code,
   selection,
   selectionDelta,
-  onClick,
+  onMouseDown,
+  onMouseOver,
   limits,
   cursor,
 }: {
   code: string[][];
   selection: Coordinate;
   selectionDelta: Coordinate;
-  onClick: (x: number, y: number) => () => void;
+  onMouseDown: (x: number, y: number) => (e: MouseEvent) => void;
+  onMouseOver: (x: number, y: number) => (e: MouseEvent) => void;
   limits: Coordinate;
   cursor: Coordinate;
 }): React.ReactElement {
@@ -38,7 +40,8 @@ export function Grid({
                 val={code[x][y]}
                 selected={isSelectedX(x) && isSelectedY(y)}
                 cursored={x === cursor.x && y === cursor.y}
-                onClick={onClick(x, y)}
+                onMouseDown={onMouseDown(x, y)}
+                onMouseOver={onMouseOver(x, y)}
                 key={`${x},${y}`}
               />
             ))}
