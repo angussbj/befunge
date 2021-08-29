@@ -24,6 +24,7 @@ export function useGridTyping(
   const selection = useRef(new Coordinate(0, 0)).current;
   const selectionDelta = useRef(new Coordinate(0, 0)).current;
   const direction = useRef(new Coordinate(1, 0)).current;
+  let deleteMode = useRef<"delete" | "backspace">("delete").current;
 
   const moveSelection = useCallback((direction: Coordinate) => {
     selection.add(direction);
@@ -35,6 +36,7 @@ export function useGridTyping(
     if (event.key.length === 1 && !event.ctrlKey && !event.metaKey) {
       code[selection.x][selection.y] = event.key;
       moveSelection(direction);
+      deleteMode = "backspace";
     } else if (event.key.match(/^Arrow/) && !event.ctrlKey && !event.metaKey) {
       if (event.shiftKey) {
         selectionDelta.add(DIRECTIONS[event.key.slice(5) as DirectionName]);
@@ -43,9 +45,15 @@ export function useGridTyping(
         moveSelection(direction);
         event.preventDefault();
       }
+      deleteMode = "delete";
     } else if (event.key === "Backspace") {
-      moveSelection(direction.clone().negative());
-      code[selection.x][selection.y] = " ";
+      console.log(deleteMode);
+      if (deleteMode === "backspace") {
+        moveSelection(direction.clone().negative());
+        code[selection.x][selection.y] = " ";
+      } else if (deleteMode === "delete") {
+        deleteSelection();
+      }
     }
     render();
   }, []);
@@ -56,6 +64,18 @@ export function useGridTyping(
     },
     []
   );
+
+  const deleteSelection = useCallback((): void => {
+    const [x0, x1] = sorted([selection.x, selection.x + selectionDelta.x]);
+    const [y0, y1] = sorted([selection.y, selection.y + selectionDelta.y]);
+    const iterationCoord = new Coordinate(0, 0);
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        iterationCoord.set(x, y).modulo(limits);
+        code[iterationCoord.x][iterationCoord.y] = " ";
+      }
+    }
+  }, []);
 
   const copyWithModify = useCallback(
     (modification?: (char: string) => string) =>
@@ -124,6 +144,8 @@ export function useGridTyping(
         } else {
           selection.set(x, y);
           selectionDelta.set(0, 0);
+          deleteMode = "delete";
+          direction.setToCopy(DIRECTIONS.Right);
         }
         render();
       },
