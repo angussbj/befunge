@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState, useEffect } from "react";
-import { Befunge } from "../Befunge";
-import { CodeEditor } from "../CodeEditor";
+import { Befunge, CodeEditor } from "../domain";
 
 export function useBefunge(
   width: number,

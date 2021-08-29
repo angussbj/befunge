@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Row } from "../../ui";
 import { Square } from "./Square";
 import { Coordinate, modulo, range } from "../../utilities";
-import { CodeEditor } from "../../CodeEditor";
+import { CodeEditor } from "../../domain/CodeEditor";
 
 export function Grid({
   code,

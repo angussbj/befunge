@@ -1,6 +1,7 @@
 import autoBind from "auto-bind";
-import { constArray2, Coordinate } from "../utilities";
+import { Coordinate } from "../../utilities";
 import { CommandChar } from "./CommandChar";
+import { Code } from "../Code";
 
 enum Direction {
   Left,
@@ -23,13 +24,13 @@ export class Befunge {
   public stringMode = false;
   public halted = false;
   public limits: Coordinate;
-  public code: string[][];
+  public code: Code;
   private walking = false;
   private running = false;
 
   constructor(width: number, height: number, private render: () => void) {
     this.limits = new Coordinate(width, height);
-    this.code = constArray2(width, height, " ");
+    this.code = new Code(width, height);
     autoBind(this);
   }
 
@@ -81,12 +82,12 @@ export class Befunge {
   }
 
   public quickStep(): void {
-    this.execute(this.code[this.cursor.x][this.cursor.y]);
+    this.execute(this.code.get(this.cursor.x, this.cursor.y));
     this.moveCursor();
   }
 
   public step(): void {
-    this.execute(this.code[this.cursor.x][this.cursor.y]);
+    this.execute(this.code.get(this.cursor.x, this.cursor.y));
     this.moveCursor();
     this.render();
   }
@@ -216,12 +217,15 @@ export class Befunge {
   }
   private ["g"](): void {
     this.stack.push(
-      this.code[this.stack.pop() ?? 0][this.stack.pop() ?? 0].charCodeAt(0)
+      this.code.get(this.stack.pop() ?? 0, this.stack.pop() ?? 0).charCodeAt(0)
     );
   }
   private ["p"](): void {
-    this.code[this.stack.pop() ?? 0][this.stack.pop() ?? 0] =
-      String.fromCharCode(this.stack.pop() ?? 32); // 32 is [space]
+    this.code.executionPut(
+      this.stack.pop() ?? 0,
+      this.stack.pop() ?? 0,
+      String.fromCharCode(this.stack.pop() ?? 32) // 32 is [space]
+    );
   }
   private ["."](): void {
     this.output += (this.stack.pop() ?? 0).toString(10);

@@ -1,6 +1,7 @@
 import { MouseEvent } from "react";
-import { Coordinate, sorted } from "./utilities";
+import { Coordinate, sorted } from "../utilities";
 import autoBind from "auto-bind";
+import { Code } from "./Code";
 
 const DIRECTIONS = {
   Left: new Coordinate(-1, 0),
@@ -18,7 +19,7 @@ export class CodeEditor {
   private deleteMode: "delete" | "backspace" = "delete";
 
   constructor(
-    public code: string[][],
+    public code: Code,
     public limits: Coordinate,
     private render: () => void
   ) {
@@ -73,7 +74,7 @@ export class CodeEditor {
     let textToCopy = "";
     this.selectionForEach({
       cellAction: (x: number, y: number): void => {
-        textToCopy += this.code[x][y];
+        textToCopy += this.code.get(x, y);
       },
       rowEndAction: (): void => {
         textToCopy += "\n";
@@ -92,7 +93,7 @@ export class CodeEditor {
           .set(this.selection.x, pasteCoords.y + 1)
           .modulo(this.limits);
       } else {
-        this.code[pasteCoords.x][pasteCoords.y] = char;
+        this.code.userPut(pasteCoords.x, pasteCoords.y, char);
         pasteCoords.setX(pasteCoords.x + 1).modulo(this.limits);
       }
     });
@@ -121,7 +122,7 @@ export class CodeEditor {
   private handleDeletion(): void {
     if (this.deleteMode === "backspace") {
       this.stepSelection(this.direction.clone().negative());
-      this.code[this.selection.x][this.selection.y] = " ";
+      this.code.userPut(this.selection.x, this.selection.y, " ");
     } else if (this.deleteMode === "delete") {
       this.clearSelection();
     }
@@ -138,7 +139,7 @@ export class CodeEditor {
   private fillSelection(char: string): void {
     this.selectionForEach({
       cellAction: (x: number, y: number): void => {
-        this.code[x][y] = char;
+        this.code.userPut(x, y, char);
       },
     });
   }
