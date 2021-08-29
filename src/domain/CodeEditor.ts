@@ -99,6 +99,7 @@ export class CodeEditor {
   }
 
   public onKeyDown(event: KeyboardEvent): void {
+    if (this.executor.requestingInput) return;
     if (event.ctrlKey || event.metaKey) {
       this.handleKeyboardShortcuts(event);
     } else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey) {
@@ -156,7 +157,6 @@ export class CodeEditor {
     } else if (event.key === "z" && !event.shiftKey) {
       this.undo();
     } else if ((event.key === "z" && event.shiftKey) || event.key === "y") {
-      console.log("hi", this.history.length, this.future.length);
       this.redo();
     } else {
       return;

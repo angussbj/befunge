@@ -6,6 +6,8 @@ interface Props {
   onClick: () => void;
   disabled?: boolean;
   style?: React.CSSProperties;
+  color?: "secondary";
+  disableElevation?: boolean;
 }
 
 export function Button({ label, onClick, ...rest }: Props): React.ReactElement {

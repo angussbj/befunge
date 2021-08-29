@@ -29,6 +29,8 @@ interface BefungeHistoryPoint {
   running: boolean;
 }
 
+export type InputRequestStatus = false | "character" | "number";
+
 export class Befunge {
   public cursor = new Coordinate(0, 0);
   public direction = Direction.Right;
@@ -40,6 +42,7 @@ export class Befunge {
   public code: Code;
   private walking = false;
   private running = false;
+  public requestingInput: InputRequestStatus = false;
   private history: BefungeHistoryPoint[] = [];
   private future: BefungeHistoryPoint[] = [];
 
@@ -93,10 +96,26 @@ export class Befunge {
     this.running = point.running;
   }
 
+  public moveCursor(): void {
+    this.cursor.add(DIRECTION_VECTOR[this.direction]);
+    this.cursor.modulo(this.limits);
+  }
+
+  public acceptInput(s: string): void {
+    if (s.length === 0) return;
+    if (this.requestingInput === "number") {
+      this.stack.push(parseInt(s, 10));
+    } else if (this.requestingInput === "character") {
+      this.stack.push(s.charCodeAt(0));
+    }
+    this.requestingInput = false;
+    this.render();
+  }
+
   public walk(): void {
     function recur(b: Befunge): () => void {
       return (): void => {
-        if (b.walking) {
+        if (b.walking && !b.requestingInput) {
           b.slowStep();
           setTimeout(recur(b), 1);
         }
@@ -113,9 +132,9 @@ export class Befunge {
     function recur(b: Befunge): () => void {
       return (): void => {
         for (let i = 0; i < 100; i++) {
-          if (b.running) b.quickStep();
+          if (b.running && !b.requestingInput) b.quickStep();
         }
-        if (b.running) setTimeout(recur(b), 1);
+        if (b.running && !b.requestingInput) setTimeout(recur(b), 1);
         else b.render();
       };
     }
@@ -131,7 +150,6 @@ export class Befunge {
     this.running = false;
   }
 
-  // TODO: how do we reset any changes made to the playing field by `p` commands?
   public reset(): void {
     this.cursor = new Coordinate(0, 0);
     this.stack = [];
@@ -144,6 +162,7 @@ export class Befunge {
   }
 
   public step(): void {
+    if (this.halted || this.requestingInput) return;
     this.code.makeResetable();
     this.slowStep();
   }
@@ -158,12 +177,6 @@ export class Befunge {
     this.moveCursor();
     this.render();
   }
-
-  public moveCursor(): void {
-    this.cursor.add(DIRECTION_VECTOR[this.direction]);
-    this.cursor.modulo(this.limits);
-  }
-
   public execute(command: string): void {
     if (this.stringMode) this.stack.push(command.charCodeAt(0));
     if (this.isValidCommand(command)) this[command]();
@@ -301,7 +314,12 @@ export class Befunge {
     const a = this.stack.pop();
     if (a !== undefined) this.output += String.fromCharCode(a);
   }
-  // TODO: input/output methods: ., ,, &, and ~
+  private ["&"](): void {
+    this.requestingInput = "number";
+  }
+  private ["~"](): void {
+    this.requestingInput = "character";
+  }
   private ["@"](): void {
     this.halt();
   }

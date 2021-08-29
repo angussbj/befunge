@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useBefunge } from "./useBefunge";
 import { Grid } from "./Grid";
 import { Stack } from "./Stack";
-import { Output } from "./Output";
+import { InputOutput } from "./InputOutput/InputOutput";
 import { Row, Button } from "../ui";
 
 export function CodingSpace(): React.ReactElement {
@@ -23,7 +23,12 @@ export function CodingSpace(): React.ReactElement {
           <Button label={"Pause"} onClick={b.pause} style={{ marginTop: 8 }} />
           <Button label={"Reset"} onClick={b.reset} style={{ marginTop: 8 }} />
         </ButtonColumn>
-        <Output output={b.output} style={{ marginLeft: 16 }} />
+        <InputOutput
+          output={b.output}
+          requestingInput={b.requestingInput}
+          submitInput={b.acceptInput}
+          style={{ marginLeft: 16 }}
+        />
       </Row>
     </Container>
   );
