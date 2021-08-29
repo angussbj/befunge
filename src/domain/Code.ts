@@ -3,11 +3,23 @@ import { constArray2 } from "../utilities";
 
 export class Code {
   public code: string[][];
-  private resetPointWithEdits?: string[][];
-  private resetPointWithoutEdits?: string[][];
+  protected resetPointWithEdits?: string[][];
+  protected resetPointWithoutEdits?: string[][];
 
-  constructor(width: number, height: number) {
+  constructor(private width: number, private height: number) {
     this.code = constArray2(width, height, " ");
+  }
+
+  public clone(): Code {
+    const clone = new Code(this.width, this.height);
+    clone.setToCopy(this);
+    return clone;
+  }
+
+  public setToCopy(other: Code): void {
+    this.code = cloneDeep(other.code);
+    this.resetPointWithEdits = cloneDeep(other.resetPointWithEdits);
+    this.resetPointWithoutEdits = cloneDeep(other.resetPointWithoutEdits);
   }
 
   public get(x: number, y: number): string {

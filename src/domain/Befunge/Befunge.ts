@@ -2,6 +2,7 @@ import autoBind from "auto-bind";
 import { Coordinate } from "../../utilities";
 import { CommandChar } from "./CommandChar";
 import { Code } from "../Code";
+import { cloneDeep } from "lodash";
 
 enum Direction {
   Left,
@@ -16,6 +17,18 @@ const DIRECTION_VECTOR = {
   [Direction.Down]: new Coordinate(0, 1),
 };
 
+interface BefungeHistoryPoint {
+  cursor: Coordinate;
+  direction: Direction;
+  stack: number[];
+  output: string;
+  stringMode: boolean;
+  halted: boolean;
+  code: Code;
+  walking: boolean;
+  running: boolean;
+}
+
 export class Befunge {
   public cursor = new Coordinate(0, 0);
   public direction = Direction.Right;
@@ -27,11 +40,57 @@ export class Befunge {
   public code: Code;
   private walking = false;
   private running = false;
+  private history: BefungeHistoryPoint[] = [];
+  private future: BefungeHistoryPoint[] = [];
 
   constructor(width: number, height: number, private render: () => void) {
     this.limits = new Coordinate(width, height);
     this.code = new Code(width, height);
     autoBind(this);
+  }
+
+  public setHistoryPoint(): void {
+    this.history.push(this.createHistoryPoint());
+    this.future = [];
+  }
+
+  public undo(): void {
+    this.future.push(this.createHistoryPoint());
+    const point = this.history.pop();
+    this.revertToPoint(point);
+  }
+
+  public redo(): void {
+    this.history.push(this.createHistoryPoint());
+    const point = this.future.pop();
+    this.revertToPoint(point);
+  }
+
+  private createHistoryPoint(): BefungeHistoryPoint {
+    return {
+      cursor: this.cursor.clone(),
+      direction: this.direction,
+      stack: cloneDeep(this.stack),
+      output: this.output,
+      stringMode: this.stringMode,
+      halted: this.halted,
+      code: this.code.clone(),
+      walking: this.walking,
+      running: this.running,
+    };
+  }
+
+  private revertToPoint(point?: BefungeHistoryPoint): void {
+    if (!point) return;
+    this.cursor.setToCopy(point.cursor);
+    this.direction = point.direction;
+    this.stack = cloneDeep(point.stack);
+    this.output = point.output;
+    this.stringMode = point.stringMode;
+    this.halted = point.halted;
+    this.code.setToCopy(point.code);
+    this.walking = point.walking;
+    this.running = point.running;
   }
 
   public walk(): void {

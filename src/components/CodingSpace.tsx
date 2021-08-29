@@ -7,12 +7,14 @@ import { Output } from "./Output";
 import { Row, Button } from "../ui";
 
 export function CodingSpace(): React.ReactElement {
-  const { editor: e, befunge: b } = useBefunge(48, 32);
+  const width = 80;
+  const height = 25;
+  const { editor: e, befunge: b } = useBefunge(width, height);
 
   return (
     <Container>
       <Grid code={b.code.code} cursor={b.cursor} editor={e} />
-      <Row style={{ marginTop: 16, width: 816, height: 200 }}>
+      <Row style={{ marginTop: 16, width: 15 * width, height: 200 }}>
         <Stack stack={b.stack} />
         <ButtonColumn style={{ marginLeft: 16 }}>
           <Button label={"Step"} onClick={b.step} />

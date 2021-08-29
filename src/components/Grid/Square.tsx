@@ -40,8 +40,9 @@ export function Square({
 }
 
 const Background = styled.div<{ color: string }>`
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
+  font-size: 12px;
   background-color: ${({ color }): string => color};
   border-right: 1px solid #bbbbbb;
   border-bottom: 1px solid #bbbbbb;

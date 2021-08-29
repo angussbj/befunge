@@ -14,7 +14,7 @@ export function useBefunge(
   }, []);
 
   const b = useRef(new Befunge(width, height, render)).current;
-  const e = useRef(new CodeEditor(b.code, b.limits, render)).current;
+  const e = useRef(new CodeEditor(b, render)).current;
 
   useEffect(() => {
     document.addEventListener("keydown", e.onKeyDown);
