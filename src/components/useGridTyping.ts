@@ -37,6 +37,7 @@ export function useGridTyping(
       code[selection.x][selection.y] = event.key;
       moveSelection(direction);
       deleteMode = "backspace";
+      event.preventDefault();
     } else if (event.key.match(/^Arrow/) && !event.ctrlKey && !event.metaKey) {
       if (event.shiftKey) {
         selectionDelta.add(DIRECTIONS[event.key.slice(5) as DirectionName]);
@@ -47,7 +48,6 @@ export function useGridTyping(
       }
       deleteMode = "delete";
     } else if (event.key === "Backspace") {
-      console.log(deleteMode);
       if (deleteMode === "backspace") {
         moveSelection(direction.clone().negative());
         code[selection.x][selection.y] = " ";
