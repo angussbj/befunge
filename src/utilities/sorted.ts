@@ -1,5 +1,5 @@
-export function sorted<T>(arr: T[]): T[] {
+export function sorted(arr: number[]): number[] {
   const copy = [...arr];
-  copy.sort();
+  copy.sort((a, b) => a - b);
   return copy;
 }
