@@ -27,14 +27,12 @@ export function useGridTyping(
   let deleteMode = useRef<"delete" | "backspace">("delete").current;
 
   const moveSelection = useCallback((direction: Coordinate) => {
-    selection.add(direction);
-    selection.modulo(limits);
-    selectionDelta.set(0, 0);
+    selection.add(direction).modulo(limits);
   }, []);
 
   const onKeyDown = useCallback((event) => {
     if (event.key.length === 1 && !event.ctrlKey && !event.metaKey) {
-      code[selection.x][selection.y] = event.key;
+      fillSelection(event.key);
       moveSelection(direction);
       deleteMode = "backspace";
       event.preventDefault();
@@ -44,6 +42,7 @@ export function useGridTyping(
       } else {
         direction.setToCopy(DIRECTIONS[event.key.slice(5) as DirectionName]);
         moveSelection(direction);
+        selectionDelta.set(0, 0);
         event.preventDefault();
       }
       deleteMode = "delete";
@@ -52,7 +51,7 @@ export function useGridTyping(
         moveSelection(direction.clone().negative());
         code[selection.x][selection.y] = " ";
       } else if (deleteMode === "delete") {
-        deleteSelection();
+        fillSelection(" ");
       }
     }
     render();
@@ -65,14 +64,14 @@ export function useGridTyping(
     []
   );
 
-  const deleteSelection = useCallback((): void => {
+  const fillSelection = useCallback((char: string): void => {
     const [x0, x1] = sorted([selection.x, selection.x + selectionDelta.x]);
     const [y0, y1] = sorted([selection.y, selection.y + selectionDelta.y]);
     const iterationCoord = new Coordinate(0, 0);
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
         iterationCoord.set(x, y).modulo(limits);
-        code[iterationCoord.x][iterationCoord.y] = " ";
+        code[iterationCoord.x][iterationCoord.y] = char;
       }
     }
   }, []);
