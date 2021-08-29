@@ -38,12 +38,13 @@ export class Befunge {
     function recur(b: Befunge): () => void {
       return (): void => {
         if (b.walking) {
-          b.step();
+          b.slowStep();
           setTimeout(recur(b), 1);
         }
       };
     }
 
+    this.code.makeResetable();
     this.walking = true;
     this.running = false;
     recur(this)();
@@ -60,6 +61,7 @@ export class Befunge {
       };
     }
 
+    this.code.makeResetable();
     this.walking = false;
     this.running = true;
     recur(this)();
@@ -78,15 +80,21 @@ export class Befunge {
     this.halted = false;
     this.stringMode = false;
     this.walking = false;
+    this.code.reset(true);
     this.render();
   }
 
-  public quickStep(): void {
+  public step(): void {
+    this.code.makeResetable();
+    this.slowStep();
+  }
+
+  private quickStep(): void {
     this.execute(this.code.get(this.cursor.x, this.cursor.y));
     this.moveCursor();
   }
 
-  public step(): void {
+  private slowStep(): void {
     this.execute(this.code.get(this.cursor.x, this.cursor.y));
     this.moveCursor();
     this.render();
