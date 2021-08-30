@@ -161,6 +161,8 @@ export class Befunge {
     this.halted = false;
     this.stringMode = false;
     this.walking = false;
+    this.running = false;
+    this.requestingInput = false;
     this.code.reset(true);
     this.render();
   }
