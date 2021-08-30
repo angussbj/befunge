@@ -15,11 +15,16 @@ export function InputOutput({
   output,
   requestingInput,
   submitInput,
-  style,
 }: Props): React.ReactElement {
   return (
     <>
-      <OutputContainer>{output}</OutputContainer>
+      <OutputContainer>
+        <OutputInnerScrollingContainer>
+          {output.split("\n").map((x, index) => (
+            <div key={index}>{x}</div>
+          ))}
+        </OutputInnerScrollingContainer>
+      </OutputContainer>
       <InputContainer>
         <div>
           {requestingInput === "character" ? (
@@ -42,11 +47,19 @@ export function InputOutput({
 }
 
 const OutputContainer = styled.div`
-  flex: 1 1 0px;
+  flex: 1;
+  height: 0px;
+  display: flex;
+`;
+
+const OutputInnerScrollingContainer = styled.div`
+  flex: 1;
+  width: 0px;
   background-color: ${Colors.LIGHT.toString()};
   overflow: scroll;
-  scrollbar-width: none;
-  padding: 8;
+  scrollbar-width: thin;
+  flex-direction: column;
+  padding: 8px;
 `;
 
 const InputContainer = styled.div`

@@ -233,6 +233,11 @@ export const befungeCommands = [
     ),
   },
   {
+    key: "blank 1",
+    command: <div style={{ height: 12 }} />,
+    customCommandStyle: true,
+  },
+  {
     key: "execution cursor",
     command: (
       <SquareBackground
