@@ -189,7 +189,7 @@ export class CodeEditor {
     this.setHistoryPoint();
     if (this.deleteMode === "backspace") {
       this.stepSelection(this.direction.clone().negative());
-      this.code.userPut(this.selection.x, this.selection.y, " ");
+      this.clearSelection();
     } else if (this.deleteMode === "delete") {
       this.clearSelection();
     }

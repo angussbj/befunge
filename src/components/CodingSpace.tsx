@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useBefunge } from "./useBefunge";
 import { Grid } from "./Grid";
 import { Stack } from "./Stack";
-import { InputOutput } from "./InputOutput/InputOutput";
+import { InputOutput } from "./InputOutput";
 import { Row, Button, Colors } from "../ui";
 
 export function CodingSpace(): React.ReactElement {
