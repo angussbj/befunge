@@ -35,6 +35,11 @@ export function InputOutput({
             <div style={{ color: "#000033", fontWeight: 600 }}>
               Please enter a number: <Input submitInput={submitInput} />
             </div>
+          ) : requestingInput === "divideBy0" ? (
+            <div style={{ color: "#000033", fontWeight: 600 }}>
+              Division by 0. Please enter the result:{" "}
+              <Input submitInput={submitInput} />
+            </div>
           ) : (
             <div style={{ color: Colors.DARK.fade(0.3).toString() }}>
               No input needed

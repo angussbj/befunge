@@ -29,7 +29,7 @@ interface BefungeHistoryPoint {
   running: boolean;
 }
 
-export type InputRequestStatus = false | "character" | "number";
+export type InputRequestStatus = false | "character" | "number" | "divideBy0";
 
 export class Befunge {
   public cursor = new Coordinate(0, 0);
@@ -103,7 +103,10 @@ export class Befunge {
 
   public acceptInput(s: string): void {
     if (s.length === 0) return;
-    if (this.requestingInput === "number") {
+    if (
+      this.requestingInput === "number" ||
+      this.requestingInput === "divideBy0"
+    ) {
       this.stack.push(parseInt(s, 10));
     } else if (this.requestingInput === "character") {
       this.stack.push(s.charCodeAt(0));
@@ -237,9 +240,10 @@ export class Befunge {
     this.stack.push(-(this.stack.pop() ?? 0) + (this.stack.pop() ?? 0));
   }
   private ["/"](): void {
-    this.stack.push(
-      Math.floor((1 / (this.stack.pop() ?? 1)) * (this.stack.pop() || 1)) // handle division by 0?
-    );
+    const a = this.stack.pop() ?? 0;
+    const b = this.stack.pop() ?? 1;
+    if (a === 0) this.requestingInput = "divideBy0";
+    else this.stack.push(Math.floor(b / a));
   }
   private ["*"](): void {
     this.stack.push((this.stack.pop() ?? 1) * (this.stack.pop() ?? 1));
