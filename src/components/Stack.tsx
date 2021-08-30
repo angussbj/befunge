@@ -11,7 +11,7 @@ export function Stack({ stack, style }: Props): React.ReactElement {
     <div
       style={{
         width: 120,
-        alignSelf: "stretch",
+        flex: 1,
         backgroundColor: Colors.LIGHT.toString(),
         padding: 8,
         overflow: "scroll",

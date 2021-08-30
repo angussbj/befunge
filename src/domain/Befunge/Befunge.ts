@@ -152,6 +152,7 @@ export class Befunge {
 
   public reset(): void {
     this.cursor = new Coordinate(0, 0);
+    this.direction = Direction.Right;
     this.stack = [];
     this.output = "";
     this.halted = false;

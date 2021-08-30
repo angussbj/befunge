@@ -15,10 +15,10 @@ export function Square({
   onMouseOver,
 }: {
   val: string;
-  selected: boolean;
-  cursored: boolean;
-  onMouseDown: (e: MouseEvent) => void;
-  onMouseOver: (e: MouseEvent) => void;
+  selected?: boolean;
+  cursored?: boolean;
+  onMouseDown?: (e: MouseEvent) => void;
+  onMouseOver?: (e: MouseEvent) => void;
 }): React.ReactElement {
   const color = !(selected || cursored)
     ? LIGHT
@@ -43,6 +43,7 @@ const Background = styled.div<{ color: string }>`
   width: 14px;
   height: 14px;
   font-size: 12px;
+  font-family: monospace;
   background-color: ${({ color }): string => color};
   border-right: 1px solid #bbbbbb;
   border-bottom: 1px solid #bbbbbb;

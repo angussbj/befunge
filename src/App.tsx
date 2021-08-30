@@ -1,20 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import { CodingSpace } from "./components/CodingSpace";
 import { Colors } from "./ui/Colors";
+import Sidebar from "react-sidebar";
+import { SidebarContent } from "./components/SidebarContent";
+import { IconButton } from "@material-ui/core";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 
 function App(): React.ReactElement {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   return (
     <div
       style={{
         backgroundColor: Colors.DARK.toString(),
-        display: "flex",
         minHeight: "100vh",
-        padding: 24,
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
-      <CodingSpace />
+      <Sidebar
+        sidebar={<SidebarContent onClose={(): void => setSidebarOpen(false)} />}
+        open={sidebarOpen}
+        onSetOpen={setSidebarOpen}
+        styles={{
+          sidebar: { background: Colors.DARK.darken(0.3).toString() },
+          content: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          overlay: {
+            bottom: undefined,
+            top: undefined,
+          },
+        }}
+        pullRight={true}
+      >
+        <IconButton
+          style={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            color: Colors.ACCENT.toString(),
+          }}
+          onClick={(): void => setSidebarOpen(true)}
+        >
+          <InfoOutlinedIcon />
+        </IconButton>
+
+        <CodingSpace />
+      </Sidebar>
     </div>
   );
 }

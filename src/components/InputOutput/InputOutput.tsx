@@ -18,7 +18,7 @@ export function InputOutput({
   style,
 }: Props): React.ReactElement {
   return (
-    <Container style={style}>
+    <>
       <OutputContainer>{output}</OutputContainer>
       <InputContainer>
         <div>
@@ -37,19 +37,12 @@ export function InputOutput({
           )}
         </div>
       </InputContainer>
-    </Container>
+    </>
   );
 }
 
-const Container = styled.div`
-  flex: 1;
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-`;
-
 const OutputContainer = styled.div`
-  flex: 1;
+  flex: 1 1 0px;
   background-color: ${Colors.LIGHT.toString()};
   overflow: scroll;
   scrollbar-width: none;

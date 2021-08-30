@@ -6,5 +6,5 @@ export const Colors = {
   GREY: Color("#CCCCCC"),
   WRITING_CURSOR: Color("#CCEAFF"),
   EXECUTING_CURSOR: Color("#FFE0CC"),
-  ACCENT: Color("#09b2eb"),
+  ACCENT: Color("#5ed6ff"),
 };
