@@ -301,16 +301,18 @@ export class Befunge {
     this.moveCursor();
   }
   private ["g"](): void {
-    this.stack.push(
-      this.code.get(this.stack.pop() ?? 0, this.stack.pop() ?? 0).charCodeAt(0)
-    );
+    const y = this.stack.pop() ?? 0;
+    const x = this.stack.pop() ?? 0;
+    const coord = new Coordinate(x, y);
+    console.log(coord);
+    if (coord.clone().modulo(this.limits).equals(coord))
+      this.stack.push(this.code.get(x, y).charCodeAt(0));
+    else this.stack.push(0);
   }
   private ["p"](): void {
-    this.code.executionPut(
-      this.stack.pop() ?? 0,
-      this.stack.pop() ?? 0,
-      String.fromCharCode(this.stack.pop() ?? 32) // 32 is [space]
-    );
+    const y = this.stack.pop() ?? 0;
+    const x = this.stack.pop() ?? 0;
+    this.code.executionPut(x, y, String.fromCharCode(this.stack.pop() ?? 32)); // 32 is [space]
   }
   private ["."](): void {
     this.output += (this.stack.pop() ?? 0).toString(10);

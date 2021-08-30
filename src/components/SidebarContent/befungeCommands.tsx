@@ -69,9 +69,10 @@ export const befungeCommands = [
     description: (
       <div>
         <B>Integer division:</B> pop two values <M>a</M> then <M>b</M>, then
-        push the result of <M>b / a</M>, rounded down.
+        push the result of <M>b / a</M>, rounded down. If a is zero, ask the
+        user what result they want.
       </div>
-    ), //According to the specifications, if a is zero, ask the user what result they want.
+    ),
   },
   {
     key: "%",
@@ -204,10 +205,10 @@ export const befungeCommands = [
       <div>
         <B>Get:</B> a way to retrieve data in storage. Pop two values <M>y</M>{" "}
         then <M>x</M>, then push the ASCII value of the character at that
-        position in the program.
+        position in the program. If <M>(x, y)</M> is out of bounds, push{" "}
+        <M>0</M>
       </div>
     ),
-    // If <M>(x, y)</M> is out of bounds, push <M>0</M>
   },
   {
     key: "p",
