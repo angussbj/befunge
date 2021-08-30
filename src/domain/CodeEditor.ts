@@ -116,6 +116,7 @@ export class CodeEditor {
     this.setHistoryPoint();
     this.onCopy(event);
     this.clearSelection();
+    this.render();
   }
 
   public onCopy(event: ClipboardEvent): void {
