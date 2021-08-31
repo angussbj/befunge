@@ -21,7 +21,7 @@ function App(): React.ReactElement {
         open={sidebarOpen}
         onSetOpen={setSidebarOpen}
         styles={{
-          sidebar: { background: Colors.DARK.darken(0.3).toString() },
+          sidebar: { background: Colors.DARKER.toString() },
           content: {
             display: "flex",
             justifyContent: "center",
