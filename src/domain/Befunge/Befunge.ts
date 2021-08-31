@@ -113,6 +113,8 @@ export class Befunge {
     }
     this.requestingInput = false;
     this.render();
+    if (this.running) this.run();
+    if (this.walking) this.walk();
   }
 
   public walk(): void {
