@@ -184,8 +184,9 @@ export class Befunge {
     this.render();
   }
   public execute(command: string): void {
-    if (this.stringMode) this.stack.push(command.charCodeAt(0));
-    if (this.isValidCommand(command)) this[command]();
+    if (this.stringMode && command !== '"')
+      this.stack.push(command.charCodeAt(0));
+    else if (this.isValidCommand(command)) this[command]();
     else this.throwUnrecognisedCommand(command, this.cursor);
   }
 
@@ -306,7 +307,6 @@ export class Befunge {
     const y = this.stack.pop() ?? 0;
     const x = this.stack.pop() ?? 0;
     const coord = new Coordinate(x, y);
-    console.log(coord);
     if (coord.clone().modulo(this.limits).equals(coord))
       this.stack.push(this.code.get(x, y).charCodeAt(0));
     else this.stack.push(0);
