@@ -151,6 +151,7 @@ export class Befunge {
   public pause(): void {
     this.walking = false;
     this.running = false;
+    this.render();
   }
 
   public reset(): void {
