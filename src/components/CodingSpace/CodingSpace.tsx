@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { useBefunge } from "./useBefunge";
-import { Grid } from "./Grid";
-import { Stack } from "./Stack";
-import { InputOutput } from "./InputOutput";
-import { Row, Button, Colors } from "../ui";
+import { useBefunge } from "../useBefunge";
+import { Grid } from "../Grid";
+import { Stack } from "../Stack";
+import { InputOutput } from "../InputOutput";
+import { Row, Colors } from "../../ui";
+import { ControlPanel } from "./ControlPanel";
 
 export function CodingSpace(): React.ReactElement {
   const width = 80;
@@ -23,22 +24,8 @@ export function CodingSpace(): React.ReactElement {
           <Stack stack={b.stack} />
         </Column>
         <Column style={{ marginLeft: 16 }}>
-          <Label>Controls</Label>
-          <ButtonColumn style={{ flex: 1 }}>
-            <Button label={"Step"} onClick={b.step} />
-            <Button label={"Walk"} onClick={b.walk} style={{ marginTop: 8 }} />
-            <Button label={"Run"} onClick={b.run} style={{ marginTop: 8 }} />
-            <Button
-              label={"Pause"}
-              onClick={b.pause}
-              style={{ marginTop: 8 }}
-            />
-            <Button
-              label={"Reset"}
-              onClick={b.reset}
-              style={{ marginTop: 8 }}
-            />
-          </ButtonColumn>
+          <Label>Control panel</Label>
+          <ControlPanel befunge={b} editor={e} />
         </Column>
         <Column style={{ marginLeft: 16, flexGrow: 1 }}>
           <Label>Input + output</Label>
@@ -61,13 +48,6 @@ const Container = styled.div`
 
 const Column = styled.div`
   align-self: stretch;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ButtonColumn = styled.div`
-  align-self: stretch;
-  justify-content: space-between;
   display: flex;
   flex-direction: column;
 `;

@@ -20,7 +20,7 @@ export function SidebarContent({
           position: "absolute",
           top: 8,
           right: 8,
-          color: Colors.ACCENT.toString(),
+          color: Colors.ACCENT_BLUE.toString(),
         }}
         onClick={onClose}
       >

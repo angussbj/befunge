@@ -1,12 +1,13 @@
-import React, { FC } from "react";
+import React from "react";
 import MaterialButton from "@material-ui/core/Button";
 
 interface Props {
-  label: string | FC<{ color?: string }>;
+  label: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
   style?: React.CSSProperties;
-  color?: "secondary";
+  color?: "primary" | "secondary";
+  variant?: "text" | "outlined";
   disableElevation?: boolean;
 }
 

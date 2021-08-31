@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CodingSpace } from "./components/CodingSpace";
-import { Colors } from "./ui/Colors";
+import { Colors } from "./ui";
 import Sidebar from "react-sidebar";
 import { SidebarContent } from "./components/SidebarContent";
 import { IconButton } from "@material-ui/core";
@@ -39,7 +39,7 @@ function App(): React.ReactElement {
             position: "absolute",
             top: 8,
             right: 8,
-            color: Colors.ACCENT.toString(),
+            color: Colors.ACCENT_BLUE.toString(),
           }}
           onClick={(): void => setSidebarOpen(true)}
         >

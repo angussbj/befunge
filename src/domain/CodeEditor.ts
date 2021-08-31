@@ -2,30 +2,21 @@ import { MouseEvent } from "react";
 import { Coordinate, sorted } from "../utilities";
 import autoBind from "auto-bind";
 import { Code } from "./Code";
-import { Befunge } from "./Befunge";
-
-const DIRECTIONS = {
-  Left: new Coordinate(-1, 0),
-  Right: new Coordinate(1, 0),
-  Up: new Coordinate(0, -1),
-  Down: new Coordinate(0, 1),
-};
-
-type DirectionName = keyof typeof DIRECTIONS;
+import { Befunge, Direction, DIRECTION_VECTOR, DirectionName } from "./Befunge";
 
 type DeleteMode = "delete" | "backspace";
 
 interface CodeEditorHistoryPoint {
   selection: Coordinate;
   selectionDelta: Coordinate;
-  direction: Coordinate;
+  direction: Direction;
   deleteMode: DeleteMode;
 }
 
 export class CodeEditor {
   public selection = new Coordinate(0, 0);
   public selectionDelta = new Coordinate(0, 0);
-  public direction = DIRECTIONS.Right.clone();
+  public direction = Direction.Right;
   private deleteMode: DeleteMode = "delete";
   private history: CodeEditorHistoryPoint[] = [];
   private future: CodeEditorHistoryPoint[] = [];
@@ -36,6 +27,10 @@ export class CodeEditor {
     this.code = executor.code;
     this.limits = executor.limits;
     autoBind(this);
+  }
+
+  public getSelectedCharacter(): string {
+    return this.code.get(this.selection.x, this.selection.y);
   }
 
   public setHistoryPoint(): void {
@@ -62,7 +57,7 @@ export class CodeEditor {
     return {
       selection: this.selection.clone(),
       selectionDelta: this.selectionDelta.clone(),
-      direction: this.direction.clone(),
+      direction: this.direction,
       deleteMode: this.deleteMode,
     };
   }
@@ -83,7 +78,7 @@ export class CodeEditor {
         this.selection.set(x, y);
         this.selectionDelta.set(0, 0);
         this.deleteMode = "delete";
-        this.direction.setToCopy(DIRECTIONS.Right);
+        this.direction = Direction.Right;
       }
       this.render();
     };
@@ -99,7 +94,7 @@ export class CodeEditor {
   }
 
   public onKeyDown(event: KeyboardEvent): void {
-    if (this.executor.requestingInput) return;
+    if (document.activeElement !== document.body) return;
     if (event.ctrlKey || event.metaKey) {
       this.handleKeyboardShortcuts(event);
     } else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey) {
@@ -113,6 +108,7 @@ export class CodeEditor {
   }
 
   public onCut(event: ClipboardEvent): void {
+    if (document.activeElement !== document.body) return;
     this.setHistoryPoint();
     this.onCopy(event);
     this.clearSelection();
@@ -120,6 +116,7 @@ export class CodeEditor {
   }
 
   public onCopy(event: ClipboardEvent): void {
+    if (document.activeElement !== document.body) return;
     this.setHistoryPoint();
     let textToCopy = "";
     this.selectionForEach({
@@ -135,6 +132,7 @@ export class CodeEditor {
   }
 
   public onPaste(event: ClipboardEvent): void {
+    if (document.activeElement !== document.body) return;
     this.setHistoryPoint();
     const text = event.clipboardData?.getData("Text");
     const pasteCoords = new Coordinate(this.selection.x, this.selection.y);
@@ -168,17 +166,18 @@ export class CodeEditor {
   private handleEnteredCharacter(event: KeyboardEvent): void {
     this.setHistoryPoint();
     this.fillSelection(event.key);
-    this.stepSelection(this.direction);
+    this.stepSelection(DIRECTION_VECTOR[this.direction]);
     this.deleteMode = "backspace";
     event.preventDefault();
   }
 
   private handleSelectionMovement(event: KeyboardEvent): void {
+    const movementDirection = Direction[event.key.slice(5) as DirectionName];
     if (event.shiftKey) {
-      this.selectionDelta.add(DIRECTIONS[event.key.slice(5) as DirectionName]);
+      this.selectionDelta.add(DIRECTION_VECTOR[movementDirection]);
     } else {
-      this.direction.setToCopy(DIRECTIONS[event.key.slice(5) as DirectionName]);
-      this.stepSelection(this.direction);
+      this.direction = movementDirection;
+      this.stepSelection(DIRECTION_VECTOR[this.direction]);
       this.selectionDelta.set(0, 0);
       event.preventDefault();
     }
@@ -188,15 +187,15 @@ export class CodeEditor {
   private handleDeletion(): void {
     this.setHistoryPoint();
     if (this.deleteMode === "backspace") {
-      this.stepSelection(this.direction.clone().negative());
+      this.stepSelection(DIRECTION_VECTOR[this.direction].clone().negative());
       this.clearSelection();
     } else if (this.deleteMode === "delete") {
       this.clearSelection();
     }
   }
 
-  private stepSelection(direction: Coordinate): void {
-    this.selection.add(direction).modulo(this.limits);
+  private stepSelection(directionVector: Coordinate): void {
+    this.selection.add(directionVector).modulo(this.limits);
   }
 
   private clearSelection(): void {

@@ -3,19 +3,7 @@ import { Coordinate } from "../../utilities";
 import { CommandChar } from "./CommandChar";
 import { Code } from "../Code";
 import { cloneDeep } from "lodash";
-
-enum Direction {
-  Left,
-  Right,
-  Up,
-  Down,
-}
-const DIRECTION_VECTOR = {
-  [Direction.Left]: new Coordinate(-1, 0),
-  [Direction.Right]: new Coordinate(1, 0),
-  [Direction.Up]: new Coordinate(0, -1),
-  [Direction.Down]: new Coordinate(0, 1),
-};
+import { Direction, DIRECTION_VECTOR } from "./Direction";
 
 interface BefungeHistoryPoint {
   cursor: Coordinate;
@@ -40,8 +28,9 @@ export class Befunge {
   public halted = false;
   public limits: Coordinate;
   public code: Code;
-  private walking = false;
-  private running = false;
+  public walkingDelay = 32;
+  public walking = false;
+  public running = false;
   public requestingInput: InputRequestStatus = false;
   private history: BefungeHistoryPoint[] = [];
   private future: BefungeHistoryPoint[] = [];
@@ -122,7 +111,7 @@ export class Befunge {
       return (): void => {
         if (b.walking && !b.requestingInput) {
           b.slowStep();
-          setTimeout(recur(b), 1);
+          setTimeout(recur(b), b.walkingDelay);
         }
       };
     }
@@ -136,7 +125,7 @@ export class Befunge {
   public run(): void {
     function recur(b: Befunge): () => void {
       return (): void => {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 1000; i++) {
           if (b.running && !b.requestingInput) b.quickStep();
         }
         if (b.running && !b.requestingInput) setTimeout(recur(b), 1);
@@ -144,9 +133,18 @@ export class Befunge {
       };
     }
 
+    function renderPeriodically(b: Befunge): () => void {
+      return (): void => {
+        b.render();
+        if (b.running && !b.requestingInput)
+          setTimeout(renderPeriodically(b), 1000);
+      };
+    }
+
     this.code.makeResetable();
     this.walking = false;
     this.running = true;
+    renderPeriodically(this)();
     recur(this)();
   }
 
@@ -177,15 +175,20 @@ export class Befunge {
   }
 
   private quickStep(): void {
-    this.execute(this.code.get(this.cursor.x, this.cursor.y));
+    this.execute(this.getCursorCharacter());
     this.moveCursor();
   }
 
   private slowStep(): void {
-    this.execute(this.code.get(this.cursor.x, this.cursor.y));
+    this.execute(this.getCursorCharacter());
     this.moveCursor();
     this.render();
   }
+
+  public getCursorCharacter(): string {
+    return this.code.get(this.cursor.x, this.cursor.y);
+  }
+
   public execute(command: string): void {
     if (this.stringMode && command !== '"')
       this.stack.push(command.charCodeAt(0));
@@ -336,4 +339,14 @@ export class Befunge {
     this.halt();
   }
   private [" "](): void {} // eslint-disable-line @typescript-eslint/no-empty-function
+
+  public increaseWalkingDelay(): void {
+    this.walkingDelay *= 2;
+    this.render();
+  }
+
+  public decreaseWalkingDelay(): void {
+    this.walkingDelay /= 2;
+    this.render();
+  }
 }
