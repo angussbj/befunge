@@ -97,7 +97,7 @@ export class CodeEditor {
 
   public onDoubleClick(x: number, y: number): () => void {
     return (): void => {
-      this.code.breakpoints[x][y] = true;
+      this.code.breakpoints[x][y] = !this.code.breakpoints[x][y];
       this.render();
     };
   }
