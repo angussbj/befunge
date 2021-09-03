@@ -1,7 +1,6 @@
-import { Colors, Row } from "../../../ui";
+import { Row, T } from "../../../../ui";
 import React, { useState } from "react";
 import { createTheme, TextField, ThemeProvider } from "@material-ui/core";
-import styled from "styled-components";
 
 export function AsciiCalculator(): React.ReactElement {
   const [char, setChar] = useState("A");
@@ -19,14 +18,17 @@ export function AsciiCalculator(): React.ReactElement {
         <TextField
           value={char}
           onChange={(e): void => {
-            const a = e.target.value.toString().charAt(0);
-            setChar(a);
-            setNum(a ? a.charCodeAt(0).toString() : "");
+            const input = e.target.value.toString();
+            const value = input.charAt(input.length - 1);
+            setChar(value);
+            setNum(value ? value.charCodeAt(0).toString() : "");
           }}
           style={{ width: 16, height: 10, marginTop: -16 }}
           size="small"
         />
-        <UnselectableText style={{ marginLeft: 16 }}>α↔n</UnselectableText>
+        <T size="small" unselectable style={{ marginLeft: 16 }}>
+          α↔n
+        </T>
         <TextField
           value={num}
           onChange={(e): void => {
@@ -46,15 +48,3 @@ export function AsciiCalculator(): React.ReactElement {
     </ThemeProvider>
   );
 }
-
-const UnselectableText = styled.div`
-  margin-bottom: 6px;
-  font-size: 11px;
-  color: ${Colors.LIGHT.fade(0.2).toString()};
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-`;

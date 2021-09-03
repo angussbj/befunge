@@ -1,10 +1,11 @@
-import { Button, Colors } from "../../../ui";
+import { Button, Colors, T } from "../../../../ui";
 import React from "react";
 import styled from "styled-components";
-import { Befunge, Direction } from "../../../domain/Befunge";
-import { CodeEditor } from "../../../domain/CodeEditor";
-import { MiniButton } from "../../../ui/MiniButton";
+import { Befunge, Direction } from "../../../../domain/Befunge";
+import { CodeEditor } from "../../../../domain/CodeEditor";
 import { AsciiCalculator } from "./AsciiCalculator";
+import { WalkingSpeedControl } from "./WalkingSpeedControl";
+import { Checkbox } from "../../../../ui/Checkbox";
 
 export function ControlPanel({
   befunge: b,
@@ -13,6 +14,7 @@ export function ControlPanel({
   befunge: Befunge;
   editor: CodeEditor;
 }): React.ReactElement {
+  console.log("A", e.changeDirectionOnDirectionCharacters);
   return (
     <Container style={{ flex: 1 }}>
       <Column>
@@ -31,65 +33,66 @@ export function ControlPanel({
       </Column>
       <Column style={{ marginLeft: 16 }}>
         <Row>
-          <Text>Code input direction:</Text>
-          <Text style={{ marginLeft: 4, color: Colors.ACCENT_BLUE.toString() }}>
+          <T size="small">Code input direction:</T>
+          <T
+            size="small"
+            style={{ marginLeft: 4, color: Colors.ACCENT_BLUE.toString() }}
+          >
             {DIRECTION_SYMBOL[e.direction]}
-          </Text>
+          </T>
         </Row>
         <Row>
-          <Text>Input cursor ascii:</Text>
-          <Text style={{ marginLeft: 4, color: Colors.ACCENT_BLUE.toString() }}>
+          <T size="small">Input cursor ascii:</T>
+          <T
+            size="small"
+            style={{ marginLeft: 4, color: Colors.ACCENT_BLUE.toString() }}
+          >
             {e.getSelectedCharacter().charCodeAt(0)}
-          </Text>
+          </T>
         </Row>
         <Row>
-          <Text>Execution direction:</Text>
-          <Text
+          <T size="small">Execution direction:</T>
+          <T
+            size="small"
             style={{ marginLeft: 4, color: Colors.ACCENT_ORANGE.toString() }}
           >
             {DIRECTION_SYMBOL[b.direction]}
-          </Text>
+          </T>
         </Row>
         <Row>
-          <Text>Execution cursor ascii:</Text>
-          <Text
+          <T size="small">Execution cursor ascii:</T>
+          <T
+            size="small"
             style={{ marginLeft: 4, color: Colors.ACCENT_ORANGE.toString() }}
           >
             {b.getCursorCharacter().charCodeAt(0)}
-          </Text>
+          </T>
         </Row>
         <Row>
-          <Text>String mode enabled:</Text>
-          <Text style={{ marginLeft: 4 }}>{b.stringMode ? "Yes" : "No"}</Text>
+          <T size="small">String mode enabled:</T>
+          <T size="small" style={{ marginLeft: 4 }}>
+            {b.stringMode ? "Yes" : "No"}
+          </T>
         </Row>
         <Row style={{ marginTop: 2, marginBottom: 2 }}>
-          <Text>Walking speed:</Text>
-          <Row style={{ marginLeft: 8 }}>
-            <MiniButton
-              label={"-"}
-              onClick={b.increaseWalkingDelay}
-              disabled={b.walkingDelay >= 4096}
-            />
-            <UnselectableText
-              style={{
-                width: 20,
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
-            >
-              {10 - Math.log2(b.walkingDelay)}
-            </UnselectableText>
-            <MiniButton
-              label={"+"}
-              onClick={b.decreaseWalkingDelay}
-              disabled={b.walkingDelay <= 1}
-            />
-          </Row>
+          <WalkingSpeedControl befunge={b} />
         </Row>
-        <Text>ASCII value calculator:</Text>
+        <T size="small">ASCII value calculator:</T>
         <Row>
           <AsciiCalculator />
+        </Row>
+      </Column>
+      <Column style={{ marginLeft: 16 }}>
+        <Row>
+          <T size="small" style={{ width: 120 }}>
+            Change input direction on{" "}
+            <text style={{ fontFamily: "monospace" }}>{"<>^v"}</text>:
+          </T>
+          <Checkbox
+            object={e}
+            k={"changeDirectionOnDirectionCharacters"}
+            style={{ marginLeft: 4 }}
+          />
         </Row>
       </Column>
     </Container>
@@ -103,24 +106,6 @@ const DIRECTION_SYMBOL = {
   [Direction.Down]: "↓",
 };
 
-const Text = styled.div`
-  margin-bottom: 6px;
-  font-size: 11px;
-  color: ${Colors.LIGHT.fade(0.2).toString()};
-`;
-
-const UnselectableText = styled.div`
-  margin-bottom: 6px;
-  font-size: 11px;
-  color: ${Colors.LIGHT.fade(0.2).toString()};
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-`;
-
 const Column = styled.div`
   align-self: stretch;
   display: flex;
@@ -131,6 +116,7 @@ const Column = styled.div`
 const Row = styled.div`
   align-self: stretch;
   justify-content: space-between;
+  align-items: center;
   display: flex;
   flex-direction: row;
 `;

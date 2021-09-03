@@ -23,6 +23,8 @@ export class CodeEditor {
   public code: Code;
   public limits: Coordinate;
 
+  public changeDirectionOnDirectionCharacters = false;
+
   constructor(private executor: Befunge, private render: () => void) {
     this.code = executor.code;
     this.limits = executor.limits;
@@ -97,9 +99,9 @@ export class CodeEditor {
     if (document.activeElement !== document.body) return;
     if (event.ctrlKey || event.metaKey) {
       this.handleKeyboardShortcuts(event);
-    } else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey) {
+    } else if (event.key.length === 1) {
       this.handleEnteredCharacter(event);
-    } else if (event.key.match(/^Arrow/) && !event.ctrlKey && !event.metaKey) {
+    } else if (event.key.match(/^Arrow/)) {
       this.handleSelectionMovement(event);
     } else if (event.key === "Backspace") {
       this.handleDeletion();
@@ -157,6 +159,8 @@ export class CodeEditor {
       this.undo();
     } else if ((event.key === "z" && event.shiftKey) || event.key === "y") {
       this.redo();
+    } else if (event.key.match(/^Arrow/)) {
+      this.direction = Direction[event.key.slice(5) as DirectionName];
     } else {
       return;
     }
@@ -166,6 +170,7 @@ export class CodeEditor {
   private handleEnteredCharacter(event: KeyboardEvent): void {
     this.setHistoryPoint();
     this.fillSelection(event.key);
+    this.changeTypingDirectionIfNeeded(event.key);
     this.stepSelection(DIRECTION_VECTOR[this.direction]);
     this.deleteMode = "backspace";
     event.preventDefault();
@@ -176,8 +181,7 @@ export class CodeEditor {
     if (event.shiftKey) {
       this.selectionDelta.add(DIRECTION_VECTOR[movementDirection]);
     } else {
-      this.direction = movementDirection;
-      this.stepSelection(DIRECTION_VECTOR[this.direction]);
+      this.stepSelection(DIRECTION_VECTOR[movementDirection]);
       this.selectionDelta.set(0, 0);
       event.preventDefault();
     }
@@ -232,6 +236,16 @@ export class CodeEditor {
         cellAction(iterationCoord.x, iterationCoord.y);
       }
       rowEndAction?.();
+    }
+  }
+
+  private changeTypingDirectionIfNeeded(character: string): void {
+    console.log(this.changeDirectionOnDirectionCharacters);
+    if (this.changeDirectionOnDirectionCharacters) {
+      if (character === "<") this.direction = Direction.Left;
+      if (character === ">") this.direction = Direction.Right;
+      if (character === "^") this.direction = Direction.Up;
+      if (character === "v") this.direction = Direction.Down;
     }
   }
 }

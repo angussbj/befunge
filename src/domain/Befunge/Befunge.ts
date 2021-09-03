@@ -28,7 +28,11 @@ export class Befunge {
   public halted = false;
   public limits: Coordinate;
   public code: Code;
-  public walkingDelay = 32;
+  public walkingDelayIndex = 5;
+  private walkingDelay = 32;
+  private static walkingDelays = [
+    1, 32, 64, 128, 256, 512, 768, 1280, 2048, 3072,
+  ];
   public walking = false;
   public running = false;
   public requestingInput: InputRequestStatus = false;
@@ -341,12 +345,18 @@ export class Befunge {
   private [" "](): void {} // eslint-disable-line @typescript-eslint/no-empty-function
 
   public increaseWalkingDelay(): void {
-    this.walkingDelay *= 2;
-    this.render();
+    if (this.walkingDelayIndex < 9) {
+      this.walkingDelayIndex += 1;
+      this.walkingDelay = Befunge.walkingDelays[this.walkingDelayIndex];
+      this.render();
+    }
   }
 
   public decreaseWalkingDelay(): void {
-    this.walkingDelay /= 2;
-    this.render();
+    if (this.walkingDelayIndex > 0) {
+      this.walkingDelayIndex -= 1;
+      this.walkingDelay = Befunge.walkingDelays[this.walkingDelayIndex];
+      this.render();
+    }
   }
 }
