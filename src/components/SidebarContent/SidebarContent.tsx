@@ -15,7 +15,7 @@ export function SidebarContent({
   return (
     <Container>
       <IconButton
-        aria-label="delete"
+        aria-label="close-side-bar"
         style={{
           position: "absolute",
           top: 8,
