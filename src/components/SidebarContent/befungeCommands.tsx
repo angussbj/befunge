@@ -243,7 +243,7 @@ export const befungeCommands = [
     command: (
       <SquareBackground
         style={{
-          backgroundColor: Colors.EXECUTING_CURSOR.blacken(1)
+          backgroundColor: Colors.LIGHT.mix(Colors.ACCENT_ORANGE, 0.4)
             .saturate(1)
             .toString(),
         }}
@@ -262,7 +262,7 @@ export const befungeCommands = [
     command: (
       <SquareBackground
         style={{
-          backgroundColor: Colors.WRITING_CURSOR.blacken(1)
+          backgroundColor: Colors.LIGHT.mix(Colors.ACCENT_BLUE, 0.4)
             .saturate(1)
             .toString(),
         }}
@@ -281,7 +281,9 @@ export const befungeCommands = [
     command: (
       <SquareBackground
         style={{
-          backgroundColor: Colors.GREY.blacken(1).saturate(1).toString(),
+          backgroundColor: Colors.LIGHT.mix(Colors.ACCENT_BLUE, 0.4)
+            .mix(Colors.ACCENT_ORANGE, 0.4)
+            .toString(),
         }}
       />
     ),

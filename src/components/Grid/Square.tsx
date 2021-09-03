@@ -2,37 +2,34 @@ import React, { MouseEvent } from "react";
 import styled from "styled-components";
 import { Colors } from "../../ui/Colors";
 
-const LIGHT = Colors.LIGHT.toString();
-const BOTH_CURSORS = Colors.GREY.toString();
-const WRITING_CURSOR = Colors.WRITING_CURSOR.toString();
-const EXECUTING_CURSOR = Colors.EXECUTING_CURSOR.toString();
-
 export function Square({
   val,
   selected,
   cursored,
+  isBreakpoint,
   onMouseDown,
   onMouseOver,
+  onDoubleClick,
 }: {
   val: string;
   selected?: boolean;
   cursored?: boolean;
+  isBreakpoint?: boolean;
   onMouseDown?: (e: MouseEvent) => void;
   onMouseOver?: (e: MouseEvent) => void;
+  onDoubleClick?: () => void;
 }): React.ReactElement {
-  const color = !(selected || cursored)
-    ? LIGHT
-    : selected && cursored
-    ? BOTH_CURSORS
-    : selected
-    ? WRITING_CURSOR
-    : EXECUTING_CURSOR;
+  let color = Colors.LIGHT;
+  if (selected) color = color.mix(Colors.ACCENT_BLUE, 0.3);
+  if (cursored) color = color.mix(Colors.ACCENT_ORANGE, 0.3);
+  if (isBreakpoint) color = color.mix(Colors.RED, 0.5);
 
   return (
     <Background
-      color={color}
+      color={color.toString()}
       onMouseDown={onMouseDown}
       onMouseOver={onMouseOver}
+      onDoubleClick={onDoubleClick}
     >
       {val}
     </Background>

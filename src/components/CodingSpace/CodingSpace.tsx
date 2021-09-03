@@ -16,7 +16,7 @@ export function CodingSpace(): React.ReactElement {
     <Container>
       <div>
         <Label>Code editor</Label>
-        <Grid code={b.code.code} cursor={b.cursor} editor={e} />
+        <Grid code={b.code} cursor={b.cursor} editor={e} />
       </div>
       <Row style={{ marginTop: 16, width: 15 * width, height: 220 }}>
         <Column>

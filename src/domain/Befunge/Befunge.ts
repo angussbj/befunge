@@ -122,6 +122,7 @@ export class Befunge {
     this.code.makeResetable();
     this.walking = true;
     this.running = false;
+    this.stepOver();
     recur(this)();
   }
 
@@ -147,6 +148,7 @@ export class Befunge {
     this.code.makeResetable();
     this.walking = false;
     this.running = true;
+    this.stepOver();
     renderPeriodically(this)();
     recur(this)();
   }
@@ -174,18 +176,34 @@ export class Befunge {
   public step(): void {
     if (this.halted || this.requestingInput) return;
     this.code.makeResetable();
-    this.slowStep();
+    this.stepOver();
   }
 
   private quickStep(): void {
-    this.execute(this.getCursorCharacter());
-    this.moveCursor();
+    if (this.cursorAtBreakpoint()) this.pause();
+    else {
+      this.execute(this.getCursorCharacter());
+      this.moveCursor();
+    }
   }
 
   private slowStep(): void {
+    if (this.cursorAtBreakpoint()) this.pause();
+    else {
+      this.execute(this.getCursorCharacter());
+      this.moveCursor();
+      this.render();
+    }
+  }
+
+  private stepOver(): void {
     this.execute(this.getCursorCharacter());
     this.moveCursor();
     this.render();
+  }
+
+  private cursorAtBreakpoint(): boolean {
+    return this.code.breakpoints[this.cursor.x][this.cursor.y];
   }
 
   public getCursorCharacter(): string {

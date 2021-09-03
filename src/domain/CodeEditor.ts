@@ -81,14 +81,23 @@ export class CodeEditor {
 
   public onMouseDown(x: number, y: number): (event: MouseEvent) => void {
     return (event: MouseEvent): void => {
-      if (event.shiftKey) {
-        this.selectionDelta.set(x - this.selection.x, y - this.selection.y);
-      } else {
-        this.selection.set(x, y);
-        this.selectionDelta.set(0, 0);
-        this.deleteMode = "delete";
-        this.direction = Direction.Right;
+      if (event.buttons % 2 === 1) {
+        if (event.shiftKey) {
+          this.selectionDelta.set(x - this.selection.x, y - this.selection.y);
+        } else {
+          this.selection.set(x, y);
+          this.selectionDelta.set(0, 0);
+          this.deleteMode = "delete";
+          this.direction = Direction.Right;
+        }
+        this.render();
       }
+    };
+  }
+
+  public onDoubleClick(x: number, y: number): () => void {
+    return (): void => {
+      this.code.breakpoints[x][y] = true;
       this.render();
     };
   }

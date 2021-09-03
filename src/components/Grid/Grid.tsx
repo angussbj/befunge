@@ -3,13 +3,14 @@ import { Row } from "../../ui";
 import { Square } from "./Square";
 import { Coordinate, modulo, range } from "../../utilities";
 import { CodeEditor } from "../../domain/CodeEditor";
+import { Code } from "../../domain/Code";
 
 export function Grid({
   code,
   cursor,
   editor: e,
 }: {
-  code: string[][];
+  code: Code;
   cursor: Coordinate;
   editor: CodeEditor;
 }): React.ReactElement {
@@ -30,11 +31,13 @@ export function Grid({
           <Row key={y}>
             {range(0, e.limits.x).map((x) => (
               <Square
-                val={code[x][y]}
+                val={code.code[x][y]}
                 selected={isSelectedX(x) && isSelectedY(y)}
                 cursored={x === cursor.x && y === cursor.y}
+                isBreakpoint={code.breakpoints[x][y]}
                 onMouseDown={e.onMouseDown(x, y)}
                 onMouseOver={e.onMouseOver(x, y)}
+                onDoubleClick={e.onDoubleClick(x, y)}
                 key={`${x},${y}`}
               />
             ))}

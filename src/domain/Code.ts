@@ -5,9 +5,11 @@ export class Code {
   public code: string[][];
   protected resetPointWithEdits?: string[][];
   protected resetPointWithoutEdits?: string[][];
+  public breakpoints: boolean[][];
 
   constructor(private width: number, private height: number) {
     this.code = constArray2(width, height, " ");
+    this.breakpoints = constArray2(width, height, false);
   }
 
   public clone(): Code {
