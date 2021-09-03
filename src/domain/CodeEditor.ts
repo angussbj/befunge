@@ -1,8 +1,14 @@
 import { MouseEvent } from "react";
-import { Coordinate, sorted } from "../utilities";
+import {
+  Coordinate,
+  Direction,
+  DIRECTION_VECTOR,
+  DirectionName,
+  MajorMinorDirections,
+} from "../utilities";
 import autoBind from "auto-bind";
 import { Code } from "./Code";
-import { Befunge, Direction, DIRECTION_VECTOR, DirectionName } from "./Befunge";
+import { Befunge } from "./Befunge";
 
 type DeleteMode = "delete" | "backspace";
 
@@ -23,6 +29,7 @@ export class CodeEditor {
   public code: Code;
   public limits: Coordinate;
 
+  public useSelectionDirectionForCutCopyPaste = false;
   public changeDirectionOnDirectionCharacters = false;
 
   constructor(private executor: Befunge, private render: () => void) {
@@ -128,6 +135,9 @@ export class CodeEditor {
       rowEndAction: (): void => {
         textToCopy += "\n";
       },
+      directions: this.useSelectionDirectionForCutCopyPaste
+        ? this.selectionDelta.getMajorAndMinorDirections()
+        : undefined,
     });
     event.clipboardData?.setData("text/plain", textToCopy);
     event.preventDefault();
@@ -137,15 +147,19 @@ export class CodeEditor {
     if (document.activeElement !== document.body) return;
     this.setHistoryPoint();
     const text = event.clipboardData?.getData("Text");
-    const pasteCoords = new Coordinate(this.selection.x, this.selection.y);
+    const pasteCoords = this.selection.clone();
+    const newLineCoord = this.selection.clone();
+    const { majorVector, minorVector } = this
+      .useSelectionDirectionForCutCopyPaste
+      ? this.selectionDelta.getMajorAndMinorDirections()
+      : this.getDefaultIterationDirections();
     text?.split("").forEach((char: string) => {
       if (char === "\n") {
-        pasteCoords
-          .set(this.selection.x, pasteCoords.y + 1)
-          .modulo(this.limits);
+        newLineCoord.add(minorVector).modulo(this.limits);
+        pasteCoords.setToCopy(newLineCoord);
       } else {
         this.code.userPut(pasteCoords.x, pasteCoords.y, char);
-        pasteCoords.setX(pasteCoords.x + 1).modulo(this.limits);
+        pasteCoords.add(majorVector).modulo(this.limits);
       }
     });
     this.render();
@@ -217,26 +231,45 @@ export class CodeEditor {
   private selectionForEach({
     cellAction,
     rowEndAction,
+    directions,
   }: {
     cellAction: (x: number, y: number) => void;
     rowEndAction?: () => void;
+    directions?: MajorMinorDirections;
   }): void {
-    const [x0, x1] = sorted([
-      this.selection.x,
-      this.selection.x + this.selectionDelta.x,
-    ]);
-    const [y0, y1] = sorted([
-      this.selection.y,
-      this.selection.y + this.selectionDelta.y,
-    ]);
-    const iterationCoord = new Coordinate(0, 0);
-    for (let y = y0; y <= y1; y++) {
-      for (let x = x0; x <= x1; x++) {
-        iterationCoord.set(x, y).modulo(this.limits);
+    const { start, majorVector, majorMax, minorVector, minorMax } = directions
+      ? { start: this.selection, ...directions }
+      : this.getDefaultIterationDirections();
+    const iterationCoord = start.clone();
+    for (let minor = 0; minor <= minorMax; minor++) {
+      iterationCoord.setToCopy(start);
+      iterationCoord.add(minorVector.clone().times(minor)).modulo(this.limits);
+      for (let major = 0; major <= majorMax; major++) {
         cellAction(iterationCoord.x, iterationCoord.y);
+        iterationCoord.add(majorVector).modulo(this.limits);
       }
       rowEndAction?.();
     }
+  }
+
+  private getDefaultIterationDirections(): {
+    start: Coordinate;
+  } & MajorMinorDirections {
+    const x0 = Math.min(
+      this.selection.x,
+      this.selection.x + this.selectionDelta.x
+    );
+    const y0 = Math.min(
+      this.selection.y,
+      this.selection.y + this.selectionDelta.y
+    );
+    return {
+      start: new Coordinate(x0, y0),
+      majorVector: DIRECTION_VECTOR[Direction.Right],
+      majorMax: Math.abs(this.selectionDelta.x),
+      minorVector: DIRECTION_VECTOR[Direction.Down],
+      minorMax: Math.abs(this.selectionDelta.y),
+    };
   }
 
   private changeTypingDirectionIfNeeded(character: string): void {

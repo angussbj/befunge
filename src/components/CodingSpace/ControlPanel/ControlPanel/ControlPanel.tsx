@@ -1,11 +1,12 @@
 import { Button, Colors, T } from "../../../../ui";
 import React from "react";
 import styled from "styled-components";
-import { Befunge, Direction } from "../../../../domain/Befunge";
+import { Befunge } from "../../../../domain/Befunge";
 import { CodeEditor } from "../../../../domain/CodeEditor";
 import { AsciiCalculator } from "./AsciiCalculator";
 import { WalkingSpeedControl } from "./WalkingSpeedControl";
 import { Checkbox } from "../../../../ui/Checkbox";
+import { Direction } from "../../../../utilities";
 
 export function ControlPanel({
   befunge: b,
@@ -82,7 +83,7 @@ export function ControlPanel({
           <AsciiCalculator />
         </Row>
       </Column>
-      <Column style={{ marginLeft: 16 }}>
+      <Column style={{ marginLeft: 16, justifyContent: "flex-start" }}>
         <Row>
           <T size="small" style={{ width: 120 }}>
             Change input direction on{" "}
@@ -91,6 +92,16 @@ export function ControlPanel({
           <Checkbox
             object={e}
             k={"changeDirectionOnDirectionCharacters"}
+            style={{ marginLeft: 4 }}
+          />
+        </Row>
+        <Row style={{ marginTop: 4 }}>
+          <T size="small" style={{ width: 120 }}>
+            Cut/copy/paste in selection direction:
+          </T>
+          <Checkbox
+            object={e}
+            k={"useSelectionDirectionForCutCopyPaste"}
             style={{ marginLeft: 4 }}
           />
         </Row>
