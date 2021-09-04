@@ -44,8 +44,8 @@ const Background = styled.div<{ color: string }>`
   font-size: 12px;
   font-family: monospace;
   background-color: ${({ color }): string => color};
-  border-right: 1px solid #bbbbbb;
-  border-bottom: 1px solid #bbbbbb;
+  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -135,7 +135,7 @@ const XNumberBox = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  border-bottom: 1px solid #bbbbbb;
+  border-bottom: 1px solid #dddddd;
 `;
 
 const YNumberBox = styled.div`
@@ -145,5 +145,5 @@ const YNumberBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  border-right: 1px solid #bbbbbb;
+  border-right: 1px solid #dddddd;
 `;
