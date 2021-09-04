@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 
-export function useBlink(frequency = 1200): { blink: boolean } {
+export function useBlink(enabled?: boolean): { blink: boolean } {
   const [blink, setBlink] = useState(false);
 
-  const timeout = setTimeout(() => {
-    setBlink(!blink);
-  }, frequency / 2);
-
   useEffect(() => {
-    return (): void => clearTimeout(timeout);
-  }, [timeout]);
+    const interval = setInterval(() => {
+      if (enabled) setBlink((blink) => !blink);
+    }, 600);
+    return (): void => clearInterval(interval);
+  }, [enabled]);
 
   return { blink };
 }

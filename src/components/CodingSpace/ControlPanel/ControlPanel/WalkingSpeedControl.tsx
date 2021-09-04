@@ -15,7 +15,7 @@ export function WalkingSpeedControl({
         <MiniButton
           label={"-"}
           onClick={b.increaseWalkingDelay}
-          disabled={b.walkingDelayIndex >= 9}
+          disabled={b.walkingDelayIndex >= 4}
         />
         <T
           size="small"
@@ -27,7 +27,7 @@ export function WalkingSpeedControl({
             justifyContent: "center",
           }}
         >
-          {10 - b.walkingDelayIndex}
+          {5 - b.walkingDelayIndex}
         </T>
         <MiniButton
           label={"+"}

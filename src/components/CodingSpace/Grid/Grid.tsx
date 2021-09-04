@@ -42,7 +42,7 @@ export function Grid({
     [e.selection.y, e.selectionDelta.y, e.limits.y, focused]
   );
 
-  const { blink } = useBlink();
+  const { blink } = useBlink(focused);
   const selectionOpacity = blink ? 0.35 : 0.2;
 
   return (
