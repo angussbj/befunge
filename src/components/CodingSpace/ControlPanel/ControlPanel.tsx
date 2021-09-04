@@ -9,6 +9,7 @@ import { Checkbox } from "../../../ui/Checkbox";
 import { Direction } from "../../../utilities";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { IconButton } from "@material-ui/core";
+import { ExpandCollapseArrows } from "./ExpandCollapseArrows";
 
 export function ControlPanel({
   befunge: b,
@@ -113,50 +114,7 @@ export function ControlPanel({
         </Column>
       )}
 
-      <div
-        style={{
-          width: 8,
-          alignSelf: "center",
-          overflow: "hidden",
-          marginLeft: columns >= 2 ? 12 : 4,
-        }}
-      >
-        {columns >= 2 && (
-          <IconButton
-            aria-label="collapse-options"
-            style={{
-              color: Colors.ACCENT_BLUE.toString(),
-              marginLeft: -20,
-              backgroundColor: "transparent",
-            }}
-            onClick={(): void => setColumns(columns - 1)}
-          >
-            <BsChevronCompactLeft />
-          </IconButton>
-        )}
-      </div>
-      <div
-        style={{
-          width: 8,
-          alignSelf: "center",
-          marginRight: -20,
-          overflow: "hidden",
-        }}
-      >
-        {columns <= 2 && (
-          <IconButton
-            aria-label="expand-options"
-            style={{
-              color: Colors.ACCENT_BLUE.toString(),
-              marginLeft: -20,
-              backgroundColor: "transparent",
-            }}
-            onClick={(): void => setColumns(columns + 1)}
-          >
-            <BsChevronCompactRight />
-          </IconButton>
-        )}
-      </div>
+      <ExpandCollapseArrows columns={columns} setColumns={setColumns} />
     </Container>
   );
 }
