@@ -1,10 +1,11 @@
 import React, { MouseEvent } from "react";
 import styled from "styled-components";
-import { Colors } from "../../ui/Colors";
+import { Colors } from "../../../ui/Colors";
 
 export function Square({
   val,
   selected,
+  selectionOpacity = 0.3,
   cursored,
   isBreakpoint,
   onMouseDown,
@@ -13,6 +14,7 @@ export function Square({
 }: {
   val: string;
   selected?: boolean;
+  selectionOpacity?: number;
   cursored?: boolean;
   isBreakpoint?: boolean;
   onMouseDown?: (e: MouseEvent) => void;
@@ -20,7 +22,7 @@ export function Square({
   onDoubleClick?: () => void;
 }): React.ReactElement {
   let color = Colors.LIGHT;
-  if (selected) color = color.mix(Colors.ACCENT_BLUE, 0.3);
+  if (selected) color = color.mix(Colors.ACCENT_BLUE, selectionOpacity);
   if (cursored) color = color.mix(Colors.ACCENT_ORANGE, 0.3);
   if (isBreakpoint) color = color.mix(Colors.RED, 0.5);
 

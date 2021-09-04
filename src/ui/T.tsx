@@ -4,10 +4,11 @@ import { Colors } from "./Colors";
 import Color from "color";
 
 interface Props {
-  size?: "small";
+  size?: "small" | "tiny";
   color?: Color;
   children: React.ReactNode;
   unselectable?: boolean;
+  monospace?: boolean;
   style?: React.CSSProperties;
 }
 
@@ -15,12 +16,15 @@ export function T({
   size,
   color,
   unselectable,
+  monospace,
   children,
   style,
 }: Props): React.ReactElement {
   const finalStyle = {
     color: (color || Colors.LIGHT.fade(0.2)).toString(),
-    fontSize: size === "small" ? 11 : size === "big" ? 16 : 12,
+    fontSize:
+      size === "tiny" ? 8 : size === "small" ? 11 : size === "big" ? 16 : 12,
+    fontFamily: monospace ? "monospace" : undefined,
     ...style,
   };
 

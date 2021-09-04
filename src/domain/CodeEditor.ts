@@ -29,6 +29,7 @@ export class CodeEditor {
   public code: Code;
   public limits: Coordinate;
 
+  public hasFocus = false;
   public useSelectionDirectionForCutCopyPaste = false;
   public changeDirectionOnDirectionCharacters = false;
 
@@ -112,7 +113,7 @@ export class CodeEditor {
   }
 
   public onKeyDown(event: KeyboardEvent): void {
-    if (document.activeElement !== document.body) return;
+    if (!this.hasFocus) return;
     if (event.ctrlKey || event.metaKey) {
       this.handleKeyboardShortcuts(event);
     } else if (event.key.length === 1) {
@@ -126,7 +127,7 @@ export class CodeEditor {
   }
 
   public onCut(event: ClipboardEvent): void {
-    if (document.activeElement !== document.body) return;
+    if (!this.hasFocus) return;
     this.setHistoryPoint();
     this.onCopy(event);
     this.clearSelection();
@@ -134,7 +135,7 @@ export class CodeEditor {
   }
 
   public onCopy(event: ClipboardEvent): void {
-    if (document.activeElement !== document.body) return;
+    if (!this.hasFocus) return;
     this.setHistoryPoint();
     let textToCopy = "";
     this.selectionForEach({
@@ -153,7 +154,7 @@ export class CodeEditor {
   }
 
   public onPaste(event: ClipboardEvent): void {
-    if (document.activeElement !== document.body) return;
+    if (!this.hasFocus) return;
     this.setHistoryPoint();
     const text = event.clipboardData?.getData("Text");
     const pasteCoords = this.selection.clone();
@@ -282,7 +283,6 @@ export class CodeEditor {
   }
 
   private changeTypingDirectionIfNeeded(character: string): void {
-    console.log(this.changeDirectionOnDirectionCharacters);
     if (this.changeDirectionOnDirectionCharacters) {
       if (character === "<") this.direction = Direction.Left;
       if (character === ">") this.direction = Direction.Right;

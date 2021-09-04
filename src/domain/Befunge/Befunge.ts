@@ -137,19 +137,10 @@ export class Befunge {
       };
     }
 
-    function renderPeriodically(b: Befunge): () => void {
-      return (): void => {
-        b.render();
-        if (b.running && !b.requestingInput)
-          setTimeout(renderPeriodically(b), 1000);
-      };
-    }
-
     this.code.makeResetable();
     this.walking = false;
     this.running = true;
     this.stepOver();
-    renderPeriodically(this)();
     recur(this)();
   }
 

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { useBefunge } from "../useBefunge";
-import { Grid } from "../Grid";
+import { Grid } from "./Grid";
 import { Stack } from "../Stack";
 import { InputOutput } from "../InputOutput";
 import { Row, Colors } from "../../ui";
