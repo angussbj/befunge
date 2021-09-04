@@ -32,7 +32,7 @@ function App(): React.ReactElement {
             top: undefined,
           },
         }}
-        pullRight={true}
+        pullRight
       >
         <IconButton
           style={{

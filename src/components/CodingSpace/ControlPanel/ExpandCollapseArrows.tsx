@@ -21,19 +21,12 @@ export function ExpandCollapseArrows({
         marginRight: -20,
         display: "flex",
         marginLeft: columns >= 2 ? 12 : 4,
+        backgroundColor: Colors.DARKEST.toString(),
+        paddingLeft: 2,
+        paddingRight: 2,
+        borderRadius: 4,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <TriangleLeft show={showLeft} />
-        <TriangleRight show={showRight} />
-      </div>
-
       <div
         style={{
           width: 8,
@@ -46,6 +39,8 @@ export function ExpandCollapseArrows({
             style={{
               color: Colors.ACCENT_BLUE.toString(),
               marginLeft: -20,
+              marginTop: -8,
+              marginBottom: -8,
               backgroundColor: "transparent",
             }}
             onClick={(): void => setColumns(columns - 1)}
@@ -67,6 +62,8 @@ export function ExpandCollapseArrows({
             style={{
               color: Colors.ACCENT_BLUE.toString(),
               marginLeft: -20,
+              marginTop: -8,
+              marginBottom: -8,
               backgroundColor: "transparent",
             }}
             onClick={(): void => setColumns(columns + 1)}
@@ -79,16 +76,4 @@ export function ExpandCollapseArrows({
   );
 }
 
-const TriangleLeft = styled.div<{ show: boolean }>`
-  border-right: 12px solid
-    ${({ show }): string => (show ? Colors.DARKEST.toString() : "transparent")};
-  border-top: 24px solid transparent;
-  border-bottom: 24px solid transparent;
-  margin-left: -4px;
-`;
-const TriangleRight = styled.div<{ show: boolean }>`
-  border-left: 12px solid
-    ${({ show }): string => (show ? Colors.DARKEST.toString() : "transparent")};
-  border-top: 24px solid transparent;
-  border-bottom: 24px solid transparent;
-`;
+const Container = styled.div``;
