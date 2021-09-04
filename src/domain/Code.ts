@@ -18,6 +18,16 @@ export class Code {
     return clone;
   }
 
+  public set(code: string[][]): void {
+    this.code.forEach((col, x) =>
+      col.forEach((_element, y) => {
+        if (code[x]?.[y]) this.code[x][y] = code[x][y];
+      })
+    );
+    this.resetPointWithEdits = undefined;
+    this.resetPointWithoutEdits = undefined;
+  }
+
   public setToCopy(other: Code): void {
     this.code = cloneDeep(other.code);
     this.resetPointWithEdits = cloneDeep(other.resetPointWithEdits);

@@ -63,13 +63,13 @@ export function Grid({
         <Row key={y} style={{ justifyContent: "flex-end" }}>
           {range(-1, e.limits.x + 1).map((x) =>
             x === -1 && y === -1 ? null : x === -1 ? (
-              <YNumberBox>
+              <YNumberBox key={`${x},${y}`}>
                 <T size="tiny" color={Colors.DARK.fade(0.4)}>
                   {y}
                 </T>
               </YNumberBox>
             ) : y === -1 ? (
-              <XNumberBox>
+              <XNumberBox key={`${x},${y}`}>
                 <T size="tiny" color={Colors.DARK.fade(0.4)}>
                   {x}
                 </T>

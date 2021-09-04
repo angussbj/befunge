@@ -33,10 +33,17 @@ export class CodeEditor {
   public useSelectionDirectionForCutCopyPaste = false;
   public changeDirectionOnDirectionCharacters = false;
 
-  constructor(private executor: Befunge, private render: () => void) {
+  constructor(
+    private executor: Befunge,
+    private externalOnChange: (code: string) => void
+  ) {
     this.code = executor.code;
     this.limits = executor.limits;
     autoBind(this);
+  }
+
+  private onChange(): void {
+    this.externalOnChange(JSON.stringify(this.code.code));
   }
 
   public getSelectedCharacter(): string {
@@ -53,14 +60,14 @@ export class CodeEditor {
     this.future.push(this.createHistoryPoint());
     this.revertToPoint(this.history.pop());
     this.executor.undo();
-    this.render();
+    this.onChange();
   }
 
   public redo(): void {
     this.history.push(this.createHistoryPoint());
     this.revertToPoint(this.future.pop());
     this.executor.redo();
-    this.render();
+    this.onChange();
   }
 
   private createHistoryPoint(): CodeEditorHistoryPoint {
@@ -91,7 +98,7 @@ export class CodeEditor {
           this.deleteMode = "delete";
           this.direction = Direction.Right;
         }
-        this.render();
+        this.onChange();
       }
     };
   }
@@ -99,7 +106,7 @@ export class CodeEditor {
   public onDoubleClick(x: number, y: number): () => void {
     return (): void => {
       this.code.breakpoints[x][y] = !this.code.breakpoints[x][y];
-      this.render();
+      this.onChange();
     };
   }
 
@@ -107,7 +114,7 @@ export class CodeEditor {
     return (event: MouseEvent): void => {
       if (event.buttons % 2 === 1) {
         this.selectionDelta.set(x - this.selection.x, y - this.selection.y);
-        this.render();
+        this.onChange();
       }
     };
   }
@@ -123,7 +130,7 @@ export class CodeEditor {
     } else if (event.key === "Backspace") {
       this.handleDeletion();
     }
-    this.render();
+    this.onChange();
   }
 
   public onCut(event: ClipboardEvent): void {
@@ -131,7 +138,7 @@ export class CodeEditor {
     this.setHistoryPoint();
     this.onCopy(event);
     this.clearSelection();
-    this.render();
+    this.onChange();
   }
 
   public onCopy(event: ClipboardEvent): void {
@@ -172,7 +179,7 @@ export class CodeEditor {
         pasteCoords.add(majorVector).modulo(this.limits);
       }
     });
-    this.render();
+    this.onChange();
   }
 
   private handleKeyboardShortcuts(event: KeyboardEvent): void {
