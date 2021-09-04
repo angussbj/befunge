@@ -1,6 +1,5 @@
 import { Colors } from "../../../ui";
 import React from "react";
-import styled from "styled-components";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { IconButton } from "@material-ui/core";
 
@@ -75,5 +74,3 @@ export function ExpandCollapseArrows({
     </div>
   );
 }
-
-const Container = styled.div``;

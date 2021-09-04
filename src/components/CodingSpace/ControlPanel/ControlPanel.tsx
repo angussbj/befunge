@@ -7,8 +7,6 @@ import { AsciiCalculator } from "./AsciiCalculator";
 import { WalkingSpeedControl } from "./WalkingSpeedControl";
 import { Checkbox } from "../../../ui/Checkbox";
 import { Direction } from "../../../utilities";
-import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
-import { IconButton } from "@material-ui/core";
 import { ExpandCollapseArrows } from "./ExpandCollapseArrows";
 
 export function ControlPanel({

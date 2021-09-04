@@ -54,7 +54,6 @@ export function Grid({
         setFocused(true);
       }}
       onBlur={(): void => {
-        console.log("onBlur");
         e.hasFocus = false;
         setFocused(false);
       }}
@@ -125,7 +124,9 @@ const Container = styled.div<{ focused: boolean }>`
   border-radius: 4px;
   outline: 0 none !important;
   ${({ focused }): string => {
-    return focused ? `box-shadow: 0px 0px 5px 2px #5577FF` : "";
+    return focused
+      ? `box-shadow: 0px 0px 0px 2px ${Colors.FOCUS.toString()}`
+      : "";
   }};
 `;
 

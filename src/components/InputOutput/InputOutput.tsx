@@ -29,16 +29,18 @@ export function InputOutput({
         <div>
           {requestingInput === "character" ? (
             <div style={{ color: "#000033", fontWeight: 600 }}>
-              Please enter a character: <Input submitInput={submitInput} />
+              Please enter a character:{" "}
+              <Input submitInput={submitInput} inputType="character" />
             </div>
           ) : requestingInput === "number" ? (
             <div style={{ color: "#000033", fontWeight: 600 }}>
-              Please enter a number: <Input submitInput={submitInput} />
+              Please enter a number:{" "}
+              <Input submitInput={submitInput} inputType="number" />
             </div>
           ) : requestingInput === "divideBy0" ? (
             <div style={{ color: "#000033", fontWeight: 600 }}>
               Division by 0. Please enter the result:{" "}
-              <Input submitInput={submitInput} />
+              <Input submitInput={submitInput} inputType="number" />
             </div>
           ) : (
             <div style={{ color: Colors.DARK.fade(0.3).toString() }}>
