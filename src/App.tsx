@@ -22,15 +22,8 @@ function App(): React.ReactElement {
         onSetOpen={setSidebarOpen}
         styles={{
           sidebar: { background: Colors.DARKER.toString() },
-          content: {
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          },
-          overlay: {
-            bottom: undefined,
-            top: undefined,
-          },
+          content: { display: "flex" },
+          overlay: { bottom: undefined, top: undefined },
         }}
         pullRight
       >
@@ -45,8 +38,20 @@ function App(): React.ReactElement {
         >
           <InfoOutlinedIcon />
         </IconButton>
-
-        <CodingSpace />
+        <div
+          style={{
+            flexGrow: 1,
+            padding: 32,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ flexGrow: 1 }} />
+            <CodingSpace />
+            <div style={{ flexGrow: 1, minHeight: 40 }} />
+          </div>
+        </div>
       </Sidebar>
     </div>
   );
