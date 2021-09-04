@@ -1,12 +1,12 @@
-import { Button, Colors, T } from "../../../../ui";
+import { Button, Colors, T } from "../../../ui";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Befunge } from "../../../../domain/Befunge";
-import { CodeEditor } from "../../../../domain/CodeEditor";
+import { Befunge } from "../../../domain/Befunge";
+import { CodeEditor } from "../../../domain/CodeEditor";
 import { AsciiCalculator } from "./AsciiCalculator";
 import { WalkingSpeedControl } from "./WalkingSpeedControl";
-import { Checkbox } from "../../../../ui/Checkbox";
-import { Direction } from "../../../../utilities";
+import { Checkbox } from "../../../ui/Checkbox";
+import { Direction } from "../../../utilities";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { IconButton } from "@material-ui/core";
 
