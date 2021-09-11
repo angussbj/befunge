@@ -1,4 +1,4 @@
-import { SidebarTitle } from "../../ui";
+import { SidebarTitle } from "ui";
 import React from "react";
 
 export function ExampleSidebarContent(): React.ReactElement {

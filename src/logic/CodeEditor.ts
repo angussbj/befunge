@@ -5,7 +5,7 @@ import {
   DIRECTION_VECTOR,
   DirectionName,
   MajorMinorDirections,
-} from "../utilities";
+} from "utilities";
 import autoBind from "auto-bind";
 import { Code } from "./Code";
 import { Befunge } from "./Befunge";

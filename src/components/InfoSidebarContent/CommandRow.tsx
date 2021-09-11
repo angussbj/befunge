@@ -1,4 +1,4 @@
-import { Row } from "../../ui";
+import { Row } from "ui";
 import React from "react";
 import { SquareBackground } from "./SquareBackground";
 

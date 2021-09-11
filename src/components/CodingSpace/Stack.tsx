@@ -1,5 +1,5 @@
 import React from "react";
-import { Colors } from "../../ui";
+import { Colors } from "ui";
 
 interface Props {
   stack: number[];

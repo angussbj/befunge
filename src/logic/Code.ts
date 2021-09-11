@@ -1,5 +1,5 @@
 import { cloneDeep, isEqual } from "lodash";
-import { constArray2 } from "../utilities";
+import { constArray2 } from "utilities";
 
 export class Code {
   public code: string[][];

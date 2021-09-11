@@ -1,10 +1,10 @@
-import { Button, Colors, Checkbox, T } from "../../../ui";
+import { Button, Colors, Checkbox, T } from "ui";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Befunge, CodeEditor } from "../../../domain";
+import { Befunge, CodeEditor } from "logic";
 import { AsciiCalculator } from "./AsciiCalculator";
 import { WalkingSpeedControl } from "./WalkingSpeedControl";
-import { Direction } from "../../../utilities";
+import { Direction } from "utilities";
 import { ExpandCollapseArrows } from "./ExpandCollapseArrows";
 
 export function ControlPanel({

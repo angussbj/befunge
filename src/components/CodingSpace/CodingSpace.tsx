@@ -4,7 +4,7 @@ import { useBefunge } from "./useBefunge";
 import { Grid } from "./Grid";
 import { Stack } from "./Stack";
 import { InputOutput } from "./InputOutput";
-import { Row, Colors } from "../../ui";
+import { Row, Colors } from "ui";
 import { ControlPanel } from "./ControlPanel";
 
 export function CodingSpace(): React.ReactElement {

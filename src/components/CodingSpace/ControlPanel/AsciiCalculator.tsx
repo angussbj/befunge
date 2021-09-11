@@ -1,4 +1,4 @@
-import { Colors, Row, T, TextField } from "../../../ui";
+import { Colors, Row, T, TextField } from "ui";
 import React, { useState } from "react";
 
 export function AsciiCalculator(): React.ReactElement {

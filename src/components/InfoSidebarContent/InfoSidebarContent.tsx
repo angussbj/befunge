@@ -1,4 +1,4 @@
-import { Colors } from "../../ui";
+import { Colors } from "ui";
 import React from "react";
 import { befungeCommands } from "./befungeCommands";
 import "./InfoSidebarContent.css";

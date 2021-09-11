@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Colors } from "../../ui";
+import { Colors } from "ui";
 
 export const SquareBackground = styled.div`
   width: 14px;

@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState, useEffect } from "react";
-import { Befunge, CodeEditor } from "../../domain";
+import { Befunge, CodeEditor } from "logic";
 
 export function useBefunge(
   width: number,

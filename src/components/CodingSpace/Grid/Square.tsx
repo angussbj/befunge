@@ -1,6 +1,6 @@
 import React, { MouseEvent } from "react";
 import styled from "styled-components";
-import { Colors } from "../../../ui";
+import { Colors } from "ui";
 
 export function Square({
   val,

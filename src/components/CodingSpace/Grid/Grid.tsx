@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Colors, Row, T } from "../../../ui";
+import { Colors, Row, T } from "ui";
 import { Square } from "./Square";
-import { Coordinate, modulo, range } from "../../../utilities";
-import { Code, CodeEditor } from "../../../domain";
+import { Coordinate, modulo, range } from "utilities";
+import { Code, CodeEditor } from "logic";
 import styled from "styled-components";
 import { useBlink } from "./useBlink";
 

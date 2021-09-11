@@ -2,7 +2,7 @@ import autoBind from "auto-bind";
 import { CommandChar } from "./CommandChar";
 import { Code } from "../Code";
 import { cloneDeep } from "lodash";
-import { Coordinate, Direction, DIRECTION_VECTOR } from "../../utilities";
+import { Coordinate, Direction, DIRECTION_VECTOR } from "utilities";
 
 interface BefungeHistoryPoint {
   cursor: Coordinate;
