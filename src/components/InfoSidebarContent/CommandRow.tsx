@@ -1,7 +1,6 @@
 import { Row } from "../../ui";
 import React from "react";
 import { SquareBackground } from "./SquareBackground";
-import "./SidebarContent.css";
 
 interface Props {
   command: React.ReactNode;

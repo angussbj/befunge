@@ -2,8 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Colors, Row, T } from "../../../ui";
 import { Square } from "./Square";
 import { Coordinate, modulo, range } from "../../../utilities";
-import { CodeEditor } from "../../../domain/CodeEditor";
-import { Code } from "../../../domain/Code";
+import { Code, CodeEditor } from "../../../domain";
 import styled from "styled-components";
 import { useBlink } from "./useBlink";
 

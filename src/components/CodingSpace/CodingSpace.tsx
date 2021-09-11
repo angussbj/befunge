@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useBefunge } from "../useBefunge";
+import { useBefunge } from "./useBefunge";
 import { Grid } from "./Grid";
-import { Stack } from "../Stack";
-import { InputOutput } from "../InputOutput/InputOutput";
+import { Stack } from "./Stack";
+import { InputOutput } from "./InputOutput";
 import { Row, Colors } from "../../ui";
 import { ControlPanel } from "./ControlPanel";
 

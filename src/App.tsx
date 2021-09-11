@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { CodingSpace } from "./components/CodingSpace";
-import { Colors } from "./ui";
-import Sidebar from "react-sidebar";
-import { SidebarContent } from "./components/SidebarContent";
+import { Colors, Sidebar } from "./ui";
+import { InfoSidebarContent } from "./components/InfoSidebarContent";
 import { IconButton } from "@material-ui/core";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import { ExampleSidebarContent } from "./components/ExampleSidebarContent";
 
 function App(): React.ReactElement {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [infoOpen, setInfoOpen] = useState(true);
+  const [examplesOpen, setExamplesOpen] = useState(true);
 
   return (
     <div
@@ -17,42 +18,47 @@ function App(): React.ReactElement {
       }}
     >
       <Sidebar
-        sidebar={<SidebarContent onClose={(): void => setSidebarOpen(false)} />}
-        open={sidebarOpen}
-        onSetOpen={setSidebarOpen}
-        styles={{
-          sidebar: { background: Colors.DARKER.toString() },
-          content: { display: "flex" },
-          overlay: { bottom: undefined, top: undefined },
-        }}
         pullRight
-      >
-        <IconButton
-          style={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            color: Colors.ACCENT_BLUE.toString(),
-          }}
-          onClick={(): void => setSidebarOpen(true)}
-        >
-          <InfoOutlinedIcon />
-        </IconButton>
-        <div
-          style={{
-            flexGrow: 1,
-            padding: 32,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ flexGrow: 1 }} />
-            <CodingSpace />
-            <div style={{ flexGrow: 1, minHeight: 40 }} />
-          </div>
-        </div>
-      </Sidebar>
+        open={infoOpen}
+        onSetOpen={setInfoOpen}
+        content={<InfoSidebarContent />}
+        page={
+          <Sidebar
+            open={examplesOpen}
+            onSetOpen={setExamplesOpen}
+            content={<ExampleSidebarContent />}
+            page={
+              <>
+                <IconButton
+                  style={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    color: Colors.ACCENT_BLUE.toString(),
+                  }}
+                  onClick={(): void => setInfoOpen(true)}
+                >
+                  <InfoOutlinedIcon />
+                </IconButton>
+                <div
+                  style={{
+                    flexGrow: 1,
+                    padding: 32,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div style={{ flexGrow: 1 }} />
+                    <CodingSpace />
+                    <div style={{ flexGrow: 1, minHeight: 40 }} />
+                  </div>
+                </div>
+              </>
+            }
+          />
+        }
+      />
     </div>
   );
 }

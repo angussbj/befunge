@@ -1,7 +1,6 @@
-import { Row, T } from "../../../ui";
+import { Row, T, MiniButton } from "../../../ui";
 import React from "react";
-import { Befunge } from "../../../domain/Befunge";
-import { MiniButton } from "../../../ui/MiniButton";
+import { Befunge } from "../../../domain";
 
 export function WalkingSpeedControl({
   befunge: b,

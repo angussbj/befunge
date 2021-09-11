@@ -1,11 +1,9 @@
-import { Button, Colors, T } from "../../../ui";
+import { Button, Colors, Checkbox, T } from "../../../ui";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Befunge } from "../../../domain/Befunge";
-import { CodeEditor } from "../../../domain/CodeEditor";
+import { Befunge, CodeEditor } from "../../../domain";
 import { AsciiCalculator } from "./AsciiCalculator";
 import { WalkingSpeedControl } from "./WalkingSpeedControl";
-import { Checkbox } from "../../../ui/Checkbox";
 import { Direction } from "../../../utilities";
 import { ExpandCollapseArrows } from "./ExpandCollapseArrows";
 

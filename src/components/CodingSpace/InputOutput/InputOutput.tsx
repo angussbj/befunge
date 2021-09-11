@@ -1,6 +1,6 @@
 import React from "react";
-import { Colors } from "../../ui";
-import { InputRequestStatus } from "../../domain/index";
+import { Colors } from "../../../ui";
+import { InputRequestStatus } from "../../../domain/index";
 import styled from "styled-components";
 import { Input } from "./Input";
 

@@ -1,2 +1,3 @@
 export * from "./CodingSpace";
-export * from "./SidebarContent";
+export * from "./InfoSidebarContent";
+export * from "./ExampleSidebarContent";

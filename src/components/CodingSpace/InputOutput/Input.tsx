@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { TextField, Button } from "../../ui";
+import { TextField, Button } from "../../../ui";
 
 interface Props {
   submitInput: (input: string) => void;
