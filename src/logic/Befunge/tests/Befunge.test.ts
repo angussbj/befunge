@@ -5,7 +5,8 @@ describe("Befunge", () => {
   describe("isValidCommand", () => {
     let b: Befunge;
     beforeEach(() => {
-      b = new Befunge([]);
+      b = new Befunge(0, 0);
+      b.code.set([]);
     });
 
     it("should recognise command chars", () => {
@@ -24,7 +25,8 @@ describe("Befunge", () => {
   describe("operations", () => {
     let b: Befunge;
     beforeEach(() => {
-      b = new Befunge([]);
+      b = new Befunge(0, 0);
+      b.code.set([]);
     });
 
     describe("+", () => {
@@ -68,13 +70,15 @@ describe("Befunge", () => {
 
   describe("run", () => {
     it("should execute an arithmetic program correctly", () => {
-      const b = new Befunge([["v", "8", "8", "*", "@"]]);
+      const b = new Befunge(1, 5);
+      b.code.set([["v", "8", "8", "*", "@"]]);
       b.run();
       expect(b.stack).toEqual([64]);
     });
 
     it("should execute a program with a loop correctly", () => {
-      const b = new Befunge([
+      const b = new Befunge(3, 8);
+      b.code.set([
         ["v", "1", "+", ":", "6", "%", ">", " "],
         ["<", " ", " ", " ", " ", " ", "|", "@"],
         [" ", " ", " ", " ", " ", " ", " ", " "],

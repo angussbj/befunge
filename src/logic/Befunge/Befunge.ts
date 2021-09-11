@@ -36,7 +36,7 @@ export class Befunge {
   private history: BefungeHistoryPoint[] = [];
   private future: BefungeHistoryPoint[] = [];
 
-  constructor(width: number, height: number, private render: () => void) {
+  constructor(width: number, height: number, private render?: () => void) {
     this.limits = new Coordinate(width, height);
     this.code = new Code(width, height);
     autoBind(this);
@@ -102,7 +102,7 @@ export class Befunge {
       this.stack.push(s.charCodeAt(0));
     }
     this.requestingInput = false;
-    this.render();
+    this.render?.();
     if (this.running) this.run();
     if (this.walking) this.walk();
   }
@@ -131,13 +131,13 @@ export class Befunge {
           if (b.running && !b.requestingInput) b.quickStep();
         }
         if (b.running && !b.requestingInput) setTimeout(recur(b), 1);
-        else b.render();
+        else b.render?.();
       };
     }
 
     function renderPeriodically(b: Befunge): () => void {
       return (): void => {
-        b.render();
+        b.render?.();
         if (b.running && !b.requestingInput)
           setTimeout(renderPeriodically(b), 1000);
       };
@@ -154,7 +154,7 @@ export class Befunge {
   public pause(): void {
     this.walking = false;
     this.running = false;
-    this.render();
+    this.render?.();
   }
 
   public reset(): void {
@@ -168,7 +168,7 @@ export class Befunge {
     this.running = false;
     this.requestingInput = false;
     this.code.reset(true);
-    this.render();
+    this.render?.();
   }
 
   public step(): void {
@@ -190,14 +190,14 @@ export class Befunge {
     else {
       this.execute(this.getCursorCharacter());
       this.moveCursor();
-      this.render();
+      this.render?.();
     }
   }
 
   private stepOver(): void {
     this.execute(this.getCursorCharacter());
     this.moveCursor();
-    this.render();
+    this.render?.();
   }
 
   private cursorAtBreakpoint(): boolean {
@@ -363,7 +363,7 @@ export class Befunge {
     if (this.walkingDelayIndex < 4) {
       this.walkingDelayIndex += 1;
       this.walkingDelay = Befunge.walkingDelays[this.walkingDelayIndex];
-      this.render();
+      this.render?.();
     }
   }
 
@@ -371,7 +371,7 @@ export class Befunge {
     if (this.walkingDelayIndex > 0) {
       this.walkingDelayIndex -= 1;
       this.walkingDelay = Befunge.walkingDelays[this.walkingDelayIndex];
-      this.render();
+      this.render?.();
     }
   }
 }
