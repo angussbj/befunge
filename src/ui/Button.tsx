@@ -9,13 +9,19 @@ interface Props {
   color?: "primary" | "secondary";
   variant?: "text" | "outlined";
   disableElevation?: boolean;
+  size?: "large" | "medium" | "small";
 }
 
-export function Button({ label, onClick, ...rest }: Props): React.ReactElement {
+export function Button({
+  label,
+  onClick,
+  size = "small",
+  ...rest
+}: Props): React.ReactElement {
   return (
     <MaterialButton
       variant="contained"
-      size="small"
+      size={size}
       disableElevation
       onClick={onClick}
       {...rest}

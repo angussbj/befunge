@@ -1,24 +1,25 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
-import { useBefunge } from "./useBefunge";
 import { Grid } from "./Grid";
 import { Stack } from "./Stack";
 import { InputOutput } from "./InputOutput";
 import { Row, Colors } from "ui";
 import { ControlPanel } from "./ControlPanel";
+import { Befunge, CodeEditor } from "logic";
 
-export function CodingSpace(): React.ReactElement {
-  const width = 80;
-  const height = 25;
-  const { editor: e, befunge: b } = useBefunge(width, height);
+interface Props {
+  e: CodeEditor;
+  b: Befunge;
+}
 
+export function CodingSpace({ e, b }: Props): ReactElement {
   return (
     <Container>
       <div>
         <Label>Code editor</Label>
         <Grid code={b.code} cursor={b.cursor} editor={e} />
       </div>
-      <Row style={{ marginTop: 16, width: 15 * width, height: 220 }}>
+      <Row style={{ marginTop: 16, width: 15 * b.width, height: 220 }}>
         <Column>
           <Label>Stack</Label>
           <Stack stack={b.stack} />

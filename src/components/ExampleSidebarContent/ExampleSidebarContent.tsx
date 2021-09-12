@@ -1,11 +1,28 @@
 import { SidebarTitle } from "ui";
 import React from "react";
+import { examples } from "./examples";
+import { Example } from "./Example";
+import { CodeEditor } from "logic";
 
-export function ExampleSidebarContent(): React.ReactElement {
+export function ExampleSidebarContent({
+  editor,
+  render,
+}: {
+  editor: CodeEditor;
+  render: () => void;
+}): React.ReactElement {
   return (
     <>
       <SidebarTitle style={{ marginTop: 0 }}>Examples</SidebarTitle>
-      <p>Examples coming soon</p>
+      {examples.map(({ ...exampleDetails }) => (
+        <Example
+          {...exampleDetails}
+          key={exampleDetails.label}
+          editor={editor}
+          render={render}
+          style={{ marginTop: 8 }}
+        />
+      ))}
     </>
   );
 }

@@ -46,6 +46,16 @@ export class CodeEditor {
     this.externalOnChange(JSON.stringify(this.code.code));
   }
 
+  public setCode(code: string): void {
+    this.setHistoryPoint();
+    this.executor.reset();
+    this.selection = new Coordinate(0, 0);
+    this.selectionDelta = new Coordinate(0, 0);
+    this.clearAll();
+    this.paste(code);
+    setTimeout(this.onChange, 100);
+  }
+
   public getSelectedCharacter(): string {
     return this.code.get(this.selection.x, this.selection.y);
   }
@@ -164,13 +174,18 @@ export class CodeEditor {
     if (!this.hasFocus) return;
     this.setHistoryPoint();
     const text = event.clipboardData?.getData("Text");
+    if (text) this.paste(text);
+    this.onChange();
+  }
+
+  private paste(text: string): void {
     const pasteCoords = this.selection.clone();
     const newLineCoord = this.selection.clone();
     const { majorVector, minorVector } = this
       .useSelectionDirectionForCutCopyPaste
       ? this.selectionDelta.getMajorAndMinorDirections()
       : this.getDefaultIterationDirections();
-    text?.split("").forEach((char: string) => {
+    text.split("").forEach((char: string) => {
       if (char === "\n") {
         newLineCoord.add(minorVector).modulo(this.limits);
         pasteCoords.setToCopy(newLineCoord);
@@ -179,7 +194,6 @@ export class CodeEditor {
         pasteCoords.add(majorVector).modulo(this.limits);
       }
     });
-    this.onChange();
   }
 
   private handleKeyboardShortcuts(event: KeyboardEvent): void {
@@ -237,6 +251,14 @@ export class CodeEditor {
     this.fillSelection(" ");
   }
 
+  private clearAll(): void {
+    this.forEach({
+      cellAction: (x: number, y: number): void => {
+        this.code.userPut(x, y, " ");
+      },
+    });
+  }
+
   private fillSelection(char: string): void {
     this.selectionForEach({
       cellAction: (x: number, y: number): void => {
@@ -264,6 +286,21 @@ export class CodeEditor {
       for (let major = 0; major <= majorMax; major++) {
         cellAction(iterationCoord.x, iterationCoord.y);
         iterationCoord.add(majorVector).modulo(this.limits);
+      }
+      rowEndAction?.();
+    }
+  }
+
+  private forEach({
+    cellAction,
+    rowEndAction,
+  }: {
+    cellAction: (x: number, y: number) => void;
+    rowEndAction?: () => void;
+  }): void {
+    for (let x = 0; x < this.limits.x; x++) {
+      for (let y = 0; y < this.limits.y; y++) {
+        cellAction(x, y);
       }
       rowEndAction?.();
     }

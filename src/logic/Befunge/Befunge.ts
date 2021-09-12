@@ -36,7 +36,11 @@ export class Befunge {
   private history: BefungeHistoryPoint[] = [];
   private future: BefungeHistoryPoint[] = [];
 
-  constructor(width: number, height: number, private render?: () => void) {
+  constructor(
+    public width: number,
+    public height: number,
+    private render?: () => void
+  ) {
     this.limits = new Coordinate(width, height);
     this.code = new Code(width, height);
     autoBind(this);

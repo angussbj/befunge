@@ -1,7 +1,6 @@
 import { Colors } from "ui";
 import React from "react";
 import { befungeCommands } from "./befungeCommands";
-import "./InfoSidebarContent.css";
 import styled from "styled-components";
 import { CommandRow } from "./CommandRow";
 

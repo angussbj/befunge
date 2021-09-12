@@ -24,7 +24,8 @@ export function Square({
   let color = Colors.LIGHT;
   if (selected) color = color.mix(Colors.ACCENT_BLUE, selectionOpacity);
   if (cursored) color = color.mix(Colors.ACCENT_ORANGE, 0.3);
-  if (isBreakpoint) color = color.mix(Colors.RED, 0.5);
+  if (isBreakpoint)
+    color = cursored ? color.mix(Colors.BLUE, 0.5) : color.mix(Colors.RED, 0.5);
 
   return (
     <Background

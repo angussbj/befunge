@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { CodingSpace } from "./components/CodingSpace";
-import { Colors, Sidebar } from "./ui";
+import { Button, Colors, Sidebar } from "ui";
 import { InfoSidebarContent } from "./components/InfoSidebarContent";
 import { IconButton } from "@material-ui/core";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { ExampleSidebarContent } from "./components/ExampleSidebarContent";
+import { useBefunge } from "./components/useBefunge";
 
 function App(): React.ReactElement {
   const [infoOpen, setInfoOpen] = useState(true);
-  const [examplesOpen, setExamplesOpen] = useState(true);
+  const [examplesOpen, setExamplesOpen] = useState(false);
+
+  const setRenderHelper = useState(false)[1];
+  const render = useCallback((): void => {
+    setRenderHelper((val) => !val);
+  }, []);
+
+  const { editor, befunge } = useBefunge(render);
 
   return (
     <div
@@ -26,7 +34,7 @@ function App(): React.ReactElement {
           <Sidebar
             open={examplesOpen}
             onSetOpen={setExamplesOpen}
-            content={<ExampleSidebarContent />}
+            content={<ExampleSidebarContent editor={editor} render={render} />}
             page={
               <>
                 <IconButton
@@ -36,10 +44,22 @@ function App(): React.ReactElement {
                     right: 8,
                     color: Colors.ACCENT_BLUE.toString(),
                   }}
-                  onClick={(): void => setInfoOpen(true)}
+                  onClick={(): void => setInfoOpen(!infoOpen)}
                 >
                   <InfoOutlinedIcon />
                 </IconButton>
+                <Button
+                  label="Examples"
+                  size="large"
+                  variant="text"
+                  style={{
+                    position: "absolute",
+                    top: 8,
+                    left: 8,
+                    color: Colors.ACCENT_BLUE.toString(),
+                  }}
+                  onClick={(): void => setExamplesOpen(!examplesOpen)}
+                />
                 <div
                   style={{
                     flexGrow: 1,
@@ -50,7 +70,7 @@ function App(): React.ReactElement {
                 >
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     <div style={{ flexGrow: 1 }} />
-                    <CodingSpace />
+                    <CodingSpace e={editor} b={befunge} />
                     <div style={{ flexGrow: 1, minHeight: 40 }} />
                   </div>
                 </div>

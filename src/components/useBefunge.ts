@@ -1,17 +1,17 @@
-import { useCallback, useRef, useState, useEffect } from "react";
+import { useCallback, useRef, useEffect } from "react";
 import { Befunge, CodeEditor } from "logic";
 
 export function useBefunge(
-  width: number,
-  height: number
+  render: () => void,
+  width = 80,
+  height = 25
 ): {
   editor: CodeEditor;
   befunge: Befunge;
 } {
-  const setRenderHelper = useState(false)[1];
   const onChange = useCallback((code?: string): void => {
-    setRenderHelper((val) => !val);
     if (code) localStorage.setItem("code", code);
+    render();
   }, []);
 
   const b = useRef(new Befunge(width, height, onChange)).current;
