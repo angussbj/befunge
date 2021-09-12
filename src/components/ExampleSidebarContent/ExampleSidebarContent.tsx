@@ -23,6 +23,11 @@ export function ExampleSidebarContent({
           style={{ marginTop: 8 }}
         />
       ))}
+      <div style={{ marginTop: 32 }}>
+        <a className="link" href="https://esolangs.org/wiki/Befunge#Examples">
+          More examples
+        </a>
+      </div>
     </>
   );
 }

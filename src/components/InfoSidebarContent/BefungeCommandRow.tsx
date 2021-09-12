@@ -9,7 +9,7 @@ interface Props {
   style: React.CSSProperties;
 }
 
-export function CommandRow({
+export function BefungeCommandRow({
   command,
   description,
   customCommandStyle,

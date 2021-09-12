@@ -1,5 +1,6 @@
 export * from "./Button";
 export * from "./Checkbox";
+export * from "./SidebarSection";
 export * from "./Colors";
 export * from "./MiniButton";
 export * from "./TextField";
