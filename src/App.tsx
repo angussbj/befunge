@@ -69,7 +69,7 @@ function App(): React.ReactElement {
                   }}
                 >
                   <div style={{ display: "flex", flexDirection: "column" }}>
-                    <div style={{ flexGrow: 1 }} />
+                    <div style={{ flexGrow: 1, minHeight: 24 }} />
                     <CodingSpace e={editor} b={befunge} />
                     <div style={{ flexGrow: 1, minHeight: 40 }} />
                   </div>
