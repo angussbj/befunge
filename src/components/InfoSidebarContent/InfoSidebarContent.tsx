@@ -39,6 +39,10 @@ export function InfoSidebarContent(): React.ReactElement {
             />
           )
         )}
+        <div style={{ marginTop: 12 }}>
+          The control key works in place of the command key on Windows
+          computers.
+        </div>
       </SidebarSection>
       <SidebarSection title="About Befunge">
         Befunge is a programming language invented in 1993 by Chris Pressey. For

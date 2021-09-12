@@ -54,7 +54,18 @@ export const editorCommands = [
   },
   {
     key: "Arrows+",
-    command: "⇧ + ↑/↓/→/←",
+    command: (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <T monospace>⇧ +</T>
+        <T monospace>↑/↓/→/←</T>
+      </div>
+    ),
     description: "Extend selection",
   },
   {
