@@ -38,6 +38,26 @@ export const editorCommands = [
     description: "Redo - also reverts any execution state to this point",
   },
   {
+    key: "J",
+    command: "⌘ + J",
+    description: "Step",
+  },
+  {
+    key: "K",
+    command: "⌘ + K",
+    description: "Walk or pause",
+  },
+  {
+    key: "L",
+    command: "⌘ + L",
+    description: "Run or pause",
+  },
+  {
+    key: ";",
+    command: "⌘ + ;",
+    description: "Reset",
+  },
+  {
     key: "DC",
     command: (
       <T monospace>

@@ -19,6 +19,7 @@ export function Grid({
   const [focused, setFocused] = useState(false);
   useEffect(() => {
     containerRef.current?.focus();
+    e.setFocusMethod((): void => containerRef.current?.focus());
   }, []);
 
   const isSelectedX = useCallback(

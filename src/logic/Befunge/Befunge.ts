@@ -111,6 +111,16 @@ export class Befunge {
     if (this.walking) this.walk();
   }
 
+  public runOrPause(): void {
+    if (this.running) this.pause();
+    else this.run();
+  }
+
+  public walkOrPause(): void {
+    if (this.walking) this.pause();
+    else this.walk();
+  }
+
   public walk(): void {
     function recur(b: Befunge): () => void {
       return (): void => {

@@ -29,6 +29,7 @@ export class CodeEditor {
   public code: Code;
   public limits: Coordinate;
 
+  public focus?: () => void;
   public hasFocus = false;
   public useSelectionDirectionForCutCopyPaste = false;
   public changeDirectionOnDirectionCharacters = false;
@@ -44,6 +45,10 @@ export class CodeEditor {
 
   private onChange(): void {
     this.externalOnChange(JSON.stringify(this.code.code));
+  }
+
+  public setFocusMethod(newFocusMethod: () => void): void {
+    this.focus = newFocusMethod;
   }
 
   public setCode(code: string): void {
@@ -67,17 +72,23 @@ export class CodeEditor {
   }
 
   public undo(): void {
-    this.future.push(this.createHistoryPoint());
-    this.revertToPoint(this.history.pop());
-    this.executor.undo();
-    this.onChange();
+    const historyPointToGoBackTo = this.history.pop();
+    if (historyPointToGoBackTo) {
+      this.future.push(this.createHistoryPoint());
+      this.revertToPoint(historyPointToGoBackTo);
+      this.executor.undo();
+      this.onChange();
+    }
   }
 
   public redo(): void {
-    this.history.push(this.createHistoryPoint());
-    this.revertToPoint(this.future.pop());
-    this.executor.redo();
-    this.onChange();
+    const futurePointToGoBackTo = this.future.pop();
+    if (futurePointToGoBackTo) {
+      this.history.push(this.createHistoryPoint());
+      this.revertToPoint(futurePointToGoBackTo);
+      this.executor.redo();
+      this.onChange();
+    }
   }
 
   private createHistoryPoint(): CodeEditorHistoryPoint {
@@ -130,9 +141,10 @@ export class CodeEditor {
   }
 
   public onKeyDown(event: KeyboardEvent): void {
-    if (!this.hasFocus) return;
     if (event.ctrlKey || event.metaKey) {
       this.handleKeyboardShortcuts(event);
+    } else if (!this.hasFocus) {
+      return;
     } else if (event.key.length === 1) {
       this.handleEnteredCharacter(event);
     } else if (event.key.match(/^Arrow/)) {
@@ -200,12 +212,24 @@ export class CodeEditor {
     if (event.key === "a") {
       this.selection.set(0, 0);
       this.selectionDelta.setToCopy(this.limits).add(new Coordinate(-1, -1));
+      this.focus?.();
     } else if (event.key === "z" && !event.shiftKey) {
       this.undo();
+      this.focus?.();
     } else if ((event.key === "z" && event.shiftKey) || event.key === "y") {
       this.redo();
+      this.focus?.();
+    } else if (event.key === "j") {
+      this.executor.step();
+    } else if (event.key === "k") {
+      this.executor.walkOrPause();
+    } else if (event.key === "l") {
+      this.executor.runOrPause();
+    } else if (event.key === ";") {
+      this.executor.reset();
     } else if (event.key.match(/^Arrow/)) {
-      this.direction = Direction[event.key.slice(5) as DirectionName];
+      if (this.hasFocus)
+        this.direction = Direction[event.key.slice(5) as DirectionName];
     } else {
       return;
     }

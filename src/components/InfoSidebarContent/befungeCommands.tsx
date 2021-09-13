@@ -1,7 +1,6 @@
 import React from "react";
 import { SquareBackground } from "./SquareBackground";
 import styled from "styled-components";
-import { Colors } from "ui";
 
 const M = styled.text`
   font-family: monospace;
