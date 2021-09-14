@@ -77,8 +77,9 @@ export function Grid({
             ) : (
               <Square
                 val={code.code[x][y]}
-                selected={isSelectedX(x) && isSelectedY(y)}
-                selectionOpacity={selectionOpacity}
+                selectionOpacity={
+                  isSelectedX(x) && isSelectedY(y) && selectionOpacity
+                }
                 cursored={x === cursor.x && y === cursor.y}
                 isBreakpoint={code.breakpoints[x][y]}
                 onMouseDown={e.onMouseDown(x, y)}

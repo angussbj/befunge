@@ -11,4 +11,5 @@ export const Colors = {
   ACCENT_ORANGE: Color("#FF875E"),
   RED: Color("#FF0000"),
   BLUE: Color("#0000FF"),
+  TRANSPARENT: Color("#000000").alpha(0),
 };
