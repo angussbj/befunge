@@ -22,6 +22,7 @@
     "react-scripts": "4.0.3",
     "react-sidebar": "^3.0.2",
     "styled-components": "^5.3.1",
+    "ts-is-present": "^1.2.2",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
@@ -61,7 +62,7 @@
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.1.0",
     "gh-pages": "^3.2.3",
-    "prettier": "^2.3.2",
+    "prettier": "^2.4.0",
     "react-app-rewired": "^2.1.8"
   }
 }

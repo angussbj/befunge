@@ -14,6 +14,10 @@ export function InfoSidebarContent(): React.ReactElement {
         Try typing some commands into the text editor, then press step, walk, or
         run to execute them.
       </p>
+      <p>
+        You can also try out some example befunge programs from the examples
+        section, or copy-paste code in from other sources.
+      </p>
       <SidebarSection title="Befunge commands" collapsible>
         {befungeCommands.map(
           ({ command, description, customCommandStyle, key }) => (

@@ -1,11 +1,12 @@
 import { Button, Colors, Checkbox, T } from "ui";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Befunge, CodeEditor } from "logic";
 import { AsciiCalculator } from "./AsciiCalculator";
 import { WalkingSpeedControl } from "./WalkingSpeedControl";
 import { Direction } from "utilities";
 import { ExpandCollapseArrows } from "./ExpandCollapseArrows";
+import { useLocalStorageAsState } from "../../../utilities/useLocalStorageAsState";
 
 export function ControlPanel({
   befunge: b,
@@ -14,7 +15,12 @@ export function ControlPanel({
   befunge: Befunge;
   editor: CodeEditor;
 }): React.ReactElement {
-  const [columns, setColumns] = useState(2);
+  const [columns, setColumns] = useLocalStorageAsState({
+    storageKey: "controlPanelColumns",
+    initialValue: 2,
+  });
+
+  console.log("rendering");
   return (
     <Container style={{ flex: 1 }}>
       <Column>
@@ -92,8 +98,11 @@ export function ControlPanel({
               <text style={{ fontFamily: "monospace" }}>{"<>^v"}</text>:
             </T>
             <Checkbox
-              object={e}
+              object={e.options}
               k={"changeDirectionOnDirectionCharacters"}
+              onChange={(newVal: boolean): void =>
+                e.options.setChangeDirectionOnDirectionCharacters(newVal)
+              }
               style={{ marginLeft: 4 }}
             />
           </Row>
@@ -102,8 +111,11 @@ export function ControlPanel({
               Cut/copy/paste in selection direction:
             </T>
             <Checkbox
-              object={e}
+              object={e.options}
               k={"useSelectionDirectionForCutCopyPaste"}
+              onChange={(newVal: boolean): void =>
+                e.options.setUseSelectionDirectionForCutCopyPaste(newVal)
+              }
               style={{ marginLeft: 4 }}
             />
           </Row>

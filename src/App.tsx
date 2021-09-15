@@ -6,10 +6,18 @@ import { IconButton } from "@material-ui/core";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { ExampleSidebarContent } from "./components/ExampleSidebarContent";
 import { useBefunge } from "./components/useBefunge";
+import { useLocalStorageAsState } from "./utilities/useLocalStorageAsState";
 
 function App(): React.ReactElement {
-  const [infoOpen, setInfoOpen] = useState(true);
-  const [examplesOpen, setExamplesOpen] = useState(false);
+  const [infoOpen, setInfoOpen] = useLocalStorageAsState({
+    storageKey: "infoOpen",
+    initialValue: true,
+  });
+
+  const [examplesOpen, setExamplesOpen] = useLocalStorageAsState({
+    storageKey: "examplesOpen",
+    initialValue: false,
+  });
 
   const setRenderHelper = useState(false)[1];
   const render = useCallback((): void => {

@@ -7,8 +7,9 @@ import {
   MajorMinorDirections,
 } from "utilities";
 import autoBind from "auto-bind";
-import { Code } from "./Code";
-import { Befunge } from "./Befunge";
+import { Code } from "../Code";
+import { Befunge } from "../Befunge";
+import { CodeEditorOptions } from "./CodeEditorOptions";
 
 type DeleteMode = "delete" | "backspace";
 
@@ -31,8 +32,7 @@ export class CodeEditor {
 
   public focus?: () => void;
   public hasFocus = false;
-  public useSelectionDirectionForCutCopyPaste = false;
-  public changeDirectionOnDirectionCharacters = false;
+  public options = new CodeEditorOptions();
 
   constructor(
     private executor: Befunge,
@@ -174,7 +174,7 @@ export class CodeEditor {
       rowEndAction: (): void => {
         textToCopy += "\n";
       },
-      directions: this.useSelectionDirectionForCutCopyPaste
+      directions: this.options.useSelectionDirectionForCutCopyPaste
         ? this.selectionDelta.getMajorAndMinorDirections()
         : undefined,
     });
@@ -193,7 +193,7 @@ export class CodeEditor {
   private paste(text: string): void {
     const pasteCoords = this.selection.clone();
     const newLineCoord = this.selection.clone();
-    const { majorVector, minorVector } = this
+    const { majorVector, minorVector } = this.options
       .useSelectionDirectionForCutCopyPaste
       ? this.selectionDelta.getMajorAndMinorDirections()
       : this.getDefaultIterationDirections();
@@ -351,7 +351,7 @@ export class CodeEditor {
   }
 
   private changeTypingDirectionIfNeeded(character: string): void {
-    if (this.changeDirectionOnDirectionCharacters) {
+    if (this.options.changeDirectionOnDirectionCharacters) {
       if (character === "<") this.direction = Direction.Left;
       if (character === ">") this.direction = Direction.Right;
       if (character === "^") this.direction = Direction.Up;

@@ -6,12 +6,14 @@ import { Colors } from "./Colors";
 interface Props<T extends string> {
   object: { [key in T]: boolean };
   k: T;
+  onChange: (newValue: boolean) => void;
   style?: React.CSSProperties;
 }
 
 export function Checkbox<T extends string>({
   object,
   k,
+  onChange,
   style,
 }: Props<T>): React.ReactElement {
   const [renderHelper, setRenderHelper] = useState(false);
@@ -22,7 +24,7 @@ export function Checkbox<T extends string>({
         <MaterialUICheckbox
           checked={object[k]}
           onChange={(event): void => {
-            object[k] = event.target.checked;
+            onChange(event.target.checked);
             setRenderHelper(!renderHelper);
           }}
           icon={
