@@ -145,15 +145,15 @@ export class Befunge {
           if (b.running && !b.requestingInput) b.quickStep();
         }
         if (b.running && !b.requestingInput) setTimeout(recur(b), 1);
-        else b.render?.();
       };
     }
 
     function renderPeriodically(b: Befunge): () => void {
       return (): void => {
-        b.render?.();
-        if (b.running && !b.requestingInput)
+        if (b.running && !b.requestingInput) {
+          b.render?.();
           setTimeout(renderPeriodically(b), 1000);
+        }
       };
     }
 
@@ -161,6 +161,7 @@ export class Befunge {
     this.walking = false;
     this.running = true;
     this.stepOver();
+    this.render?.();
     renderPeriodically(this)();
     recur(this)();
   }
