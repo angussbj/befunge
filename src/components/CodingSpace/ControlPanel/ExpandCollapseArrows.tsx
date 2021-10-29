@@ -1,7 +1,7 @@
 import { Colors } from "ui";
 import React from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
-import { IconButton } from "@material-ui/core";
+import { IconButton } from "ui";
 
 export function ExpandCollapseArrows({
   columns,
@@ -36,7 +36,6 @@ export function ExpandCollapseArrows({
           <IconButton
             aria-label="collapse-options"
             style={{
-              color: Colors.ACCENT_BLUE.toString(),
               marginLeft: -20,
               marginTop: -8,
               marginBottom: -8,
@@ -59,7 +58,6 @@ export function ExpandCollapseArrows({
           <IconButton
             aria-label="expand-options"
             style={{
-              color: Colors.ACCENT_BLUE.toString(),
               marginLeft: -20,
               marginTop: -8,
               marginBottom: -8,

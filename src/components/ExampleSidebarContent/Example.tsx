@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
-import { Colors, Row, T } from "ui";
+import { Colors, IconButton, Row, T } from "ui";
 import { BsBoxArrowInRight, BsFiles } from "react-icons/bs";
-import { IconButton } from "@material-ui/core";
 import { CodeEditor } from "logic";
 
 interface Props {
@@ -27,7 +26,6 @@ export function Example({
         <T color={Colors.LIGHT}>{label}</T>
         <Row>
           <IconButton
-            style={{ color: Colors.ACCENT_BLUE.toString() }}
             onClick={(): void => {
               navigator.clipboard.writeText(code);
             }}
@@ -35,7 +33,7 @@ export function Example({
             <BsFiles size={12} />
           </IconButton>
           <IconButton
-            style={{ color: Colors.ACCENT_BLUE.toString(), marginLeft: -8 }}
+            style={{ marginLeft: -8 }}
             onClick={(): void => {
               editor.setCode(code);
               render();

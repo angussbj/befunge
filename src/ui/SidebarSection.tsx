@@ -3,7 +3,7 @@ import { Colors } from "./Colors";
 import { Row } from "./Row";
 import { SidebarTitle } from "./SidebarTitle";
 import styled from "styled-components";
-import { IconButton } from "@material-ui/core";
+import { IconButton } from "ui";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
 interface Props {
@@ -41,7 +41,7 @@ export function SidebarSection({
           <SidebarTitle>{title}</SidebarTitle>
           {collapsible && (
             <IconButton
-              style={{ color: Colors.ACCENT_BLUE.toString(), marginRight: -4 }}
+              style={{ marginRight: -4 }}
               onClick={(): void => setCollapsed(!collapsed)}
             >
               {collapsed ? (
@@ -64,6 +64,6 @@ const FadeOut = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  height: 160px;
+  top: 40px;
   background: linear-gradient(transparent, ${Colors.DARKER.toString()});
 `;

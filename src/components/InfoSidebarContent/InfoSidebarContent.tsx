@@ -43,22 +43,25 @@ export function InfoSidebarContent(): React.ReactElement {
             />
           )
         )}
-        <div style={{ marginTop: 12 }}>
+        <p style={{ marginTop: 12 }}>
           The control key works in place of the command key on Windows
           computers.
-        </div>
+        </p>
+        <p>Input options can be found by expanding the control panel.</p>
       </SidebarSection>
       <SidebarSection title="About Befunge">
-        Befunge is a programming language invented in 1993 by Chris Pressey. For
-        more information see the Befunge pages on{" "}
-        <a className="link" href={"https://en.wikipedia.org/wiki/Befunge"}>
-          Wikipedia
-        </a>{" "}
-        or{" "}
-        <a className="link" href={"https://esolangs.org/wiki/Befunge"}>
-          Esolangs
-        </a>
-        .
+        <p>
+          Befunge is a programming language invented in 1993 by Chris Pressey.
+          For more information see the Befunge pages on{" "}
+          <a className="link" href={"https://en.wikipedia.org/wiki/Befunge"}>
+            Wikipedia
+          </a>{" "}
+          or{" "}
+          <a className="link" href={"https://esolangs.org/wiki/Befunge"}>
+            Esolangs
+          </a>
+          .
+        </p>
       </SidebarSection>
       <SidebarSection title="About this editor">
         This befunge interpreter was written by Angus Johnson. Please let me
@@ -72,6 +75,7 @@ export function InfoSidebarContent(): React.ReactElement {
         style={{
           fontSize: 10,
           marginTop: 16,
+          marginBottom: 16,
           display: "flex",
           justifyContent: "flex-end",
           color: Colors.LIGHT.fade(0.4).toString(),

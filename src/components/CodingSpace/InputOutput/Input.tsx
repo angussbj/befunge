@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { TextField, Button } from "ui";
+import { TextField, Button, Colors } from "ui";
 
 interface Props {
   submitInput: (input: string) => void;
@@ -37,8 +37,7 @@ export function Input({ submitInput, inputType }: Props): React.ReactElement {
         label={"Submit"}
         onClick={onSubmit}
         style={{ marginLeft: 8 }}
-        color="secondary"
-        disableElevation={false}
+        color={Colors.SUPER_ACCENT}
       />
     </>
   );

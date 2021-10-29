@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { CodingSpace } from "./components/CodingSpace";
-import { Button, Colors, Sidebar } from "ui";
+import { Colors, Sidebar, IconButton, TextButton } from "ui";
 import { InfoSidebarContent } from "./components/InfoSidebarContent";
-import { IconButton } from "@material-ui/core";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { ExampleSidebarContent } from "./components/ExampleSidebarContent";
 import { useBefunge } from "./components/useBefunge";
@@ -50,20 +49,18 @@ function App(): React.ReactElement {
                     position: "absolute",
                     top: 8,
                     right: 8,
-                    color: Colors.ACCENT_BLUE.toString(),
                   }}
+                  color={Colors.ACCENT_BLUE}
                   onClick={(): void => setInfoOpen(!infoOpen)}
                 >
                   <InfoOutlinedIcon />
                 </IconButton>
-                <Button
+                <TextButton
                   label="Examples"
-                  size="large"
-                  variant="text"
                   style={{
                     position: "absolute",
-                    top: 8,
-                    left: 8,
+                    top: 20,
+                    left: 20,
                     color: Colors.ACCENT_BLUE.toString(),
                   }}
                   onClick={(): void => setExamplesOpen(!examplesOpen)}

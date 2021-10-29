@@ -137,7 +137,7 @@ export const befungeCommands = [
     command: '"',
     description: (
       <div>
-        <B>Toggle string-mode:</B> push each character&apos;s ASCII value all
+        <B>Toggle string-mode:</B> push each character&apos;s UTF-16 value all
         the way up to the next <M>{'"'}</M>
       </div>
     ),
@@ -163,7 +163,8 @@ export const befungeCommands = [
     command: ",",
     description: (
       <div>
-        <B>Character output:</B> pop top of stack and output its ASCII character
+        <B>Character output:</B> pop top of stack and output its UTF-16
+        character
       </div>
     ),
   },
@@ -203,7 +204,7 @@ export const befungeCommands = [
     description: (
       <div>
         <B>Get:</B> a way to retrieve data in storage. Pop two values <M>y</M>{" "}
-        then <M>x</M>, then push the ASCII value of the character at that
+        then <M>x</M>, then push the UTF-16 value of the character at that
         position in the program. If <M>(x, y)</M> is out of bounds, push{" "}
         <M>0</M>
       </div>
@@ -216,7 +217,7 @@ export const befungeCommands = [
       <div>
         <B>Put:</B> a way to store a value for later use. Pop three values{" "}
         <M>y</M>, then <M>x</M>, then <M>v</M>, then change the character at the
-        position <M>(x, y)</M> in the program to the character with ASCII value{" "}
+        position <M>(x, y)</M> in the program to the character with UTF-16 value{" "}
         <M>v</M>
       </div>
     ),
@@ -228,7 +229,7 @@ export const befungeCommands = [
     description: (
       <div>
         <B>No-op:</B> does nothing. There is a space character in this location,
-        which has ASCII value 32
+        which has UTF-16 value 32
       </div>
     ),
   },

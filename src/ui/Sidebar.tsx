@@ -1,7 +1,7 @@
 import React from "react";
 import { Colors } from "./Colors";
 import ReactSidebar from "react-sidebar";
-import { IconButton } from "@material-ui/core";
+import { IconButton } from "ui";
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 
@@ -29,7 +29,6 @@ export function Sidebar({
               position: "absolute",
               top: 8,
               right: 8,
-              color: Colors.ACCENT_BLUE.toString(),
             }}
             onClick={(): void => onSetOpen(false)}
           >

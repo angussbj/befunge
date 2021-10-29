@@ -9,6 +9,7 @@ export const Colors = {
   FOCUS: Color("#5577FF"),
   ACCENT_BLUE: Color("#5ed6ff"),
   ACCENT_ORANGE: Color("#FF875E"),
+  SUPER_ACCENT: Color("#ff6e3d"),
   RED: Color("#FF0000"),
   BLUE: Color("#0000FF"),
   TRANSPARENT: Color("#000000").alpha(0),

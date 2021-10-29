@@ -2,7 +2,7 @@ import { Button, Colors, Checkbox, T } from "ui";
 import React from "react";
 import styled from "styled-components";
 import { Befunge, CodeEditor } from "logic";
-import { AsciiCalculator } from "./AsciiCalculator";
+import { UnicodeCalculator } from "./UnicodeCalculator";
 import { WalkingSpeedControl } from "./WalkingSpeedControl";
 import { Direction } from "utilities";
 import { ExpandCollapseArrows } from "./ExpandCollapseArrows";
@@ -20,20 +20,25 @@ export function ControlPanel({
     initialValue: 2,
   });
 
-  console.log("rendering");
   return (
     <Container style={{ flex: 1 }}>
       <Column>
-        <Button label={"Step"} onClick={b.step} />
+        <Button
+          label={"Step"}
+          onClick={b.step}
+          disabled={!!b.requestingInput || b.halted}
+        />
         <Button
           label={b.walking ? "Pause" : "Walk"}
           onClick={b.walking ? b.pause : b.walk}
           style={{ marginTop: 8 }}
+          disabled={b.halted}
         />
         <Button
           label={b.running ? "Pause" : "Run"}
           onClick={b.running ? b.pause : b.run}
           style={{ marginTop: 8 }}
+          disabled={b.halted}
         />
         <Button label={"Reset"} onClick={b.reset} style={{ marginTop: 8 }} />
       </Column>
@@ -49,7 +54,7 @@ export function ControlPanel({
             </T>
           </Row>
           <Row>
-            <T size="small">Input cursor ascii:</T>
+            <T size="small">Input cursor value:</T>
             <T
               size="small"
               style={{ marginLeft: 4, color: Colors.ACCENT_BLUE.toString() }}
@@ -67,7 +72,7 @@ export function ControlPanel({
             </T>
           </Row>
           <Row>
-            <T size="small">Execution cursor ascii:</T>
+            <T size="small">Execution cursor value:</T>
             <T
               size="small"
               style={{ marginLeft: 4, color: Colors.ACCENT_ORANGE.toString() }}
@@ -84,9 +89,9 @@ export function ControlPanel({
           <Row style={{ marginTop: 2, marginBottom: 2 }}>
             <WalkingSpeedControl befunge={b} />
           </Row>
-          <T size="small">ASCII value calculator:</T>
+          <T size="small">UTF-16 value translator:</T>
           <Row>
-            <AsciiCalculator />
+            <UnicodeCalculator />
           </Row>
         </Column>
       )}

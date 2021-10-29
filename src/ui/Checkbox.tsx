@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 import MaterialUICheckbox from "@material-ui/core/Checkbox";
 import { Colors } from "./Colors";
+import { useHover } from "./useHover";
 
 interface Props<T extends string> {
   object: { [key in T]: boolean };
@@ -17,9 +18,11 @@ export function Checkbox<T extends string>({
   style,
 }: Props<T>): React.ReactElement {
   const [renderHelper, setRenderHelper] = useState(false);
+  const [ref, hovered] = useHover();
+  const color = Colors.ACCENT_BLUE.fade(hovered ? 0.2 : 0).toString();
 
   return (
-    <div style={style}>
+    <div style={style} ref={ref}>
       <div style={{ margin: -4 }}>
         <MaterialUICheckbox
           checked={object[k]}
@@ -27,18 +30,10 @@ export function Checkbox<T extends string>({
             onChange(event.target.checked);
             setRenderHelper(!renderHelper);
           }}
-          icon={
-            <ImCheckboxUnchecked
-              size={11}
-              color={Colors.ACCENT_BLUE.toString()}
-            />
-          }
-          checkedIcon={
-            <ImCheckboxChecked
-              size={11}
-              color={Colors.ACCENT_BLUE.toString()}
-            />
-          }
+          style={{ backgroundColor: "transparent" }}
+          disableRipple
+          icon={<ImCheckboxUnchecked size={11} color={color} />}
+          checkedIcon={<ImCheckboxChecked size={11} color={color} />}
         />
       </div>
     </div>

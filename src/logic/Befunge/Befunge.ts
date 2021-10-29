@@ -28,7 +28,7 @@ export class Befunge {
   public limits: Coordinate;
   public code: Code;
   public walkingDelayIndex = 2;
-  private walkingDelay = 32;
+  private walkingDelay = Befunge.walkingDelays[this.walkingDelayIndex];
   private static walkingDelays = [1, 64, 256, 1024, 2048];
   public walking = false;
   public running = false;
@@ -131,11 +131,13 @@ export class Befunge {
       };
     }
 
+    if (this.halted) return;
     this.code.makeResetable();
     this.walking = true;
     this.running = false;
-    this.stepOver();
-    recur(this)();
+    if (!this.requestingInput) this.stepOver();
+    else this.render?.();
+    setTimeout(recur(this), this.walkingDelay);
   }
 
   public run(): void {
@@ -150,17 +152,18 @@ export class Befunge {
 
     function renderPeriodically(b: Befunge): () => void {
       return (): void => {
+        b.render?.();
         if (b.running && !b.requestingInput) {
-          b.render?.();
           setTimeout(renderPeriodically(b), 1000);
         }
       };
     }
 
+    if (this.halted) return;
     this.code.makeResetable();
     this.walking = false;
     this.running = true;
-    this.stepOver();
+    if (!this.requestingInput) this.stepOver();
     this.render?.();
     renderPeriodically(this)();
     recur(this)();
@@ -243,6 +246,7 @@ export class Befunge {
     this.halted = true;
     this.walking = false;
     this.running = false;
+    this.render?.();
   }
 
   // Instructions

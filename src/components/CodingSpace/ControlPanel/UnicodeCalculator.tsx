@@ -1,7 +1,7 @@
 import { Colors, Row, T, TextField } from "ui";
 import React, { useState } from "react";
 
-export function AsciiCalculator(): React.ReactElement {
+export function UnicodeCalculator(): React.ReactElement {
   const [char, setChar] = useState("A");
   const [num, setNum] = useState("A".charCodeAt(0).toString());
 

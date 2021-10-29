@@ -9,16 +9,16 @@ export const examples = [
     code: '"!dlrow ,olleH",,,,,,,,,,,,,@',
   },
   {
-    label: "ASCII hello world",
+    label: "UTF-16 hello world",
     description:
-      "The ASCII values of the characters are put on the stack by doing arithmetic with single digit numbers, then printed in reverse order.",
+      "The UTF-16 values of the characters are put on the stack by doing arithmetic with single digit numbers, then printed in reverse order.",
     code: " v>v>v>v>v>v>v \n 5 5 5 4 5 5 9 \n 6 7-7-2 7 7+8 \n + +7+22 + +1* \n 3*9*9*2*9*9*  \n *:*:*:*4*9*:  \n  * +3+*+3+ *  \n  5 6+6*6+7 5  \n  2 5 5 5 5 2  \n >^>^>^>^>^>^>v\n@,,,,,,,,,,,,,<\n               \n !dlrow ,olleH \n", // prettier-ignore
   },
   {
     label: "FizzBuzz",
     description:
       "The program asks for a numeric input, then prints all the numbers up to that input value, replacing multiples of 3 with 'Fizz', multiples of 5 with 'Buzz', and multiples of both 3 and 5 with 'FizzBuzz'",
-    code: ' 52*:"?timiL",,,,,,,,&00p   v\nv:_v#%3: _v#%5: _v#%*53:  +1<\n>.#"#>   #"#>   #"#> v> 25*,^\n   z ,    z ,    z , :|      \n   z ,    z ,    z , 1>@     \n   i ,    u ,    u , +#      \n   F ,    B ,    B , 0!      \n   "      "      z , 0`      \n   > ^    > ^    z , g       \n                 i , >^      \n                 F ,         \n                 "           \n                 > ^         \n',
+    code: ' 52*:"?timiL",,,,,,,,&03p   v\nv:_v#%3: _v#%5: _v#%*53:  +1<\n>.#"#>   #"#>   #"#> v> 25*,^\n   z ,    z ,    z , :|      \n   z ,    z ,    z , 1>@     \n   i ,    u ,    u , +#      \n   F ,    B ,    B , 0!      \n   "      "      z , 3`      \n   > ^    > ^    z , g       \n                 i , >^      \n                 F ,         \n                 "           \n                 > ^         \n',
   },
   {
     label: "Prime generator",
