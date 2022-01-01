@@ -69,7 +69,7 @@ export function InfoSidebarContent(): React.ReactElement {
         <a className="link" href={"https://github.com/angussbj/befunge/issues"}>
           Github
         </a>{" "}
-        if you find are any issues.
+        if you find any issues.
       </SidebarSection>
       <div
         style={{
