@@ -4,16 +4,17 @@ import { Colors, Sidebar, IconButton, TextButton } from "ui";
 import { InfoSidebarContent } from "./components/InfoSidebarContent";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { ExampleSidebarContent } from "./components/ExampleSidebarContent";
-import { useBefunge } from "./components/useBefunge";
-import { useLocalStorageAsState } from "./utilities/useLocalStorageAsState";
+import { useGlobalBefungeState } from "./components/useGlobalBefungeState";
+import { useLocalStorageState } from "./utilities/useLocalStorageState";
 
+// TODO: break up components
 function App(): React.ReactElement {
-  const [infoOpen, setInfoOpen] = useLocalStorageAsState({
+  const [infoOpen, setInfoOpen] = useLocalStorageState({
     storageKey: "infoOpen",
     initialValue: true,
   });
 
-  const [examplesOpen, setExamplesOpen] = useLocalStorageAsState({
+  const [examplesOpen, setExamplesOpen] = useLocalStorageState({
     storageKey: "examplesOpen",
     initialValue: false,
   });
@@ -23,7 +24,7 @@ function App(): React.ReactElement {
     setRenderHelper((val) => !val);
   }, []);
 
-  const { editor, befunge } = useBefunge(render);
+  const befungeState = useGlobalBefungeState(render);
 
   return (
     <div
@@ -41,7 +42,12 @@ function App(): React.ReactElement {
           <Sidebar
             open={examplesOpen}
             onSetOpen={setExamplesOpen}
-            content={<ExampleSidebarContent editor={editor} render={render} />}
+            content={
+              <ExampleSidebarContent
+                editor={befungeState.editor}
+                render={render}
+              />
+            }
             page={
               <>
                 <IconButton
@@ -75,7 +81,7 @@ function App(): React.ReactElement {
                 >
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     <div style={{ flexGrow: 1, minHeight: 24 }} />
-                    <CodingSpace e={editor} b={befunge} />
+                    <CodingSpace state={befungeState} />
                     <div style={{ flexGrow: 1, minHeight: 40 }} />
                   </div>
                 </div>

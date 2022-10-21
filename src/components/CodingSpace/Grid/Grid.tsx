@@ -8,10 +8,12 @@ import { useBlink } from "./useBlink";
 
 export function Grid({
   code,
+  limits,
   cursor,
   editor: e,
 }: {
   code: Code;
+  limits: Coordinate;
   cursor: Coordinate;
   editor: CodeEditor;
 }): React.ReactElement {
@@ -26,20 +28,20 @@ export function Grid({
     getSelectionCheckFunction(
       e.selection.x,
       e.selectionDelta.x,
-      e.limits.x,
+      limits.x,
       focused
     ),
-    [e.selection.x, e.selectionDelta.x, e.limits.x, focused]
+    [e.selection.x, e.selectionDelta.x, limits.x, focused]
   );
 
   const isSelectedY = useCallback(
     getSelectionCheckFunction(
       e.selection.y,
       e.selectionDelta.y,
-      e.limits.y,
+      limits.y,
       focused
     ),
-    [e.selection.y, e.selectionDelta.y, e.limits.y, focused]
+    [e.selection.y, e.selectionDelta.y, limits.y, focused]
   );
 
   const { blink } = useBlink(focused);
@@ -59,9 +61,9 @@ export function Grid({
       }}
       tabIndex={0}
     >
-      {range(-1, e.limits.y + 1).map((y) => (
+      {range(-1, limits.y + 1).map((y) => (
         <Row key={y} style={{ justifyContent: "flex-end" }}>
-          {range(-1, e.limits.x + 1).map((x) =>
+          {range(-1, limits.x + 1).map((x) =>
             x === -1 && y === -1 ? null : x === -1 ? (
               <YNumberBox key={`${x},${y}`}>
                 <T size="tiny" color={Colors.DARK.fade(0.4)}>

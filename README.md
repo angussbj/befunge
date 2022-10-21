@@ -1,6 +1,6 @@
 # Befunge code editor and interpreter
 
-A simple code editor and interpreter for befunge. https://en.wikipedia.org/wiki/Befunge
+A simple code editor, interpreter, and debugger for befunge. https://en.wikipedia.org/wiki/Befunge
 
 ## Available Scripts
 

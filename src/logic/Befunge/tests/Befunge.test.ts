@@ -1,34 +1,34 @@
-import { Befunge } from "../Befunge";
+import { BefungeCore } from "../BefungeCore";
 import { COMMAND_CHARS } from "../CommandChar";
+import { Code } from "../../Code";
+import { Coordinate } from "utilities";
 
 describe("Befunge", () => {
-  describe("isValidCommand", () => {
-    let b: Befunge;
-    beforeEach(() => {
-      b = new Befunge(0, 0);
-      b.code.set([]);
+  let b: BefungeCore;
+  let code: Code;
+
+  beforeEach(() => {
+    const limits = new Coordinate(10, 10);
+    code = new Code(10, 10);
+    b = new BefungeCore(limits, code);
+  });
+
+  describe("commandValidity", () => {
+    it.each(COMMAND_CHARS)("should recognise command char %s", (char) => {
+      b.execute(char);
+      expect(b.output).not.toMatch(/Error: Unrecognised command/);
     });
 
-    it("should recognise command chars", () => {
-      COMMAND_CHARS.forEach((char) => {
-        expect(b.isValidCommand(char)).toEqual(true);
-      });
-    });
-
-    it("should not recognise other chars", () => {
-      ["a", "{", "hello", "22"].forEach((s) => {
-        expect(b.isValidCommand(s)).toEqual(false);
-      });
-    });
+    it.each(["a", "{", "hello", "22"])(
+      "should not recognise %s as a valid command",
+      (s) => {
+        b.execute(s);
+        expect(b.output).toMatch(/Error: Unrecognised command/);
+      }
+    );
   });
 
   describe("operations", () => {
-    let b: Befunge;
-    beforeEach(() => {
-      b = new Befunge(0, 0);
-      b.code.set([]);
-    });
-
     describe("+", () => {
       it("should add two things on the stack", () => {
         b.execute("2");
@@ -70,20 +70,18 @@ describe("Befunge", () => {
 
   describe("run", () => {
     it("should execute an arithmetic program correctly", () => {
-      const b = new Befunge(1, 5);
-      b.code.set([["v", "8", "8", "*", "@"]]);
-      b.run();
+      code.set([["v", "8", "8", "*", "@"]]);
+      while (b.canStep()) b.step();
       expect(b.stack).toEqual([64]);
     });
 
     it("should execute a program with a loop correctly", () => {
-      const b = new Befunge(3, 8);
-      b.code.set([
+      code.set([
         ["v", "1", "+", ":", "6", "%", ">", " "],
         ["<", " ", " ", " ", " ", " ", "|", "@"],
         [" ", " ", " ", " ", " ", " ", " ", " "],
       ]);
-      b.run();
+      while (b.canStep()) b.step();
       expect(b.stack).toEqual([6]);
     });
   });

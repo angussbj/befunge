@@ -8,7 +8,7 @@ import {
 } from "utilities";
 import autoBind from "auto-bind";
 import { Code } from "../Code";
-import { Befunge } from "../Befunge";
+import { BefungeRunner } from "../Befunge";
 import { CodeEditorOptions } from "./CodeEditorOptions";
 
 type DeleteMode = "delete" | "backspace";
@@ -27,19 +27,17 @@ export class CodeEditor {
   private deleteMode: DeleteMode = "delete";
   private history: CodeEditorHistoryPoint[] = [];
   private future: CodeEditorHistoryPoint[] = [];
-  public code: Code;
-  public limits: Coordinate;
 
   public focus?: () => void;
   public hasFocus = false;
   public options = new CodeEditorOptions();
 
   constructor(
-    private executor: Befunge,
+    private code: Code,
+    private limits: Coordinate,
+    private executor: BefungeRunner,
     private externalOnChange: (code: string) => void
   ) {
-    this.code = executor.code;
-    this.limits = executor.limits;
     autoBind(this);
   }
 

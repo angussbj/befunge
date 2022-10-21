@@ -11,6 +11,7 @@ interface Props {
   style?: React.CSSProperties;
 }
 
+// TODO: Scroll to bottom after output
 export function InputOutput({
   output,
   requestingInput,

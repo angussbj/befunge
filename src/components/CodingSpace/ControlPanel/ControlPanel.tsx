@@ -1,21 +1,21 @@
-import { Button, Colors, Checkbox, T } from "ui";
+import { Button, Checkbox, Colors, T } from "ui";
 import React from "react";
 import styled from "styled-components";
-import { Befunge, CodeEditor } from "logic";
 import { UnicodeCalculator } from "./UnicodeCalculator";
 import { WalkingSpeedControl } from "./WalkingSpeedControl";
 import { Direction } from "utilities";
 import { ExpandCollapseArrows } from "./ExpandCollapseArrows";
-import { useLocalStorageAsState } from "../../../utilities/useLocalStorageAsState";
+import { useLocalStorageState } from "../../../utilities/useLocalStorageState";
+import { GlobalBefungeState } from "../../useGlobalBefungeState";
 
+// TODO: break up components
 export function ControlPanel({
-  befunge: b,
-  editor: e,
+  state,
 }: {
-  befunge: Befunge;
-  editor: CodeEditor;
+  state: GlobalBefungeState;
 }): React.ReactElement {
-  const [columns, setColumns] = useLocalStorageAsState({
+  const { limits, code, core, editor, executor } = state;
+  const [columns, setColumns] = useLocalStorageState({
     storageKey: "controlPanelColumns",
     initialValue: 2,
   });
@@ -23,24 +23,24 @@ export function ControlPanel({
   return (
     <Container style={{ flex: 1 }}>
       <Column>
+        <Button label={"Step"} onClick={core.step} disabled={!core.canStep()} />
         <Button
-          label={"Step"}
-          onClick={b.step}
-          disabled={!!b.requestingInput || b.halted}
-        />
-        <Button
-          label={b.walking ? "Pause" : "Walk"}
-          onClick={b.walking ? b.pause : b.walk}
+          label={executor.walking ? "Pause" : "Walk"}
+          onClick={executor.walking ? executor.pause : executor.walk}
           style={{ marginTop: 8 }}
-          disabled={b.halted}
+          disabled={core.halted}
         />
         <Button
-          label={b.running ? "Pause" : "Run"}
-          onClick={b.running ? b.pause : b.run}
+          label={executor.running ? "Pause" : "Run"}
+          onClick={executor.running ? executor.pause : executor.run}
           style={{ marginTop: 8 }}
-          disabled={b.halted}
+          disabled={core.halted}
         />
-        <Button label={"Reset"} onClick={b.reset} style={{ marginTop: 8 }} />
+        <Button
+          label={"Reset"}
+          onClick={executor.reset}
+          style={{ marginTop: 8 }}
+        />
       </Column>
       {columns >= 2 && (
         <Column style={{ marginLeft: 16 }}>
@@ -50,7 +50,7 @@ export function ControlPanel({
               size="small"
               style={{ marginLeft: 4, color: Colors.ACCENT_BLUE.toString() }}
             >
-              {DIRECTION_SYMBOL[e.direction]}
+              {DIRECTION_SYMBOL[editor.direction]}
             </T>
           </Row>
           <Row>
@@ -59,7 +59,7 @@ export function ControlPanel({
               size="small"
               style={{ marginLeft: 4, color: Colors.ACCENT_BLUE.toString() }}
             >
-              {e.getSelectedCharacter().charCodeAt(0)}
+              {editor.getSelectedCharacter().charCodeAt(0)}
             </T>
           </Row>
           <Row>
@@ -68,7 +68,7 @@ export function ControlPanel({
               size="small"
               style={{ marginLeft: 4, color: Colors.ACCENT_ORANGE.toString() }}
             >
-              {DIRECTION_SYMBOL[b.direction]}
+              {DIRECTION_SYMBOL[core.direction]}
             </T>
           </Row>
           <Row>
@@ -77,17 +77,17 @@ export function ControlPanel({
               size="small"
               style={{ marginLeft: 4, color: Colors.ACCENT_ORANGE.toString() }}
             >
-              {b.getCursorCharacter().charCodeAt(0)}
+              {core.getCursorCharacter().charCodeAt(0)}
             </T>
           </Row>
           <Row>
             <T size="small">String mode enabled:</T>
             <T size="small" style={{ marginLeft: 4 }}>
-              {b.stringMode ? "Yes" : "No"}
+              {core.stringMode ? "Yes" : "No"}
             </T>
           </Row>
           <Row style={{ marginTop: 2, marginBottom: 2 }}>
-            <WalkingSpeedControl befunge={b} />
+            <WalkingSpeedControl executor={executor} />
           </Row>
           <T size="small">UTF-16 value translator:</T>
           <Row>
@@ -103,10 +103,10 @@ export function ControlPanel({
               <text style={{ fontFamily: "monospace" }}>{"<>^v"}</text>:
             </T>
             <Checkbox
-              object={e.options}
+              object={editor.options}
               k={"changeDirectionOnDirectionCharacters"}
               onChange={(newVal: boolean): void =>
-                e.options.setChangeDirectionOnDirectionCharacters(newVal)
+                editor.options.setChangeDirectionOnDirectionCharacters(newVal)
               }
               style={{ marginLeft: 4 }}
             />
@@ -116,10 +116,10 @@ export function ControlPanel({
               Cut/copy/paste in selection direction:
             </T>
             <Checkbox
-              object={e.options}
+              object={editor.options}
               k={"useSelectionDirectionForCutCopyPaste"}
               onChange={(newVal: boolean): void =>
-                e.options.setUseSelectionDirectionForCutCopyPaste(newVal)
+                editor.options.setUseSelectionDirectionForCutCopyPaste(newVal)
               }
               style={{ marginLeft: 4 }}
             />

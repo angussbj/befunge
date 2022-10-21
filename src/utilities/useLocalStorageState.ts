@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-export function useLocalStorageAsState<T>({
+export function useLocalStorageState<T>({
   storageKey,
   initialValue,
 }: {

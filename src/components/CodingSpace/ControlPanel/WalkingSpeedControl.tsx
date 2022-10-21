@@ -1,11 +1,11 @@
 import { Row, T, MiniButton } from "ui";
 import React from "react";
-import { Befunge } from "logic";
+import { BefungeRunner } from "logic";
 
 export function WalkingSpeedControl({
-  befunge: b,
+  executor,
 }: {
-  befunge: Befunge;
+  executor: BefungeRunner;
 }): React.ReactElement {
   return (
     <>
@@ -13,8 +13,8 @@ export function WalkingSpeedControl({
       <Row style={{ marginLeft: 8, justifyContent: "space-between" }}>
         <MiniButton
           label={"-"}
-          onClick={b.increaseWalkingDelay}
-          disabled={b.walkingDelayIndex >= 4}
+          onClick={executor.increaseWalkingDelay}
+          disabled={executor.walkingDelayIndex >= 4}
         />
         <T
           size="small"
@@ -26,12 +26,12 @@ export function WalkingSpeedControl({
             justifyContent: "center",
           }}
         >
-          {5 - b.walkingDelayIndex}
+          {5 - executor.walkingDelayIndex}
         </T>
         <MiniButton
           label={"+"}
-          onClick={b.decreaseWalkingDelay}
-          disabled={b.walkingDelayIndex <= 0}
+          onClick={executor.decreaseWalkingDelay}
+          disabled={executor.walkingDelayIndex <= 0}
         />
       </Row>
     </>

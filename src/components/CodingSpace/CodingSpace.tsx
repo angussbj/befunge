@@ -5,35 +5,41 @@ import { Stack } from "./Stack";
 import { InputOutput } from "./InputOutput";
 import { Row, Colors } from "ui";
 import { ControlPanel } from "./ControlPanel";
-import { Befunge, CodeEditor } from "logic";
+import { GlobalBefungeState } from "../useGlobalBefungeState";
 
-interface Props {
-  e: CodeEditor;
-  b: Befunge;
-}
+export function CodingSpace({
+  state,
+}: {
+  state: GlobalBefungeState;
+}): ReactElement {
+  const { limits, code, core, executor, editor } = state;
 
-export function CodingSpace({ e, b }: Props): ReactElement {
   return (
     <Container>
       <div>
         <Label>Code editor</Label>
-        <Grid code={b.code} cursor={b.cursor} editor={e} />
+        <Grid
+          code={code}
+          limits={limits}
+          cursor={core.cursor}
+          editor={editor}
+        />
       </div>
-      <Row style={{ marginTop: 16, width: 15 * b.width, height: 220 }}>
+      <Row style={{ marginTop: 16, width: 15 * limits.x, height: 220 }}>
         <Column>
           <Label>Stack</Label>
-          <Stack stack={b.stack} />
+          <Stack stack={core.stack} />
         </Column>
         <Column style={{ marginLeft: 16 }}>
           <Label>Control panel</Label>
-          <ControlPanel befunge={b} editor={e} />
+          <ControlPanel state={state} />
         </Column>
         <Column style={{ marginLeft: 16, flexGrow: 1 }}>
           <Label>Input + output</Label>
           <InputOutput
-            output={b.output}
-            requestingInput={b.requestingInput}
-            submitInput={b.acceptInput}
+            output={core.output}
+            requestingInput={core.requestingInput}
+            submitInput={executor.acceptInput}
           />
         </Column>
       </Row>
