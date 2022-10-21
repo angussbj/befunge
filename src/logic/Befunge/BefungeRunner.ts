@@ -44,6 +44,7 @@ export class BefungeRunner {
       core: this.core.copy(),
       walking: this.walking,
       running: this.running,
+      code: this.code.clone(),
     };
   }
 
@@ -52,6 +53,7 @@ export class BefungeRunner {
     this.core.set(point.core);
     this.walking = point.walking;
     this.running = point.running;
+    this.code.setToCopy(point.code);
   }
 
   public runOrPause(): void {
