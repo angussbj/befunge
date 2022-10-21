@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from "react";
 import { CodingSpace } from "./components/CodingSpace";
-import { Colors, Sidebar, IconButton, TextButton } from "ui";
+import { Colors, IconButton, TextButton } from "ui";
 import { InfoSidebarContent } from "./components/InfoSidebarContent";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { ExampleSidebarContent } from "./components/ExampleSidebarContent";
 import { useGlobalBefungeState } from "./components/useGlobalBefungeState";
 import { useLocalStorageState } from "./utilities/useLocalStorageState";
+import { Sidebars } from "./ui/Sidebars";
 
-// TODO: break up components
+// TODO: break up components and/or use styled components
 function App(): React.ReactElement {
   const [infoOpen, setInfoOpen] = useLocalStorageState({
     storageKey: "infoOpen",
@@ -33,61 +34,53 @@ function App(): React.ReactElement {
         minHeight: "100vh",
       }}
     >
-      <Sidebar
-        pullRight
-        open={infoOpen}
-        onSetOpen={setInfoOpen}
-        content={<InfoSidebarContent />}
+      <Sidebars
+        rightOpen={infoOpen}
+        onSetRightOpen={setInfoOpen}
+        rightContent={<InfoSidebarContent />}
+        leftOpen={examplesOpen}
+        onSetLeftOpen={setExamplesOpen}
+        leftContent={
+          <ExampleSidebarContent editor={befungeState.editor} render={render} />
+        }
         page={
-          <Sidebar
-            open={examplesOpen}
-            onSetOpen={setExamplesOpen}
-            content={
-              <ExampleSidebarContent
-                editor={befungeState.editor}
-                render={render}
-              />
-            }
-            page={
-              <>
-                <IconButton
-                  style={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                  }}
-                  color={Colors.ACCENT_BLUE}
-                  onClick={(): void => setInfoOpen(!infoOpen)}
-                >
-                  <InfoOutlinedIcon />
-                </IconButton>
-                <TextButton
-                  label="Examples"
-                  style={{
-                    position: "absolute",
-                    top: 20,
-                    left: 20,
-                    color: Colors.ACCENT_BLUE.toString(),
-                  }}
-                  onClick={(): void => setExamplesOpen(!examplesOpen)}
-                />
-                <div
-                  style={{
-                    flexGrow: 1,
-                    padding: 32,
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <div style={{ flexGrow: 1, minHeight: 24 }} />
-                    <CodingSpace state={befungeState} />
-                    <div style={{ flexGrow: 1, minHeight: 40 }} />
-                  </div>
-                </div>
-              </>
-            }
-          />
+          <>
+            <IconButton
+              style={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+              }}
+              color={Colors.ACCENT_BLUE}
+              onClick={(): void => setInfoOpen(!infoOpen)}
+            >
+              <InfoOutlinedIcon />
+            </IconButton>
+            <TextButton
+              label="Examples"
+              style={{
+                position: "absolute",
+                top: 20,
+                left: 20,
+                color: Colors.ACCENT_BLUE.toString(),
+              }}
+              onClick={(): void => setExamplesOpen(!examplesOpen)}
+            />
+            <div
+              style={{
+                flexGrow: 1,
+                padding: 32,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ flexGrow: 1, minHeight: 24 }} />
+                <CodingSpace state={befungeState} />
+                <div style={{ flexGrow: 1, minHeight: 40 }} />
+              </div>
+            </div>
+          </>
         }
       />
     </div>

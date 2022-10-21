@@ -2,6 +2,8 @@
 
 A simple code editor, interpreter, and debugger for befunge. https://en.wikipedia.org/wiki/Befunge
 
+TODO: list important classes
+
 ## Available Scripts
 
 In the project directory, you can run:
