@@ -206,6 +206,7 @@ export class CodeEditor {
     });
   }
 
+  // TOOD: should execution related keyboard interactions be handled somewhere else?
   private handleKeyboardShortcuts(event: KeyboardEvent): void {
     if (event.key === "a") {
       this.selection.set(0, 0);

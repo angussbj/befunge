@@ -22,40 +22,6 @@ export class BefungeRunner {
     autoBind(this);
   }
 
-  public setHistoryPoint(): void {
-    this.history.push(this.createHistoryPoint());
-    this.future = [];
-  }
-
-  public undo(): void {
-    this.future.push(this.createHistoryPoint());
-    const point = this.history.pop();
-    this.revertToPoint(point);
-  }
-
-  public redo(): void {
-    this.history.push(this.createHistoryPoint());
-    const point = this.future.pop();
-    this.revertToPoint(point);
-  }
-
-  private createHistoryPoint(): BefungeHistoryPoint {
-    return {
-      core: this.core.copy(),
-      walking: this.walking,
-      running: this.running,
-      code: this.code.clone(),
-    };
-  }
-
-  private revertToPoint(point?: BefungeHistoryPoint): void {
-    if (!point) return;
-    this.core.set(point.core);
-    this.walking = point.walking;
-    this.running = point.running;
-    this.code.setToCopy(point.code);
-  }
-
   public runOrPause(): void {
     if (this.running) this.pause();
     else this.run();
@@ -178,5 +144,39 @@ export class BefungeRunner {
     this.render?.();
     if (this.running) this.run();
     if (this.walking) this.walk();
+  }
+
+  public setHistoryPoint(): void {
+    this.history.push(this.createHistoryPoint());
+    this.future = [];
+  }
+
+  public undo(): void {
+    this.future.push(this.createHistoryPoint());
+    const point = this.history.pop();
+    this.revertToPoint(point);
+  }
+
+  public redo(): void {
+    this.history.push(this.createHistoryPoint());
+    const point = this.future.pop();
+    this.revertToPoint(point);
+  }
+
+  private createHistoryPoint(): BefungeHistoryPoint {
+    return {
+      core: this.core.copy(),
+      walking: this.walking,
+      running: this.running,
+      code: this.code.clone(),
+    };
+  }
+
+  private revertToPoint(point?: BefungeHistoryPoint): void {
+    if (!point) return;
+    this.core.set(point.core);
+    this.walking = point.walking;
+    this.running = point.running;
+    this.code.setToCopy(point.code);
   }
 }
