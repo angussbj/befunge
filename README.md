@@ -1,8 +1,26 @@
 # Befunge code editor and interpreter
 
-A simple code editor, interpreter, and debugger for befunge. https://en.wikipedia.org/wiki/Befunge
+A simple code editor, interpreter, and debugger for [Befunge](https://en.wikipedia.org/wiki/Befunge), deployed
+at https://angussbj.github.io/befunge/.
 
-TODO: list important classes
+## Project structure
+
+At a high level, here are the important classes, components and areas in the codebase:
+
+- `logic` - a directory containing both the logic of the Befunge execution and of the text editor
+    - `BefungeCore` - the class responsible for executing befunge code according to the befunge language specification
+        - `step` - the method for executing a single instruction and moving the execution cursor to the next instruction
+    - `BefungeRunner` - the class responsible for running, pausing, and deciding when it's worth rendering the current
+      state
+    - `CodeEditor` - the class responsible for the user's interactions with the code: input, delete, select, copy,
+      paste, and more
+    - `Code` - the class responsible for storing the code (both the current state including edits made by the program
+      during execution, and the original state it will revert to when the program is reset after execution). An instance
+      of this class is shared by the `CodeEditor`, `BefungeCore` and `BefungeRunner`, all of which can manipulate it.
+- `App.tsx` - the root of the react app
+- `components` - the directory with the "clever" components and react hooks that hold and interact with instances of the
+  logic classes, like `Grid`, `ControlPanel`, `InputOutput`, or `useBefunge`
+- `ui` - the directory with the "dumb" components like `Sidebar`, `Button`, or `TextField`
 
 ## Available Scripts
 
@@ -19,7 +37,8 @@ You will also see any lint errors in the console.
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more
+information.
 
 ### `yarn build`
 
@@ -31,13 +50,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+### `yarn deploy`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Deploys the app on Github Pages
 
