@@ -18,7 +18,7 @@ export function EditorControls({
       <ControlPanelRow>
         <T size="small" style={{ width: 120 }}>
           Change input direction on{" "}
-          <text style={{ fontFamily: "monospace" }}>{"<>^v"}</text>:
+          <span style={{ fontFamily: "monospace" }}>{"<>^v"}</span>:
         </T>
         <Checkbox
           object={editor.options}
