@@ -1,11 +1,11 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
+import { Row, Colors } from "ui";
+import { GlobalBefungeState } from "logic";
 import { Grid } from "./Grid";
 import { Stack } from "./Stack";
 import { InputOutput } from "./InputOutput";
-import { Row, Colors } from "ui";
 import { ControlPanel } from "./ControlPanel";
-import { GlobalBefungeState } from "../useGlobalBefungeState";
 
 export function CodingSpace({
   state,

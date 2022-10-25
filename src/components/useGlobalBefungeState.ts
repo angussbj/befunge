@@ -1,14 +1,12 @@
 import { useCallback, useRef, useEffect } from "react";
-import { BefungeRunner, BefungeCore, Code, CodeEditor } from "logic";
+import {
+  BefungeRunner,
+  BefungeCore,
+  Code,
+  CodeEditor,
+  GlobalBefungeState,
+} from "logic";
 import { Coordinate } from "utilities";
-
-export interface GlobalBefungeState {
-  limits: Coordinate;
-  code: Code;
-  core: BefungeCore;
-  editor: CodeEditor;
-  executor: BefungeRunner;
-}
 
 export function useGlobalBefungeState(
   render: () => void,

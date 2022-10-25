@@ -22,7 +22,6 @@ export function BaseButton({
   textStyle,
   backgroundColor,
   textColor,
-  borderColor,
 }: ButtonProps): React.ReactElement {
   const [ref, hovered] = useHover();
   const fade = disabled ? 0.4 : hovered ? 0.15 : 0;
