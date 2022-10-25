@@ -5,5 +5,6 @@ export * from "./Colors";
 export * from "./TextField";
 export * from "./Row";
 export * from "./Sidebar";
+export * from "./Sidebars";
 export * from "./SidebarTitle";
 export * from "./T";

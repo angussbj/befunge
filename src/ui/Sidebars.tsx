@@ -1,15 +1,5 @@
 import React from "react";
-import { Colors } from "./Colors";
-import ReactSidebar from "react-sidebar";
-import { IconButton, Sidebar, TextButton } from "ui";
-import CloseIcon from "@material-ui/icons/Close";
-import styled from "styled-components";
-import {
-  CodingSpace,
-  ExampleSidebarContent,
-  InfoSidebarContent,
-} from "../components";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import { Sidebar } from "ui";
 
 interface Props {
   leftContent: React.ReactElement;
@@ -47,10 +37,3 @@ export function Sidebars({
     />
   );
 }
-
-const Container = styled.div`
-  padding: 24px;
-  width: 240px;
-  font-size: 12px;
-  color: ${Colors.LIGHT.fade(0.2).toString()};
-`;

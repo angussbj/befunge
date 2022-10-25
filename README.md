@@ -18,9 +18,9 @@ At a high level, here are the important classes, components and areas in the cod
       during execution, and the original state it will revert to when the program is reset after execution). An instance
       of this class is shared by the `CodeEditor`, `BefungeCore` and `BefungeRunner`, all of which can manipulate it.
 - `App.tsx` - the root of the react app
-- `components` - the directory with the "clever" components and react hooks that hold and interact with instances of the
-  logic classes, like `Grid`, `ControlPanel`, `InputOutput`, or `useBefunge`
-- `ui` - the directory with the "dumb" components like `Sidebar`, `Button`, or `TextField`
+- `components` - the directory with the "clever" components and react hooks that have knowledge and behaviour specific
+  to this application, like `ControlPanel`, `InputOutput`, the main code `Grid`, and `useGlobalBefungeState`
+- `ui` - the directory with the "knowledge-less" components like `Sidebar`, `Button`, and `TextField`
 
 ## Available Scripts
 
