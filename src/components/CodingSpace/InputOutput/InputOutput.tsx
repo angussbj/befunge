@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Colors } from "ui";
 import { InputRequestStatus } from "logic";
 import styled from "styled-components";
@@ -11,19 +11,32 @@ interface Props {
   style?: React.CSSProperties;
 }
 
-// TODO: Scroll to bottom after output
 export function InputOutput({
   output,
   requestingInput,
   submitInput,
 }: Props): React.ReactElement {
+  const bottomMarkerRef = useRef<HTMLDivElement>(null);
+  const scrollingContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const top = scrollingContainerRef.current?.scrollTop || 0; // scrolled distance from top
+    const height = scrollingContainerRef.current?.clientHeight || 0; // component height
+    const scrollHeight = scrollingContainerRef.current?.scrollHeight || 0; // total height of content
+    const nearBottom = scrollHeight - (top + height) < 20;
+    if (nearBottom) {
+      bottomMarkerRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [output]);
+
   return (
     <>
       <OutputContainer>
-        <OutputInnerScrollingContainer>
+        <OutputInnerScrollingContainer ref={scrollingContainerRef}>
           {output.split("\n").map((x, index) => (
             <div key={index}>{x}</div>
           ))}
+          <div ref={bottomMarkerRef} />
         </OutputInnerScrollingContainer>
       </OutputContainer>
       <InputContainer>

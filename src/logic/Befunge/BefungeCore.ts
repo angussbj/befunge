@@ -26,7 +26,7 @@ export class BefungeCore {
       stack: cloneDeep(this.stack),
       output: this.output,
       stringMode: this.stringMode,
-      halted: this.halted, // TODO: Thoroughly test halting
+      halted: this.halted,
     };
   }
 
