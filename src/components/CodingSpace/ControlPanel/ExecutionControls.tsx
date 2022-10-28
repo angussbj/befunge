@@ -19,13 +19,13 @@ export function ExecutionControls({
       />
       <Button
         label={executor.walking ? "Pause" : "Walk"}
-        onClick={executor.walking ? executor.pause : executor.walk}
+        onClick={executor.walkOrPause}
         style={{ marginTop: 8 }}
         disabled={core.halted}
       />
       <Button
         label={executor.running ? "Pause" : "Run"}
-        onClick={executor.running ? executor.pause : executor.run}
+        onClick={executor.runOrPause}
         style={{ marginTop: 8 }}
         disabled={core.halted}
       />

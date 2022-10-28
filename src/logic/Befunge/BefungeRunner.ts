@@ -34,8 +34,7 @@ export class BefungeRunner {
     else this.walk();
   }
 
-  // TODO: Make walk() and run() private? Or remove walkOrPause and runOrPause
-  public walk(): void {
+  private walk(): void {
     function recur(b: BefungeRunner): () => void {
       return (): void => {
         if (b.walking && !b.core.requestingInput) {
@@ -53,7 +52,7 @@ export class BefungeRunner {
     setTimeout(recur(this), this.walkingDelay);
   }
 
-  public run(): void {
+  private run(): void {
     function recur(b: BefungeRunner): () => void {
       return (): void => {
         for (let i = 0; i < 1000; i++) {
@@ -83,7 +82,7 @@ export class BefungeRunner {
     recur(this)();
   }
 
-  public pause(): void {
+  private pause(): void {
     this.walking = false;
     this.running = false;
     this.render?.();
