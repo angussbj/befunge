@@ -3,17 +3,16 @@ import { BefungeCore } from "./BefungeCore";
 import { Code } from "../Code";
 import { Coordinate } from "utilities";
 import { BefungeHistoryPoint } from "./BefungeHistoryPoint";
+import { WalkingSpeed } from "./WalkingSpeed";
 
 export const RUNNING_RENDER_PERIOD = 1000;
 
 export class BefungeRunner {
-  public walkingDelayIndex = 2;
-  private walkingDelay = BefungeRunner.walkingDelays[this.walkingDelayIndex];
-  private static walkingDelays = [1, 64, 256, 1024, 2048];
   public walking = false;
   public running = false;
   private history: BefungeHistoryPoint[] = [];
   private future: BefungeHistoryPoint[] = [];
+  public walkingSpeed: WalkingSpeed;
 
   constructor(
     limits: Coordinate,
@@ -21,6 +20,7 @@ export class BefungeRunner {
     private core: BefungeCore,
     private render?: () => void
   ) {
+    this.walkingSpeed = new WalkingSpeed(this.render);
     autoBind(this);
   }
 
@@ -39,7 +39,7 @@ export class BefungeRunner {
       return (): void => {
         if (b.walking && !b.core.requestingInput) {
           b.slowStep();
-          setTimeout(recur(b), b.walkingDelay);
+          setTimeout(recur(b), b.walkingSpeed.delay);
         }
       };
     }
@@ -49,7 +49,7 @@ export class BefungeRunner {
     this.walking = true;
     this.running = false;
     if (!this.core.requestingInput) this.stepOver();
-    setTimeout(recur(this), this.walkingDelay);
+    setTimeout(recur(this), this.walkingSpeed.delay);
   }
 
   private run(): void {
@@ -123,35 +123,6 @@ export class BefungeRunner {
   private cursorAtBreakpoint(): boolean {
     const { x, y } = this.core.cursor;
     return this.code.breakpoints[x][y];
-  }
-
-  // TODO: extract walking speed logic to new class
-  public increaseWalkingDelay(): void {
-    if (this.canIncreaseWalkingDelay()) {
-      this.walkingDelayIndex += 1;
-      this.walkingDelay = BefungeRunner.walkingDelays[this.walkingDelayIndex];
-      this.render?.();
-    }
-  }
-
-  public decreaseWalkingDelay(): void {
-    if (this.canDecreaseWalkingDelay()) {
-      this.walkingDelayIndex -= 1;
-      this.walkingDelay = BefungeRunner.walkingDelays[this.walkingDelayIndex];
-      this.render?.();
-    }
-  }
-
-  public getWalkingSpeed(): number {
-    return BefungeRunner.walkingDelays.length - this.walkingDelayIndex;
-  }
-
-  public canIncreaseWalkingDelay(): boolean {
-    return this.walkingDelayIndex < BefungeRunner.walkingDelays.length - 1;
-  }
-
-  public canDecreaseWalkingDelay(): boolean {
-    return this.walkingDelayIndex > 0;
   }
 
   public acceptInput(input: string): void {

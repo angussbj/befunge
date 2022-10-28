@@ -13,8 +13,8 @@ export function WalkingSpeedControl({
       <Row style={{ marginLeft: 8, justifyContent: "space-between" }}>
         <MiniButton
           label={"-"}
-          onClick={executor.increaseWalkingDelay}
-          disabled={!executor.canIncreaseWalkingDelay()}
+          onClick={executor.walkingSpeed.goSlower}
+          disabled={!executor.walkingSpeed.canGoSlower()}
         />
         <T
           size="small"
@@ -26,12 +26,12 @@ export function WalkingSpeedControl({
             justifyContent: "center",
           }}
         >
-          {executor.getWalkingSpeed()}
+          {executor.walkingSpeed.getSpeed()}
         </T>
         <MiniButton
           label={"+"}
-          onClick={executor.decreaseWalkingDelay}
-          disabled={!executor.canDecreaseWalkingDelay()}
+          onClick={executor.walkingSpeed.goFaster}
+          disabled={!executor.walkingSpeed.canGoFaster()}
         />
       </Row>
     </>

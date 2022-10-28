@@ -4,7 +4,7 @@ import { Code } from "../../Code";
 import { BefungeCore } from "../BefungeCore";
 import { BefungeRunner, RUNNING_RENDER_PERIOD } from "../BefungeRunner";
 
-describe("Befunge", () => {
+describe("BefungeRunner", () => {
   let render: () => {};
   let code: Code;
   let core: BefungeCore;
@@ -57,8 +57,8 @@ describe("Befunge", () => {
   describe("walkOrPause", () => {
     it("should call core.step frequently and render once per step while walking and not while paused", async () => {
       let rendersFromChangingWalkingDelay = 0;
-      while (runner.canDecreaseWalkingDelay()) {
-        runner.decreaseWalkingDelay();
+      while (runner.walkingSpeed.canGoFaster()) {
+        runner.walkingSpeed.goFaster();
         rendersFromChangingWalkingDelay += 1;
       }
 

@@ -4,7 +4,7 @@ import { Code } from "../../Code";
 import { Coordinate, Direction } from "utilities";
 import { random } from "lodash";
 
-describe("Befunge", () => {
+describe("BefungeCore", () => {
   let b: BefungeCore;
   let code: Code;
 
