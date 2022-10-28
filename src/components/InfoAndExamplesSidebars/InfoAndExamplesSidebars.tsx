@@ -12,6 +12,7 @@ interface Props {
   children: ReactNode;
 }
 
+// TODO: Info and examples buttons should stay in corners of screen, even when scrolling
 export function InfoAndExamplesSidebar({
   editor,
   render,
