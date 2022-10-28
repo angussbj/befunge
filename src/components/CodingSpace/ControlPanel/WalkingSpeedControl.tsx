@@ -1,4 +1,4 @@
-import { Row, T, MiniButton } from "ui";
+import { MiniButton, Row, T } from "ui";
 import React from "react";
 import { BefungeRunner } from "logic";
 
@@ -14,7 +14,7 @@ export function WalkingSpeedControl({
         <MiniButton
           label={"-"}
           onClick={executor.increaseWalkingDelay}
-          disabled={executor.walkingDelayIndex >= 4}
+          disabled={!executor.canIncreaseWalkingDelay()}
         />
         <T
           size="small"
@@ -26,12 +26,12 @@ export function WalkingSpeedControl({
             justifyContent: "center",
           }}
         >
-          {5 - executor.walkingDelayIndex}
+          {executor.getWalkingSpeed()}
         </T>
         <MiniButton
           label={"+"}
           onClick={executor.decreaseWalkingDelay}
-          disabled={executor.walkingDelayIndex <= 0}
+          disabled={!executor.canDecreaseWalkingDelay()}
         />
       </Row>
     </>

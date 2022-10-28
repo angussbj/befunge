@@ -50,7 +50,7 @@ export class BefungeCore {
     this.halted = false;
   }
 
-  public moveCursor(): void {
+  private moveCursor(): void {
     this.cursor.add(DIRECTION_VECTOR[this.direction]);
     this.cursor.modulo(this.limits);
   }

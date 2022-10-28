@@ -12,7 +12,11 @@ export function ExecutionControls({
 
   return (
     <ControlPanelColumn>
-      <Button label={"Step"} onClick={core.step} disabled={!core.canStep()} />
+      <Button
+        label={"Step"}
+        onClick={executor.step}
+        disabled={!core.canStep()}
+      />
       <Button
         label={executor.walking ? "Pause" : "Walk"}
         onClick={executor.walking ? executor.pause : executor.walk}

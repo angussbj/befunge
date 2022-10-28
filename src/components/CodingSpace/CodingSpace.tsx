@@ -1,12 +1,13 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import { Row, Colors } from "ui";
+import { Colors, Row } from "ui";
 import { GlobalBefungeState } from "logic";
 import { Grid } from "./Grid";
 import { Stack } from "./Stack";
 import { InputOutput } from "./InputOutput";
 import { ControlPanel } from "./ControlPanel";
 
+// TODO: Layout for narrow screens and mobile
 export function CodingSpace({
   state,
 }: {

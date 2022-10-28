@@ -424,4 +424,6 @@ describe("Befunge", () => {
       expect(b.stack).toEqual([6]);
     });
   });
+
+  // TODO: reset, copy, set, more on accepting input (can't step!), getCursorCharacter
 });

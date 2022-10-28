@@ -4,6 +4,8 @@ import { Code } from "../Code";
 import { Coordinate } from "utilities";
 import { BefungeHistoryPoint } from "./BefungeHistoryPoint";
 
+export const RUNNING_RENDER_PERIOD = 1000;
+
 export class BefungeRunner {
   public walkingDelayIndex = 2;
   private walkingDelay = BefungeRunner.walkingDelays[this.walkingDelayIndex];
@@ -32,6 +34,7 @@ export class BefungeRunner {
     else this.walk();
   }
 
+  // TODO: Make walk() and run() private? Or remove walkOrPause and runOrPause
   public walk(): void {
     function recur(b: BefungeRunner): () => void {
       return (): void => {
@@ -47,7 +50,6 @@ export class BefungeRunner {
     this.walking = true;
     this.running = false;
     if (!this.core.requestingInput) this.stepOver();
-    else this.render?.();
     setTimeout(recur(this), this.walkingDelay);
   }
 
@@ -63,9 +65,11 @@ export class BefungeRunner {
 
     function renderPeriodically(b: BefungeRunner): () => void {
       return (): void => {
-        b.render?.();
         if (b.running && b.core.canStep()) {
-          setTimeout(renderPeriodically(b), 1000);
+          setTimeout(() => {
+            b.render?.();
+            renderPeriodically(b);
+          }, RUNNING_RENDER_PERIOD);
         }
       };
     }
@@ -75,7 +79,6 @@ export class BefungeRunner {
     this.walking = false;
     this.running = true;
     if (!this.core.requestingInput) this.stepOver();
-    this.render?.();
     renderPeriodically(this)();
     recur(this)();
   }
@@ -123,8 +126,9 @@ export class BefungeRunner {
     return this.code.breakpoints[x][y];
   }
 
+  // TODO: extract walking speed logic to new class
   public increaseWalkingDelay(): void {
-    if (this.walkingDelayIndex < 4) {
+    if (this.canIncreaseWalkingDelay()) {
       this.walkingDelayIndex += 1;
       this.walkingDelay = BefungeRunner.walkingDelays[this.walkingDelayIndex];
       this.render?.();
@@ -132,11 +136,23 @@ export class BefungeRunner {
   }
 
   public decreaseWalkingDelay(): void {
-    if (this.walkingDelayIndex > 0) {
+    if (this.canDecreaseWalkingDelay()) {
       this.walkingDelayIndex -= 1;
       this.walkingDelay = BefungeRunner.walkingDelays[this.walkingDelayIndex];
       this.render?.();
     }
+  }
+
+  public getWalkingSpeed(): number {
+    return BefungeRunner.walkingDelays.length - this.walkingDelayIndex;
+  }
+
+  public canIncreaseWalkingDelay(): boolean {
+    return this.walkingDelayIndex < BefungeRunner.walkingDelays.length - 1;
+  }
+
+  public canDecreaseWalkingDelay(): boolean {
+    return this.walkingDelayIndex > 0;
   }
 
   public acceptInput(input: string): void {
