@@ -17,7 +17,7 @@ export function CodingSpace({
 
   return (
     <Container>
-      <div>
+      <Column>
         <Label>Code editor</Label>
         <Grid
           code={code}
@@ -25,7 +25,7 @@ export function CodingSpace({
           cursor={core.cursor}
           editor={editor}
         />
-      </div>
+      </Column>
       <Row style={{ marginTop: 16, width: 15 * limits.x, height: 220 }}>
         <Column>
           <Label>Stack</Label>
@@ -60,7 +60,7 @@ const Column = styled.div`
   flex-direction: column;
 `;
 
-const Label = styled.div`
+const Label = styled.label`
   margin-bottom: 6px;
   font-size: 11px;
   color: ${Colors.LIGHT.fade(0.2).toString()};

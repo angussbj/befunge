@@ -7,6 +7,7 @@ interface Props {
   style: React.CSSProperties;
   focusFirstRender?: boolean;
   onSubmit?: () => void;
+  ariaLabel?: string;
 }
 
 export function TextField({
@@ -15,6 +16,7 @@ export function TextField({
   style,
   focusFirstRender,
   onSubmit,
+  ariaLabel,
 }: Props): React.ReactElement {
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -32,6 +34,7 @@ export function TextField({
       onKeyDown={(e): void => {
         if (e.key === "Enter") onSubmit?.();
       }}
+      aria-label={ariaLabel}
       style={style}
     />
   );

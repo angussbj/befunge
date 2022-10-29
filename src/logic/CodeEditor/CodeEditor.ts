@@ -63,6 +63,22 @@ export class CodeEditor {
     return this.code.get(this.selection.x, this.selection.y);
   }
 
+  public getSelectedText(): string {
+    let text = "";
+    this.selectionForEach({
+      cellAction: (x: number, y: number): void => {
+        text += this.code.get(x, y);
+      },
+      rowEndAction: (): void => {
+        text += "\n";
+      },
+      directions: this.options.useSelectionDirectionForCutCopyPaste
+        ? this.selectionDelta.getMajorAndMinorDirections()
+        : undefined,
+    });
+    return text;
+  }
+
   public setHistoryPoint(): void {
     this.history.push(this.createHistoryPoint());
     this.future = [];
@@ -156,7 +172,8 @@ export class CodeEditor {
   public onCut(event: ClipboardEvent): void {
     if (!this.hasFocus) return;
     this.setHistoryPoint();
-    this.onCopy(event);
+    event.clipboardData?.setData("text/plain", this.getSelectedText());
+    event.preventDefault();
     this.clearSelection();
     this.onChange();
   }
@@ -164,19 +181,7 @@ export class CodeEditor {
   public onCopy(event: ClipboardEvent): void {
     if (!this.hasFocus) return;
     this.setHistoryPoint();
-    let textToCopy = "";
-    this.selectionForEach({
-      cellAction: (x: number, y: number): void => {
-        textToCopy += this.code.get(x, y);
-      },
-      rowEndAction: (): void => {
-        textToCopy += "\n";
-      },
-      directions: this.options.useSelectionDirectionForCutCopyPaste
-        ? this.selectionDelta.getMajorAndMinorDirections()
-        : undefined,
-    });
-    event.clipboardData?.setData("text/plain", textToCopy);
+    event.clipboardData?.setData("text/plain", this.getSelectedText());
     event.preventDefault();
   }
 

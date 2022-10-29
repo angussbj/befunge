@@ -12,6 +12,7 @@ export interface ButtonProps {
   backgroundColor?: Color;
   textColor: Color;
   borderColor?: Color;
+  ariaLabel?: string;
 }
 
 export function BaseButton({
@@ -22,6 +23,7 @@ export function BaseButton({
   textStyle,
   backgroundColor,
   textColor,
+  ariaLabel,
 }: ButtonProps): React.ReactElement {
   const [ref, hovered] = useHover();
   const fade = disabled ? 0.4 : hovered ? 0.15 : 0;
@@ -42,6 +44,7 @@ export function BaseButton({
         ...style,
       }}
       ref={ref}
+      aria-label={ariaLabel}
     >
       <T color={textColor.fade(fade)} style={textStyle}>
         {typeof label === "string" ? label.toUpperCase() : label}

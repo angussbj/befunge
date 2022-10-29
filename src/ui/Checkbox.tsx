@@ -9,6 +9,7 @@ interface Props<T extends string> {
   k: T;
   onChange: (newValue: boolean) => void;
   style?: React.CSSProperties;
+  ariaLabel?: string;
 }
 
 export function Checkbox<T extends string>({
@@ -16,6 +17,7 @@ export function Checkbox<T extends string>({
   k,
   onChange,
   style,
+  ariaLabel,
 }: Props<T>): React.ReactElement {
   const [renderHelper, setRenderHelper] = useState(false);
   const [ref, hovered] = useHover();
@@ -30,10 +32,17 @@ export function Checkbox<T extends string>({
             onChange(event.target.checked);
             setRenderHelper(!renderHelper);
           }}
-          style={{ backgroundColor: "transparent" }}
-          disableRipple
-          icon={<ImCheckboxUnchecked size={11} color={color} />}
-          checkedIcon={<ImCheckboxChecked size={11} color={color} />}
+          style={{
+            color: Colors.ACCENT_BLUE.toString(),
+            backgroundColor: "transparent",
+          }}
+          icon={
+            <ImCheckboxUnchecked size={11} color={color} aria-ignore={"true"} />
+          }
+          checkedIcon={
+            <ImCheckboxChecked size={11} color={color} aria-ignore={"true"} />
+          }
+          aria-label={ariaLabel}
         />
       </div>
     </div>

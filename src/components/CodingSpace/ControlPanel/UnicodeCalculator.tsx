@@ -21,6 +21,7 @@ export function UnicodeCalculator(): React.ReactElement {
             color: Colors.LIGHT.toString(),
             width: 11,
           }}
+          ariaLabel={"Character side of UTF-16 value translator"}
         />
         <T size="small" unselectable style={{ marginLeft: 16 }}>
           α↔n
@@ -38,6 +39,7 @@ export function UnicodeCalculator(): React.ReactElement {
             width: 40,
             marginLeft: 16,
           }}
+          ariaLabel={"Number side of UTF-16 value translator"}
         />
       </Row>
     </>

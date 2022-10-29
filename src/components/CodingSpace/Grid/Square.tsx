@@ -65,4 +65,5 @@ function areEqual(prev: Props, next: Props): boolean {
     prev.isBreakpoint === next.isBreakpoint
   );
 }
+
 export const Square = React.memo(UnMemoizedSquare, areEqual);

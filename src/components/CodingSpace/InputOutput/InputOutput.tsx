@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Colors } from "ui";
+import { Colors, Hidden } from "ui";
 import { InputRequestStatus } from "logic";
 import styled from "styled-components";
 import { Input } from "./Input";
@@ -32,6 +32,7 @@ export function InputOutput({
   return (
     <>
       <OutputContainer>
+        {!output && <Hidden>{"No output yet"}</Hidden>}
         <OutputInnerScrollingContainer ref={scrollingContainerRef}>
           {output.split("\n").map((x, index) => (
             <div key={index}>{x}</div>

@@ -15,6 +15,7 @@ export function WalkingSpeedControl({
           label={"-"}
           onClick={executor.walkingSpeed.goSlower}
           disabled={!executor.walkingSpeed.canGoSlower()}
+          ariaLabel={"Walking speed minus button"}
         />
         <T
           size="small"
@@ -32,6 +33,7 @@ export function WalkingSpeedControl({
           label={"+"}
           onClick={executor.walkingSpeed.goFaster}
           disabled={!executor.walkingSpeed.canGoFaster()}
+          ariaLabel={"Walking speed plus button"}
         />
       </Row>
     </>

@@ -9,6 +9,7 @@ interface Props {
   disabled?: boolean;
   style?: React.CSSProperties;
   color?: Color;
+  ariaLabel?: string;
 }
 
 export function MiniButton({

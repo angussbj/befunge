@@ -1,9 +1,9 @@
-import React from "react";
-import { Colors } from "./Colors";
-import ReactSidebar from "react-sidebar";
-import { IconButton } from "ui";
+import React, { useEffect, useRef, useState } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
+import ReactSidebar from "react-sidebar";
+import { IconButton } from "ui";
+import { Colors } from "./Colors";
 
 interface Props {
   content: React.ReactElement;
@@ -17,24 +17,45 @@ export function Sidebar({
   content,
   page,
   onSetOpen,
-  ...rest
+  open,
+  pullRight,
 }: Props): React.ReactElement {
+  const [visible, setVisible] = useState(open);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (!open) {
+      timeoutRef.current = setTimeout(() => setVisible(false), 200);
+    } else {
+      setVisible(true);
+    }
+  }, [open]);
+
   return (
     <ReactSidebar
       sidebar={
         <Container>
-          <IconButton
-            aria-label="close-side-bar"
-            style={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-            }}
-            onClick={(): void => onSetOpen(false)}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-          {content}
+          {visible ? (
+            <>
+              <IconButton
+                aria-label="close-side-bar"
+                style={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                }}
+                onClick={(): void => onSetOpen(false)}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+              {content}
+            </>
+          ) : (
+            <></>
+          )}
         </Container>
       }
       styles={{
@@ -43,7 +64,8 @@ export function Sidebar({
         overlay: { bottom: undefined, top: undefined },
       }}
       onSetOpen={onSetOpen}
-      {...rest}
+      open={open}
+      pullRight={pullRight}
     >
       {page}
     </ReactSidebar>

@@ -23,6 +23,7 @@ export function EditorControls({
         <Checkbox
           object={editor.options}
           k={"changeDirectionOnDirectionCharacters"}
+          ariaLabel={"Change input direction when typing >, <, ^, or v"}
           onChange={(newVal: boolean): void =>
             editor.options.setChangeDirectionOnDirectionCharacters(newVal)
           }
@@ -36,6 +37,9 @@ export function EditorControls({
         <Checkbox
           object={editor.options}
           k={"useSelectionDirectionForCutCopyPaste"}
+          ariaLabel={
+            "Use direction of selection to determine the rotation and reflection of text when cutting, copying, and pasting"
+          }
           onChange={(newVal: boolean): void =>
             editor.options.setUseSelectionDirectionForCutCopyPaste(newVal)
           }

@@ -3,6 +3,7 @@ export * from "./CenteredScreenContentContainer";
 export * from "./Checkbox";
 export * from "./SidebarSection";
 export * from "./Colors";
+export * from "./Hidden";
 export * from "./TextField";
 export * from "./Row";
 export * from "./Sidebar";

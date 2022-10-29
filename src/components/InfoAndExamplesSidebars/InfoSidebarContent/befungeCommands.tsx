@@ -2,11 +2,9 @@ import React from "react";
 import { SquareBackground } from "./SquareBackground";
 import styled from "styled-components";
 
-const M = styled.text`
+const M = styled.span`
   font-family: monospace;
 `;
-
-const B = styled.text``;
 
 export const befungeCommands = [
   {
@@ -37,8 +35,8 @@ export const befungeCommands = [
     command: "+",
     description: (
       <div>
-        <B>Addition:</B> pop two values <M>a</M> then <M>b</M>, then push the
-        result of <M>a + b</M>
+        Addition: pop two values <M>a</M> then <M>b</M>, then push the result of{" "}
+        <M>a + b</M>
       </div>
     ),
   },
@@ -47,8 +45,8 @@ export const befungeCommands = [
     command: "-",
     description: (
       <div>
-        <B>Subtraction:</B> pop two values <M>a</M> then <M>b</M>, then push the
-        result of <M>b - a</M>
+        Subtraction: pop two values <M>a</M> then <M>b</M>, then push the result
+        of <M>b - a</M>
       </div>
     ),
   },
@@ -57,8 +55,8 @@ export const befungeCommands = [
     command: "*",
     description: (
       <div>
-        <B>Multiplication:</B> pop two values <M>a</M> then <M>b</M>, then push
-        the result of <M>a * b</M>
+        Multiplication: pop two values <M>a</M> then <M>b</M>, then push the
+        result of <M>a * b</M>
       </div>
     ),
   },
@@ -67,9 +65,9 @@ export const befungeCommands = [
     command: "/",
     description: (
       <div>
-        <B>Integer division:</B> pop two values <M>a</M> then <M>b</M>, then
-        push the result of <M>b / a</M>, rounded down. If a is zero, ask the
-        user what result they want.
+        Integer division: pop two values <M>a</M> then <M>b</M>, then push the
+        result of <M>b / a</M>, rounded down. If a is zero, ask the user what
+        result they want.
       </div>
     ),
   },
@@ -78,8 +76,8 @@ export const befungeCommands = [
     command: "%",
     description: (
       <div>
-        <B>Modulo:</B> pop two values <M>a</M> then <M>b</M>, then push the
-        remainder of the integer division of <M>b / a</M>.
+        Modulo: pop two values <M>a</M> then <M>b</M>, then push the remainder
+        of the integer division of <M>b / a</M>.
       </div>
     ),
   },
@@ -88,8 +86,8 @@ export const befungeCommands = [
     command: "!",
     description: (
       <div>
-        <B>Not:</B> pop a value. If the value is <M>0</M>, push <M>1</M>;
-        otherwise, push <M>0</M>.
+        Not: pop a value. If the value is <M>0</M>, push <M>1</M>; otherwise,
+        push <M>0</M>.
       </div>
     ),
   },
@@ -98,8 +96,8 @@ export const befungeCommands = [
     command: "`",
     description: (
       <div>
-        <B>Comparison:</B> pop two values <M>a</M> then <M>b</M>, then push{" "}
-        <M>1</M> if <M>b {">"} a</M>, otherwise <M>0</M>.
+        Comparison: pop two values <M>a</M> then <M>b</M>, then push <M>1</M> if{" "}
+        <M>b {">"} a</M>, otherwise <M>0</M>.
       </div>
     ),
   },
@@ -117,8 +115,8 @@ export const befungeCommands = [
     command: "_",
     description: (
       <div>
-        <B>Horizontal if:</B> pop a value; set direction to right if value is{" "}
-        <M>0</M>, set to left otherwise
+        Horizontal if: pop a value; set direction to right if value is <M>0</M>,
+        set to left otherwise
       </div>
     ),
   },
@@ -127,8 +125,8 @@ export const befungeCommands = [
     command: "|",
     description: (
       <div>
-        <B>Vertical if:</B> pop a value; set direction to down if value is{" "}
-        <M>0</M>, set to up otherwise
+        Vertical if: pop a value; set direction to down if value is <M>0</M>,
+        set to up otherwise
       </div>
     ),
   },
@@ -137,8 +135,8 @@ export const befungeCommands = [
     command: '"',
     description: (
       <div>
-        <B>Toggle string-mode:</B> push each character&apos;s UTF-16 value all
-        the way up to the next <M>{'"'}</M>
+        Toggle string-mode: push each character&apos;s UTF-16 value all the way
+        up to the next <M>{'"'}</M>
       </div>
     ),
   },
@@ -153,9 +151,7 @@ export const befungeCommands = [
     key: ".",
     command: ".",
     description: (
-      <div>
-        <B>Integer output:</B> pop top of stack and output it as an integer
-      </div>
+      <div>Integer output: pop top of stack and output it as an integer</div>
     ),
   },
   {
@@ -163,8 +159,7 @@ export const befungeCommands = [
     command: ",",
     description: (
       <div>
-        <B>Character output:</B> pop top of stack and output its UTF-16
-        character
+        Character output: pop top of stack and output its UTF-16 character
       </div>
     ),
   },
@@ -173,8 +168,7 @@ export const befungeCommands = [
     command: "&",
     description: (
       <div>
-        <B>Integer input:</B> request an integer from the user and push it to
-        the stack
+        Integer input: request an integer from the user and push it to the stack
       </div>
     ),
   },
@@ -183,8 +177,8 @@ export const befungeCommands = [
     command: "~",
     description: (
       <div>
-        <B>Character input:</B> request a character from the user and push it to
-        the stack
+        Character input: request a character from the user and push it to the
+        stack
       </div>
     ),
   },
@@ -193,8 +187,7 @@ export const befungeCommands = [
     command: "#",
     description: (
       <div>
-        <B>Bridge:</B> jump over next command in the current direction of
-        movement
+        Bridge: jump over next command in the current direction of movement
       </div>
     ),
   },
@@ -203,10 +196,9 @@ export const befungeCommands = [
     command: "g",
     description: (
       <div>
-        <B>Get:</B> a way to retrieve data in storage. Pop two values <M>y</M>{" "}
-        then <M>x</M>, then push the UTF-16 value of the character at that
-        position in the program. If <M>(x, y)</M> is out of bounds, push{" "}
-        <M>0</M>
+        Get: a way to retrieve data in storage. Pop two values <M>y</M> then{" "}
+        <M>x</M>, then push the UTF-16 value of the character at that position
+        in the program. If <M>(x, y)</M> is out of bounds, push <M>0</M>
       </div>
     ),
   },
@@ -215,10 +207,9 @@ export const befungeCommands = [
     command: "p",
     description: (
       <div>
-        <B>Put:</B> a way to store a value for later use. Pop three values{" "}
-        <M>y</M>, then <M>x</M>, then <M>v</M>, then change the character at the
-        position <M>(x, y)</M> in the program to the character with UTF-16 value{" "}
-        <M>v</M>
+        Put: a way to store a value for later use. Pop three values <M>y</M>,
+        then <M>x</M>, then <M>v</M>, then change the character at the position{" "}
+        <M>(x, y)</M> in the program to the character with UTF-16 value <M>v</M>
       </div>
     ),
   },
@@ -228,8 +219,8 @@ export const befungeCommands = [
     command: " ",
     description: (
       <div>
-        <B>No-op:</B> does nothing. There is a space character in this location,
-        which has UTF-16 value 32
+        No-op: does nothing. There is a space character in this location, which
+        has UTF-16 value 32
       </div>
     ),
   },

@@ -1,10 +1,7 @@
 import React from "react";
-import styled from "styled-components";
 import { Colors, T } from "ui";
 import { HiCursorClick } from "react-icons/hi";
 import { SquareBackground } from "./SquareBackground";
-
-const B = styled.text``;
 
 export const editorCommands = [
   {
@@ -101,8 +98,8 @@ export const editorCommands = [
     ),
     description: (
       <div>
-        <B>Execution cursor:</B> the orange highlight marks the next command to
-        be executed
+        Execution cursor: the orange highlight marks the next command to be
+        executed
       </div>
     ),
     customCommandStyle: true,
@@ -120,8 +117,8 @@ export const editorCommands = [
     ),
     description: (
       <div>
-        <B>Code input cursor:</B> the blue highlight marks the square(s) you
-        edit when you type
+        Code input cursor: the blue highlight marks the square(s) you edit when
+        you type
       </div>
     ),
     customCommandStyle: true,
@@ -139,8 +136,8 @@ export const editorCommands = [
     ),
     description: (
       <div>
-        <B>Both cursors:</B> the execution and code input cursors are on top of
-        each other
+        Both cursors: the execution and code input cursors are on top of each
+        other
       </div>
     ),
     customCommandStyle: true,
@@ -156,11 +153,7 @@ export const editorCommands = [
         }}
       />
     ),
-    description: (
-      <div>
-        <B>Breakpoint:</B> code execution will stop here
-      </div>
-    ),
+    description: <div>Breakpoint: code execution will stop here</div>,
     customCommandStyle: true,
   },
   {
@@ -175,9 +168,7 @@ export const editorCommands = [
       />
     ),
     description: (
-      <div>
-        <B>Active breakpoint:</B> code execution is currently stopped here
-      </div>
+      <div>Active breakpoint: code execution is currently stopped here</div>
     ),
     customCommandStyle: true,
   },

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Colors, Row, T } from "ui";
+import { Colors, Hidden, Row, T } from "ui";
 import { Square } from "./Square";
-import { Coordinate, modulo, range } from "utilities";
+import { Coordinate, mapCharactersToNames, modulo, range } from "utilities";
 import { Code, CodeEditor } from "logic";
 import styled from "styled-components";
 import { useBlink } from "./useBlink";
@@ -60,9 +60,20 @@ export function Grid({
         setFocused(false);
       }}
       tabIndex={0}
+      aria-role={"alert"}
+      role={"alert"}
+      aria-live={"assertive"}
+      aria-label={"Code grid"}
     >
+      <Hidden>
+        {"Selected text: " + mapCharactersToNames(e.getSelectedText())}
+      </Hidden>
       {range(-1, limits.y + 1).map((y) => (
-        <Row key={y} style={{ justifyContent: "flex-end" }}>
+        <Row
+          key={y}
+          style={{ justifyContent: "flex-end" }}
+          aria-hidden={"true"}
+        >
           {range(-1, limits.x + 1).map((x) =>
             x === -1 && y === -1 ? null : x === -1 ? (
               <YNumberBox key={`${x},${y}`}>
