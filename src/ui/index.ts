@@ -1,4 +1,5 @@
 export * from "./buttons";
+export * from "./CenteredScreenContentContainer";
 export * from "./Checkbox";
 export * from "./SidebarSection";
 export * from "./Colors";

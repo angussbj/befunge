@@ -79,4 +79,6 @@ describe("BefungeRunner", () => {
       );
     });
   });
+
+  // TODO: test halting
 });
