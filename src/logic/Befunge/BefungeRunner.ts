@@ -78,7 +78,7 @@ export class BefungeRunner {
     this.walking = false;
     this.running = true;
     if (!this.core.requestingInput) this.stepOver();
-    renderPeriodically(this)();
+    renderPeriodically(this);
     recur(this)();
   }
 

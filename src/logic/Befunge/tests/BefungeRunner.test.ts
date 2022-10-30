@@ -43,14 +43,19 @@ describe("BefungeRunner", () => {
       await sleep(RUNNING_RENDER_PERIOD);
       expect(render).toHaveBeenCalledTimes(2);
       expect(stepCount).toBeGreaterThan(prevStepCount + 100);
+      prevStepCount = stepCount;
+
+      await sleep(RUNNING_RENDER_PERIOD);
+      expect(render).toHaveBeenCalledTimes(3);
+      expect(stepCount).toBeGreaterThan(prevStepCount + 100);
 
       runner.runOrPause();
-      expect(render).toHaveBeenCalledTimes(3);
+      expect(render).toHaveBeenCalledTimes(4);
       prevStepCount = stepCount;
 
       await sleep(20);
       expect(stepCount).toEqual(prevStepCount);
-      expect(render).toHaveBeenCalledTimes(3);
+      expect(render).toHaveBeenCalledTimes(4);
     });
   });
 
