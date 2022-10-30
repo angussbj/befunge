@@ -36,12 +36,8 @@ export function Checkbox<T extends string>({
             color: Colors.ACCENT_BLUE.toString(),
             backgroundColor: "transparent",
           }}
-          icon={
-            <ImCheckboxUnchecked size={11} color={color} aria-ignore={"true"} />
-          }
-          checkedIcon={
-            <ImCheckboxChecked size={11} color={color} aria-ignore={"true"} />
-          }
+          icon={<ImCheckboxUnchecked size={11} color={color} />}
+          checkedIcon={<ImCheckboxChecked size={11} color={color} />}
           aria-label={ariaLabel}
         />
       </div>
