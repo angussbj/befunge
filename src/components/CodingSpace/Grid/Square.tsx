@@ -10,6 +10,8 @@ interface Props {
   onMouseDown?: (e: MouseEvent) => void;
   onMouseOver?: (e: MouseEvent) => void;
   onDoubleClick?: () => void;
+  x: number;
+  y: number;
 }
 
 function UnMemoizedSquare({
@@ -20,6 +22,8 @@ function UnMemoizedSquare({
   onMouseDown,
   onMouseOver,
   onDoubleClick,
+  x,
+  y,
 }: Props): React.ReactElement {
   let color = Colors.TRANSPARENT;
   if (selectionOpacity) color = color.mix(Colors.ACCENT_BLUE, selectionOpacity);
@@ -33,6 +37,7 @@ function UnMemoizedSquare({
       onMouseDown={onMouseDown}
       onMouseOver={onMouseOver}
       onDoubleClick={onDoubleClick}
+      data-testid={`${x},${y}`}
     >
       {val}
     </Background>

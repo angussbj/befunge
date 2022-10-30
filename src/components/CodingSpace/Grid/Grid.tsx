@@ -60,7 +60,6 @@ export function Grid({
         setFocused(false);
       }}
       tabIndex={0}
-      aria-role={"alert"}
       role={"alert"}
       aria-live={"assertive"}
       aria-label={"Code grid"}
@@ -99,6 +98,8 @@ export function Grid({
                 onMouseOver={e.onMouseOver(x, y)}
                 onDoubleClick={e.onDoubleClick(x, y)}
                 key={`${x},${y}`}
+                x={x}
+                y={y}
               />
             )
           )}
