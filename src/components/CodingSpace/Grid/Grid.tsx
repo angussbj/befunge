@@ -71,11 +71,13 @@ export function Grid({
       {range(-1, limits.y + 1).map((y) => (
         <Row
           key={y}
-          style={{ justifyContent: "flex-end" }}
+          style={{ justifyContent: "flex-end", minWidth: "fit-content" }}
           aria-hidden={"true"}
         >
           {range(-1, limits.x + 1).map((x) =>
-            x === -1 && y === -1 ? null : x === -1 ? (
+            x === -1 && y === -1 ? (
+              <BlankCornerNumberBox />
+            ) : x === -1 ? (
               <YNumberBox key={`${x},${y}`}>
                 <T size="tiny" color={Colors.DARK.fade(0.4)}>
                   {y}
@@ -130,12 +132,10 @@ function getSelectionCheckFunction(
 }
 
 const Container = styled.div<{ focused: boolean }>`
-  padding-right: 8px;
-  padding-bottom: 8px;
-  padding-left: 4px;
-  padding-top: 4px;
+  padding: 4px 8px 8px 4px;
   background-color: ${Colors.LIGHT.toString()};
   border-radius: 4px;
+  overflow-x: scroll;
   outline: 0 none !important;
   ${({ focused }): string => {
     return focused
@@ -155,10 +155,16 @@ const XNumberBox = styled.div`
 
 const YNumberBox = styled.div`
   height: 15px;
+  width: 12px;
   padding-right: 4px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   border-right: 1px solid #dddddd;
+`;
+
+const BlankCornerNumberBox = styled.div`
+  width: 13px;
+  height: 13px;
 `;

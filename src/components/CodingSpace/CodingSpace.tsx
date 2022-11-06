@@ -16,17 +16,16 @@ export function CodingSpace({
   const { limits, code, core, executor, editor } = state;
 
   return (
-    <Container>
-      <Column>
-        <Label>Code editor</Label>
-        <Grid
-          code={code}
-          limits={limits}
-          cursor={core.cursor}
-          editor={editor}
-        />
-      </Column>
-      <Row style={{ marginTop: 16, width: 15 * limits.x, height: 220 }}>
+    <Container style={{ flexShrink: 1 }}>
+      <Label>Code editor</Label>
+      <Grid code={code} limits={limits} cursor={core.cursor} editor={editor} />
+      <Row
+        style={{
+          marginTop: 16,
+          height: 220,
+          alignSelf: "stretch",
+        }}
+      >
         <Column>
           <Label>Stack</Label>
           <Stack stack={core.stack} />
@@ -49,8 +48,8 @@ export function CodingSpace({
 }
 
 const Container = styled.div`
-  align-items: center;
   display: flex;
+  max-width: fit-content;
   flex-direction: column;
 `;
 

@@ -15,7 +15,7 @@ export function StateAndSpeed({
   const { editor, core, executor } = state;
 
   return (
-    <ControlPanelColumn style={{ marginLeft: 16 }}>
+    <ControlPanelColumn style={{ marginLeft: 16, width: 148 }}>
       <ControlPanelRow>
         <T size="small">Code input direction:</T>
         <T
