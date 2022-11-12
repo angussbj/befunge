@@ -6,17 +6,17 @@ import { ControlPanelRow } from "./ControlPanelRow";
 
 export function EditorControls({
   state,
+  style,
 }: {
   state: GlobalBefungeState;
+  style: React.CSSProperties;
 }): React.ReactElement {
   const { editor } = state;
 
   return (
-    <ControlPanelColumn
-      style={{ marginLeft: 16, justifyContent: "flex-start" }}
-    >
+    <ControlPanelColumn style={{ ...style, justifyContent: "flex-start" }}>
       <ControlPanelRow>
-        <T size="small" style={{ width: 120 }}>
+        <T size="small">
           Change input direction on{" "}
           <span style={{ fontFamily: "monospace" }}>{"<>^v"}</span>:
         </T>

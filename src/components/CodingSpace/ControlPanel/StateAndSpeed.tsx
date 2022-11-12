@@ -9,13 +9,15 @@ import { ControlPanelColumn } from "./ControlPanelColumn";
 
 export function StateAndSpeed({
   state,
+  style,
 }: {
   state: GlobalBefungeState;
+  style: React.CSSProperties;
 }): React.ReactElement {
   const { editor, core, executor } = state;
 
   return (
-    <ControlPanelColumn style={{ marginLeft: 16, width: 148 }}>
+    <ControlPanelColumn style={style}>
       <ControlPanelRow>
         <T size="small">Code input direction:</T>
         <T

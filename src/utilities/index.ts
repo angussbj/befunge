@@ -4,4 +4,5 @@ export * from "./mapCharactersToNames";
 export * from "./modulo";
 export * from "./range";
 export * from "./sorted";
+export * from "./sum";
 export * from "./useLocalStorageState";

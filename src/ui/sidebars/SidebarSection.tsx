@@ -26,6 +26,7 @@ export function SidebarSection({
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   // TODO: Generify, tidy, and extract this
+  // TODO: Stop animation on first render
   const animateHeight = useCallback((collapsed: boolean): void => {
     if (!containerRef.current) return;
     const initialHeight = containerRef.current.clientHeight;

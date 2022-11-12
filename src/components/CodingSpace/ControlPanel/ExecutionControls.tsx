@@ -5,13 +5,15 @@ import { ControlPanelColumn } from "./ControlPanelColumn";
 
 export function ExecutionControls({
   state,
+  style,
 }: {
   state: GlobalBefungeState;
+  style: React.CSSProperties;
 }): React.ReactElement {
   const { core, executor } = state;
 
   return (
-    <ControlPanelColumn>
+    <ControlPanelColumn style={style}>
       <Button
         label={"Step"}
         onClick={executor.step}
