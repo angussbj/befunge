@@ -60,14 +60,11 @@ export function Grid({
         setFocused(false);
       }}
       tabIndex={0}
-      aria-role={"alert"}
-      role={"alert"}
+      role={"textbox"}
       aria-live={"assertive"}
       aria-label={"Code grid"}
     >
-      <Hidden>
-        {"Selected text: " + mapCharactersToNames(e.getSelectedText())}
-      </Hidden>
+      <Hidden>{mapCharactersToNames(e.getSelectedText()) + "selected"}</Hidden>
       {range(-1, limits.y + 1).map((y) => (
         <Row
           key={y}
@@ -76,7 +73,7 @@ export function Grid({
         >
           {range(-1, limits.x + 1).map((x) =>
             x === -1 && y === -1 ? (
-              <BlankCornerNumberBox />
+              <BlankCornerNumberBox key={"-1,-1"} />
             ) : x === -1 ? (
               <YNumberBox key={`${x},${y}`}>
                 <T size="tiny" color={Colors.DARK.fade(0.4)}>
