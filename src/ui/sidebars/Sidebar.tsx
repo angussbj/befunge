@@ -21,9 +21,14 @@ export function Sidebar({
   pullRight,
   width = 240,
   padding = 24,
-  transitionTimeMs = 200,
+  transitionTimeMs = 300,
 }: Props): React.ReactElement {
   const [visible, setVisible] = useState(open);
+
+  const [isFirstRender, setIsFirstRender] = useState(true);
+  useEffect(() => setIsFirstRender(false), []);
+  const sideMargin = open && !isFirstRender ? 0 : -(width + 2 * padding);
+
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -46,8 +51,8 @@ export function Sidebar({
         width,
         padding,
         ...(pullRight
-          ? { right: 0, marginRight: open ? 0 : -(width + 2 * padding) }
-          : { left: 0, marginLeft: open ? 0 : -(width + 2 * padding) }),
+          ? { right: 0, marginRight: sideMargin }
+          : { left: 0, marginLeft: sideMargin }),
       }}
       ref={containerRef}
     >

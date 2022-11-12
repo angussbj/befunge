@@ -35,15 +35,12 @@ export function ControlPanel({
     const initialWidth = containerRef.current.clientWidth;
     containerRef.current.style.width = initialWidth + "px";
 
-    setTimeout(() => {
-      if (!containerRef.current) return;
-      const desiredWidth =
-        sum(columnWidths.slice(0, columns)) +
-        2 * padding +
-        (columns - 1) * gap +
-        4;
-      containerRef.current.style.width = desiredWidth + "px";
-    }, 1);
+    const desiredWidth =
+      sum(columnWidths.slice(0, columns)) +
+      2 * padding +
+      (columns - 1) * gap +
+      4;
+    containerRef.current.style.width = desiredWidth + "px";
   }, [columns]);
 
   useEffect(() => {
@@ -56,12 +53,15 @@ export function ControlPanel({
     }
   }, [columns]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (containerRef.current)
+        containerRef.current.style.transition = `width ${transitionTimeMs}ms`;
+    }, 100);
+  }, [transitionTimeMs]);
+
   return (
-    <OuterContainer
-      style={{ transition: `width ${transitionTimeMs}ms` }}
-      ref={containerRef}
-      id="control-panel"
-    >
+    <OuterContainer ref={containerRef} id="control-panel">
       <InnerContainer style={{ padding, gap }}>
         <ExecutionControls
           state={state}
