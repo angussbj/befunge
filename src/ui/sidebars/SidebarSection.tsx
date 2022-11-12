@@ -26,7 +26,6 @@ export function SidebarSection({
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   // TODO: Generify, tidy, and extract this
-  // TODO: Stop animation on first render
   const animateHeight = useCallback((collapsed: boolean): void => {
     if (!containerRef.current) return;
     const initialHeight = containerRef.current.clientHeight;
@@ -54,11 +53,17 @@ export function SidebarSection({
     }
   }, [collapsed]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (containerRef.current)
+        containerRef.current.style.transition = `max-height ${transitionTimeMs}ms`;
+    }, 100);
+  }, [transitionTimeMs]);
+
   return (
     <>
       <div
         style={{
-          transition: `max-height ${transitionTimeMs}ms`,
           overflow: "hidden",
           position: "relative",
           marginTop: 24,
