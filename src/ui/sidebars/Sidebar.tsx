@@ -24,9 +24,7 @@ export function Sidebar({
   transitionTimeMs = 200,
 }: Props): React.ReactElement {
   const [visible, setVisible] = useState(open);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined
-  );
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

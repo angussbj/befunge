@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Colors } from "../Colors";
 import { Row } from "../Row";
 import { SidebarTitle } from "./SidebarTitle";
@@ -11,6 +11,7 @@ interface Props {
   children: React.ReactNode;
   collapsible?: boolean;
   startCollapsed?: boolean;
+  transitionTimeMs?: number;
 }
 
 export function SidebarSection({
@@ -18,18 +19,50 @@ export function SidebarSection({
   children,
   collapsible = false,
   startCollapsed = collapsible,
+  transitionTimeMs = 200,
 }: Props): React.ReactElement {
   const [collapsed, setCollapsed] = useState(startCollapsed);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
+  // TODO: Generify, tidy, and extract this
+  const animateHeight = useCallback((collapsed: boolean): void => {
+    if (!containerRef.current) return;
+    const initialHeight = containerRef.current.clientHeight;
+    const contentHeight = containerRef.current.scrollHeight;
+
+    containerRef.current.style.maxHeight = initialHeight + "px";
+    timeoutRef.current = setTimeout(() => {
+      if (!containerRef.current) return;
+      if (collapsed) {
+        containerRef.current.style.maxHeight = "160px";
+      } else {
+        containerRef.current.style.maxHeight = contentHeight + "px";
+        timeoutRef.current = setTimeout(() => {
+          if (containerRef.current) containerRef.current.style.maxHeight = "";
+        }, transitionTimeMs);
+      }
+    }, 1);
+  }, []);
+
+  useEffect(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (containerRef.current) animateHeight(collapsed);
+    else {
+      timeoutRef.current = setTimeout(() => animateHeight(collapsed), 1);
+    }
+  }, [collapsed]);
 
   return (
     <>
       <div
         style={{
-          maxHeight: collapsed ? 160 : undefined,
+          transition: `max-height ${transitionTimeMs}ms`,
           overflow: "hidden",
           position: "relative",
           marginTop: 24,
         }}
+        ref={containerRef}
       >
         <Row
           style={{
