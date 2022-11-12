@@ -25,7 +25,7 @@ export function InputOutput({
     const scrollHeight = scrollingContainerRef.current?.scrollHeight || 0; // total height of content
     const nearBottom = scrollHeight - (top + height) < 20;
     if (nearBottom) {
-      bottomMarkerRef.current?.scrollIntoView({ behavior: "smooth" });
+      bottomMarkerRef.current?.scrollIntoView();
     }
   }, [output]);
 
