@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 import { IconButton } from "ui";
-import { Colors } from "./Colors";
+import { Colors } from "../Colors";
 
 interface Props {
   content: React.ReactElement;
-  page: React.ReactElement;
   open: boolean;
   onSetOpen: (open: boolean) => void;
   pullRight?: boolean;
@@ -14,7 +13,6 @@ interface Props {
 
 export function Sidebar({
   content,
-  page,
   onSetOpen,
   open,
   pullRight,
@@ -51,7 +49,6 @@ export function Sidebar({
           {content}
         </Container>
       )}
-      {page}
     </>
   );
 }

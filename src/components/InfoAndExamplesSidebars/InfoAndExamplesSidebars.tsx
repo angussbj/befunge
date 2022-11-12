@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import { IconButton, Sidebars, TextButton } from "ui";
+import { IconButton, Sidebar, TextButton } from "ui";
 import { useLocalStorageState } from "utilities";
 import { CodeEditor } from "logic";
 import { InfoSidebarContent } from "./InfoSidebarContent";
@@ -12,11 +12,9 @@ interface Props {
   children?: ReactNode;
 }
 
-// TODO: Info and examples buttons should stay in corners of screen, even when scrolling
 export function InfoAndExamplesSidebar({
   editor,
   render,
-  children,
 }: Props): React.ReactElement {
   const [infoOpen, setInfoOpen] = useLocalStorageState({
     storageKey: "infoOpen",
@@ -29,30 +27,30 @@ export function InfoAndExamplesSidebar({
   });
 
   return (
-    <Sidebars
-      rightOpen={infoOpen}
-      onSetRightOpen={setInfoOpen}
-      rightContent={<InfoSidebarContent />}
-      leftOpen={examplesOpen}
-      onSetLeftOpen={setExamplesOpen}
-      leftContent={<ExampleSidebarContent editor={editor} render={render} />}
-      page={
-        <>
-          <IconButton
-            style={topRightAbsolute8px}
-            onClick={(): void => setInfoOpen(!infoOpen)}
-          >
-            <InfoOutlinedIcon />
-          </IconButton>
-          <TextButton
-            label="Examples"
-            style={topLeftAbsolute20px}
-            onClick={(): void => setExamplesOpen(!examplesOpen)}
-          />
-          {children}
-        </>
-      }
-    />
+    <>
+      <IconButton
+        style={topRightAbsolute8px}
+        onClick={(): void => setInfoOpen(!infoOpen)}
+      >
+        <InfoOutlinedIcon />
+      </IconButton>
+      <TextButton
+        label="Examples"
+        style={topLeftAbsolute20px}
+        onClick={(): void => setExamplesOpen(!examplesOpen)}
+      />
+      <Sidebar
+        open={examplesOpen}
+        onSetOpen={setExamplesOpen}
+        content={<ExampleSidebarContent editor={editor} render={render} />}
+      />
+      <Sidebar
+        open={infoOpen}
+        onSetOpen={setInfoOpen}
+        content={<InfoSidebarContent />}
+        pullRight
+      />
+    </>
   );
 }
 

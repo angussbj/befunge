@@ -13,13 +13,14 @@ export function Content(): React.ReactElement {
   const befungeState = useGlobalBefungeState(render);
 
   return (
-    <InfoAndExamplesSidebar editor={befungeState.editor} render={render}>
+    <>
+      <InfoAndExamplesSidebar editor={befungeState.editor} render={render} />
       <HorizontalScrollingContainer>
         <CenteringContainer>
           <CodingSpace state={befungeState} />
         </CenteringContainer>
       </HorizontalScrollingContainer>
-    </InfoAndExamplesSidebar>
+    </>
   );
 }
 

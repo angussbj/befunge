@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Colors } from "./Colors";
-import { Row } from "./Row";
+import { Colors } from "../Colors";
+import { Row } from "../Row";
 import { SidebarTitle } from "./SidebarTitle";
 import styled from "styled-components";
 import { IconButton } from "ui";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 interface Props {
   title: string;
