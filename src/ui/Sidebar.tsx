@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
-import ReactSidebar from "react-sidebar";
 import { IconButton } from "ui";
 import { Colors } from "./Colors";
 
@@ -35,46 +34,36 @@ export function Sidebar({
   }, [open]);
 
   return (
-    <ReactSidebar
-      sidebar={
-        <Container>
-          {visible ? (
-            <>
-              <IconButton
-                aria-label="close-side-bar"
-                style={{
-                  position: "absolute",
-                  top: 8,
-                  right: 8,
-                }}
-                onClick={(): void => onSetOpen(false)}
-              >
-                <CloseIcon fontSize="small" />
-              </IconButton>
-              {content}
-            </>
-          ) : (
-            <></>
-          )}
+    <>
+      {visible && (
+        <Container style={pullRight ? { right: 0 } : { left: 0 }}>
+          <IconButton
+            aria-label="close-side-bar"
+            style={{
+              position: "absolute",
+              top: 8,
+              right: 8,
+            }}
+            onClick={(): void => onSetOpen(false)}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+          {content}
         </Container>
-      }
-      styles={{
-        sidebar: { background: Colors.DARKER.toString() },
-        content: { display: "flex" },
-        overlay: { bottom: undefined, top: undefined },
-      }}
-      onSetOpen={onSetOpen}
-      open={open}
-      pullRight={pullRight}
-    >
+      )}
       {page}
-    </ReactSidebar>
+    </>
   );
 }
 
 const Container = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
   padding: 24px;
   width: 240px;
   font-size: 12px;
   color: ${Colors.LIGHT.fade(0.2).toString()};
+  background-color: ${Colors.DARKER.toString()};
+  z-index: 10;
 `;

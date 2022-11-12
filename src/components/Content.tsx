@@ -27,7 +27,7 @@ const HorizontalScrollingContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
   min-height: fit-content;
-  height: 90vh;
+  height: 100vh;
   overflow-x: auto;
   overflow-y: visible;
   padding: 48px 20px 20px 20px;
