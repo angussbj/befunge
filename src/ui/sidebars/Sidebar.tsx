@@ -60,6 +60,7 @@ const Container = styled.div`
   padding: 24px;
   width: 240px;
   font-size: 12px;
+  overflow-y: auto;
   color: ${Colors.LIGHT.fade(0.2).toString()};
   background-color: ${Colors.DARKER.toString()};
   z-index: 10;
