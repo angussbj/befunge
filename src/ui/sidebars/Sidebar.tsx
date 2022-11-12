@@ -3,13 +3,15 @@ import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 import { IconButton } from "ui";
 import { Colors } from "../Colors";
-import "./sidebar.css";
 
 interface Props {
   content: React.ReactElement;
   open: boolean;
   setOpen: (open: boolean) => void;
   pullRight?: boolean;
+  width?: number;
+  padding?: number;
+  transitionTimeMs?: number;
 }
 
 export function Sidebar({
@@ -17,6 +19,9 @@ export function Sidebar({
   setOpen,
   open,
   pullRight,
+  width = 240,
+  padding = 24,
+  transitionTimeMs = 200,
 }: Props): React.ReactElement {
   const [visible, setVisible] = useState(open);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -28,24 +33,28 @@ export function Sidebar({
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     if (open) {
       setVisible(true);
-      setTimeout(() => containerRef.current?.classList.add("open"), 1);
     } else {
-      timeoutRef.current = setTimeout(() => setVisible(false), 200);
-      containerRef.current?.classList.remove("open");
+      timeoutRef.current = setTimeout(
+        () => setVisible(false),
+        transitionTimeMs
+      );
     }
   }, [open]);
 
   return (
-    <>
+    <Container
+      style={{
+        transition: `margin ${transitionTimeMs}ms`,
+        width,
+        padding,
+        ...(pullRight
+          ? { right: 0, marginRight: open ? 0 : -(width + 2 * padding) }
+          : { left: 0, marginLeft: open ? 0 : -(width + 2 * padding) }),
+      }}
+      ref={containerRef}
+    >
       {visible && (
-        <Container
-          style={
-            pullRight
-              ? { right: 0, marginRight: -288 }
-              : { left: 0, marginLeft: -288 }
-          }
-          ref={containerRef}
-        >
+        <>
           <IconButton
             aria-label="close-side-bar"
             style={{
@@ -58,9 +67,9 @@ export function Sidebar({
             <CloseIcon fontSize="small" />
           </IconButton>
           {content}
-        </Container>
+        </>
       )}
-    </>
+    </Container>
   );
 }
 
@@ -68,9 +77,6 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 240px;
-  transition: margin 0.4s;
-  padding: 24px;
   font-size: 12px;
   overflow-y: auto;
   color: ${Colors.LIGHT.fade(0.2).toString()};
