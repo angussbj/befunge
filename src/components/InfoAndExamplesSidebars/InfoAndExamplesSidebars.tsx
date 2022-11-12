@@ -41,12 +41,12 @@ export function InfoAndExamplesSidebar({
       />
       <Sidebar
         open={examplesOpen}
-        onSetOpen={setExamplesOpen}
+        setOpen={setExamplesOpen}
         content={<ExampleSidebarContent editor={editor} render={render} />}
       />
       <Sidebar
         open={infoOpen}
-        onSetOpen={setInfoOpen}
+        setOpen={setInfoOpen}
         content={<InfoSidebarContent />}
         pullRight
       />
