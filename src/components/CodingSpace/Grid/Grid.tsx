@@ -132,7 +132,6 @@ const Container = styled.div<{ focused: boolean }>`
   padding: 4px 8px 8px 4px;
   background-color: ${Colors.LIGHT.toString()};
   border-radius: 4px;
-  overflow-x: scroll;
   outline: 0 none !important;
   ${({ focused }): string => {
     return focused

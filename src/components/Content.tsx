@@ -25,10 +25,11 @@ export function Content(): React.ReactElement {
 
 const HorizontalScrollingContainer = styled.div`
   box-sizing: border-box;
-  width: 100vw;
+  width: 100%;
   min-height: fit-content;
-  max-height: 100%;
-  overflow-x: scroll;
+  height: 90vh;
+  overflow-x: auto;
+  overflow-y: visible;
   padding: 48px 20px 20px 20px;
 `;
 

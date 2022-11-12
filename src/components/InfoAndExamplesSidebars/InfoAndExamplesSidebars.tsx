@@ -9,7 +9,7 @@ import { ExampleSidebarContent } from "./ExampleSidebarContent";
 interface Props {
   editor: CodeEditor;
   render: () => void;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 // TODO: Info and examples buttons should stay in corners of screen, even when scrolling
